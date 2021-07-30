@@ -1,4 +1,4 @@
-package com.cg.bo.model;
+package com.cg.bo.model.projection;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,14 +11,14 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "status")
-public class Status {
+public class SeatStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long status_id;
+    private Long id;
 
-    private String status_name;
+    private String name;
 
-    public Status(String status_name) {
-        this.status_name = status_name;
+    public SeatStatus(String name) {
+        this.name = name;
     }
 }

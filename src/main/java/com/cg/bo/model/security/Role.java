@@ -1,4 +1,4 @@
-package com.cg.bo.model;
+package com.cg.bo.model.security;
 
 import javax.persistence.*;
 import java.util.List;

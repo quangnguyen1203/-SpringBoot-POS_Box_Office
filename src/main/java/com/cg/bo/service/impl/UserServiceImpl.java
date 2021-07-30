@@ -1,7 +1,7 @@
 package com.cg.bo.service.impl;
 
-import com.cg.bo.model.User;
-import com.cg.bo.model.UserPrinciple;
+import com.cg.bo.model.security.User;
+import com.cg.bo.model.security.UserPrinciple;
 import com.cg.bo.repository.UserRepository;
 import com.cg.bo.security.UserPrincipal;
 import com.cg.bo.service.UserService;
@@ -57,10 +57,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> userOptional = Optional.ofNullable(userRepository.findByUsername(username));
+
         if (!userOptional.isPresent()) {
             throw new UsernameNotFoundException(username);
         }
         return UserPrinciple.build(userOptional.get());
     }
+
 
 }

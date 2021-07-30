@@ -1,4 +1,4 @@
-package com.cg.bo.model;
+package com.cg.bo.model.projection;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,7 +20,7 @@ public class Seat {
 
     @OneToOne
     @JoinColumn(name = "status_id")
-    private Status status;
+    private SeatStatus seatStatus;
 
     @ManyToOne
     @JoinColumn(name = "room_id")
@@ -30,9 +30,9 @@ public class Seat {
     @JoinColumn(name= "type_id")
     private TypeSeat typeSeat;
 
-    public Seat(String seat_name, Status status, Room room, TypeSeat typeSeat) {
+    public Seat(String seat_name, SeatStatus seatStatus, Room room, TypeSeat typeSeat) {
         this.seat_name = seat_name;
-        this.status = status;
+        this.seatStatus = seatStatus;
         this.room = room;
         this.typeSeat = typeSeat;
     }
