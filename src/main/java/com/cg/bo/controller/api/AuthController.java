@@ -5,6 +5,7 @@ import com.cg.bo.model.User;
 import com.cg.bo.security.JwtUtil;
 import com.cg.bo.security.UserPrincipal;
 import com.cg.bo.service.UserService;
+import com.cg.bo.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class AuthController {
 
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Autowired
     private JwtUtil jwtUtil;
