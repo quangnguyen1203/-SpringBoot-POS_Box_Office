@@ -1,5 +1,6 @@
-package com.cg.bo.model;
+package com.cg.bo.model.projection;
 
+import com.cg.bo.model.security.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

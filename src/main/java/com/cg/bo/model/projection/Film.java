@@ -1,5 +1,6 @@
-package com.cg.bo.model;
+package com.cg.bo.model.projection;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,7 +26,10 @@ public class Film {
     private Date exp_date;
     private Long admit;
     private String description;
-    private Boolean isDelete;
+
+    @JsonIgnore
+    @Column(columnDefinition = "boolean default false")
+    private boolean isDelete;
 
     public Film(String film_name, Time duration, Date rel_date, Date exp_date, Long admit, String description) {
         this.film_name = film_name;

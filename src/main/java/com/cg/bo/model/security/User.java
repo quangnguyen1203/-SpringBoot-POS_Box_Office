@@ -1,5 +1,7 @@
-package com.cg.bo.model;
+package com.cg.bo.model.security;
 
+import com.cg.bo.model.security.BaseEntity;
+import com.cg.bo.model.security.Role;
 import lombok.*;
 
 import javax.persistence.*;

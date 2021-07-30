@@ -1,7 +1,7 @@
 package com.cg.bo.service.impl;
 
-import com.cg.bo.model.User;
-import com.cg.bo.model.UserPrinciple;
+import com.cg.bo.model.security.User;
+import com.cg.bo.model.security.UserPrinciple;
 import com.cg.bo.repository.UserRepository;
 import com.cg.bo.security.UserPrincipal;
 import com.cg.bo.service.UserService;

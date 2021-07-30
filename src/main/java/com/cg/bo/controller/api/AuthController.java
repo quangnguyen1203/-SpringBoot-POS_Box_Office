@@ -1,10 +1,9 @@
 package com.cg.bo.controller.api;
 
-import com.cg.bo.model.JwtResponse;
-import com.cg.bo.model.User;
+import com.cg.bo.model.security.JwtResponse;
+import com.cg.bo.model.security.User;
 import com.cg.bo.security.JwtUtil;
 import com.cg.bo.security.UserPrincipal;
-import com.cg.bo.service.UserService;
 import com.cg.bo.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
