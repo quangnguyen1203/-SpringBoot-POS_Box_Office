@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/sweetalert2.min.css">
+    <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="/js/sweetalert2.min.js"></script>
+    <script type="text/javascript" src="/js/app.js"></script>
+</head>
+<body>
+
+
+<div class="row">
+    <div class="main-content col-md-12 col-lg-12 col-sm-12 col-xs-12">
+        <form class="form_vaccine" action="/create" method="post" >
+            <div class="row">
+                <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group col-md-3 col-sm-4 col-xs-4">
+                        <label class="label">Ngày sinh</label>
+                        <select class="form-control dob form-select" id="day" style="width: 82px;"></select>
+                    </div>
+                    <div class="form-group col-md-3 col-sm-4 col-xs-4">
+                        <label class="label"></label>
+                        <select class="form-control dob form-select" id="month" style="width: 82px;"></select>
+                    </div>
+                    <div class="form-group col-md-3 col-sm-4 col-xs-4">
+                        <label class="label"></label>
+                        <select class="form-control dob form-select" id="year"
+                                style="width: 82px;"></select>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col"><button class="btn btn-info" type="submit">ĐĂNG KÝ</button> </div>
+                <div class="col "  ><a  href="/login" class="btn btn-primary" id="login-now" role="button">ĐĂNG NHẬP NGAY!</a></div>
+            </div>
+        </form>
+        <br><br>
+
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="row card-header">
+        <button type="button" class="btn btn-primary open-modal" data-toggle="modal" data-target="#exampleModal">
+            Tạo lịch chiếu phim
+        </button>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <h5>Danh sách Lịch chiếu</h5>
+        <table id="listSchedule" class="table">
+            <thead>
+            <tr>
+                <td>#</td>
+                <td>Ngày chiếu</td>
+                <td></td>
+            </tr>
+            </thead>
+            <tbody>
+
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+<script>
+
+    function getAllSchedule() {
+        $.ajax({
+            type: "GET",
+            url: "/api"
+        }).done(function (schedules) {
+            let content = "";
+            for (let i = schedules.length - 1; i >= 0; i--) {
+                content += `
+                    <tr id="row${schedules[i].schedule_id}">
+                        <td>${schedules[i].schedule_id}</td>
+                        <td>${schedules[i].date}</td>
+                        <td>
+                            <a value="${schedules[i].schedule_id}" class="edit-btn"  href="#">Chỉnh sửa</a> |
+                            <a value="${schedules[i].schedule_id}" class="del-btn" href="#">Xóa</a>
+                        </td>
+                    </tr>
+                `;
+                console.log(schedules)
+            }
+            $("#listSchedule tbody").html(content);
+            $(".del-btn").on("click", function () {
+                App.showDeleteConfirmDialog().then((result) => {
+                    if (result.isConfirmed) {
+                        let id = $(this).attr("value");
+                        delCity(id);
+                    }
+                });
+            })
+            $(".edit-btn").on("click", function () {
+                let id = $(this).attr("value");
+                editCity(id);
+            })
+        })
+    }
+    getAllSchedule();
+
+
+    //Tạo lịch chiếu
+    function createSchedule() {
+        let id = $('#schedule_id').val();
+        let date = $('#schedule_name').val();
+        let newSchedule = {
+            date: date
+        }
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            type: "POST",
+            data: JSON.stringify(newSchedule),
+            url: "/createSchedule",
+            success: function (schedules) {
+                $('#wareHouseList tbody').prepend(' <tr id="row' + schedules.schedule_id + '">\n' +
+                    '      <td>' + schedules.schedule_id + '</td>\n' +
+                    '      <td>' + schedules.date + '</td>\n' +
+                    ' </tr>');
+                //sư kiện nào thực hiện Ajax
+                $('.close-modal').click();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Your work has been saved',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            }
+        });
+    }
+
+    function loadAddNew() {
+        $('#exampleModalLabelSpan').text("Tạo lịch chiếu phim");
+        $('#schedule_id').val(0);
+        $('#schedule_name').val("");
+    }
+</script>
+</html>
