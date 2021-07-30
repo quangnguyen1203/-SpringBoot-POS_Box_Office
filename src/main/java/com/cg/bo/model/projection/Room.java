@@ -1,4 +1,4 @@
-package com.cg.bo.model;
+package com.cg.bo.model.projection;
 
 
 import lombok.AllArgsConstructor;

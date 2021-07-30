@@ -1,6 +1,6 @@
 package com.cg.bo.service.impl;
 
-import com.cg.bo.model.Token;
+import com.cg.bo.model.security.Token;
 import com.cg.bo.repository.TokenRepository;
 import com.cg.bo.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;

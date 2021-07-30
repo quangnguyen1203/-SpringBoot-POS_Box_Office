@@ -1,4 +1,4 @@
-package com.cg.bo.model;
+package com.cg.bo.model.security;
 
 import lombok.Data;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;

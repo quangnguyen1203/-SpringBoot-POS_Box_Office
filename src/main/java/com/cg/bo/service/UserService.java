@@ -1,7 +1,7 @@
 package com.cg.bo.service;
 
 
-import com.cg.bo.model.User;
+import com.cg.bo.model.security.User;
 import com.cg.bo.security.UserPrincipal;
 import org.springframework.security.core.userdetails.UserDetailsService;
 

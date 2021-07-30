@@ -1,6 +1,6 @@
 package com.cg.bo.security;
 
-import com.cg.bo.model.UserPrinciple;
+import com.cg.bo.model.security.UserPrinciple;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
