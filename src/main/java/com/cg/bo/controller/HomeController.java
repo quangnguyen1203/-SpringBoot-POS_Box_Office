@@ -1,7 +1,6 @@
 package com.cg.bo.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -37,7 +36,7 @@ public class HomeController {
 
     @GetMapping("/login")
     public ModelAndView login() {
-        return new ModelAndView("login");
+        return new ModelAndView("/login/login");
     }
 
     @GetMapping(value="/logout")
@@ -51,7 +50,7 @@ public class HomeController {
 
     @GetMapping("/register")
     public ModelAndView register() {
-        return new ModelAndView("register");
+        return new ModelAndView("/login/register");
     }
 
 //    @GetMapping("/admin")
