@@ -1,4 +1,4 @@
-package com.cg.bo.controller.api;
+package com.cg.bo.controller;
 
 import com.cg.bo.model.bussiness.Category;
 import com.cg.bo.model.bussiness.Product;

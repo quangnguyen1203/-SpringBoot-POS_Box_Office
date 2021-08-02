@@ -1,8 +1,5 @@
-package com.cg.bo.controller.api;
+package com.cg.bo.controller;
 
-
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,9 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
-@RequestMapping("/dashboard")
-public class ManagerController {
-
+@RequestMapping("/projection")
+public class ProjectionController {
     private String getPrincipal() {
         String userName = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -27,10 +23,8 @@ public class ManagerController {
     }
 
     @GetMapping
-//    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('PROJECTION')")
     public ModelAndView homePage() {
-        ModelAndView modelAndView = new ModelAndView("dashboard/home");
-//        modelAndView.addObject("userInfo", getPrincipal());
-        return modelAndView;
+        return new ModelAndView("projection/home");
     }
 }

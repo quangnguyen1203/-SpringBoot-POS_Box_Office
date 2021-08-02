@@ -37,8 +37,6 @@
                 <div class="col-md-12">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <button id="btnLogin" class="btn btn-lg btn-outline-primary btn-block" type="button">Sign in</button>
-                    <button id="btnRegisterPage" class="btn btn-lg btn-outline-primary btn-block" type="button">Register Page</button>
-                    <button id="btnGetUsers" class="btn btn-lg btn-outline-primary btn-block" type="button">Get Users</button>
                 </div>
             </div>
         </fieldset>
@@ -65,7 +63,7 @@
             App.showSuccessAlert("Login Successfully!");
             console.log(user);
             if  (user.roles[0].authority === "ADMIN"){
-                window.location.href = "/dashboard";
+                window.location.href = "/admin";
             } else if (user.roles[0].authority === "PROJECTION"){
                 window.location.href = "/projection";
             }
