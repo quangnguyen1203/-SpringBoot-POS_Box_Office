@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/dashboard/layout/head::resources">
+</head>
+<body>
+<!-- Begin page -->
+<div id="wrapper">
+  <th:block th:replace="/dashboard/layout/side-bar::side-bar"></th:block>
+  <!-- ============================================================== -->
+  <!-- Start Page Content here -->
+  <!-- ============================================================== -->
+  <div class="content-page">
+    <div class="content">
+      <!-- Start Content-->
+      <div class="container-fluid">
+        <!-- start page title -->
+        <div class="row">
+          <div class="col-12" style="margin-top: 10px;">
+            <div class="page-title-box">
+              <h4 class="page-title">User Table</h4>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+        </div>
+        <!-- end page title -->
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="header-title mb-4">User List</h4>
+                <div class="table-responsive">
+                  <table class="table table-centered mb-0 table-nowrap" id="inline-editable productList">
+                    <thead>
+                    <tr>
+                      <th class="text-center">Image</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Phone Number</th>
+                      <th>Role</th>
+                      <th class="text-center">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody th:each="user : ${users}">
+                    <tr th:id="'row'+${user.user_id}">
+                      <input hidden th:id="${user.user_id}">
+                      <td class="text-center">
+                        <img th:src="${user.image}" alt="picture" style="width: auto; height: 100px">
+                      </td>
+                      <td th:text="${user.username}"></td>
+                      <td th:text="${user.email}"></td>
+                      <td th:text="${user.phoneNumber}"></td>
+                      <td th:text="${user.role.name}"></td>
+                      <td class="text-center">
+                        <button th:value="${user.user_id}" class="btn btn-outline-primary mr-2 edit-user-button" ><i class="far fa-edit"></i>Edit</button>
+                        <button th:value="${user.user_id}" class="btn btn-outline-danger delete-user-button" ><i class="fas fa-trash-alt"></i>Delete</button>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- end .table-responsive-->
+              </div>
+              <!-- end card-body -->
+            </div>
+            <!-- end card -->
+          </div>
+          <!-- end col -->
+        </div>
+        <!-- end row -->
+      </div>
+      <!-- end container-fluid -->
+    </div>
+    <!-- end content -->
+  </div>
+  <!-- ============================================================== -->
+  <!-- End Page content -->
+  <!-- ============================================================== -->
+</div>
+<!-- END wrapper -->
+<div th:replace="/dashboard/layout/editModalUser::editModalUser"></div>
+</body>
+<th:block th:replace="/dashboard/layout/script::script"></th:block>
+<script th:replace="/dashboard/layout/script/user/listUser::listUser"></script>
+</html>

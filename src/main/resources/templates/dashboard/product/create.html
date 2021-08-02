@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>HOME</title>
+    <div th:replace="/dashboard/layout/head::resources"></div>
+</head>
+
+
+
+<body>
+
+<!-- Begin page -->
+<div id="wrapper">
+
+    <div th:replace="/dashboard/layout/side-bar::side-bar"></div>
+
+    <!-- ============================================================== -->
+    <!-- Start Page Content here -->
+    <!-- ============================================================== -->
+
+    <div class="content-page">
+        <div class="content">
+
+            <!-- Start Content-->
+            <div class="row">
+                <div class="col-lg-12" style="margin-top: 10px;">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="header-title mb-4">Tạo mới sản phẩm</h4>
+
+                            <form class="parsley-examples" id="create-form">
+                                <div class="form-group">
+                                    <label>Tên sản phẩm<span class="text-danger">*</span></label>
+                                    <input type="text" name="product_name" parsley-trigger="change" required placeholder="Enter product name" class="form-control" id="product_name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Giá<span class="text-danger">*</span></label>
+                                    <input type="number" name="price" parsley-trigger="change" required placeholder="Enter price" class="form-control" id="price">
+                                </div>
+                                <div class="form-group">
+                                    <label>Mô tả<span class="text-danger">*</span></label>
+                                    <input id="description" type="text" placeholder="Enter description" required class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Loại sản phẩm</label>
+                                    <select class="form-control" name="upCountry" id="category" value="">
+                                    </select>
+                                </div>
+                                <div class="form-group text-right mb-0">
+                                    <button class="btn btn-primary waves-effect waves-light mr-1" id="create-button" type="button">
+                                        Tạo mới
+                                    </button>
+                                    <button type="reset" class="btn btn-secondary waves-effect waves-light">
+                                        Thoát
+                                    </button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                    <!-- end card -->
+                </div>
+                <!-- end col -->
+            </div>
+            <!-- end container-fluid -->
+
+        </div>
+        <!-- end content -->
+
+    <!-- ============================================================== -->
+    <!-- End Page content -->
+    <!-- ============================================================== -->
+
+</div>
+<!-- END wrapper -->
+</div>
+
+</body>
+<div th:replace="/dashboard/layout/script::script"></div>
+
+<script src="/js/manager/createProduct.js"></script>
+<script>
+    $(() => {
+        $("#create-form").validate({
+            errorElement: 'div',
+            rules: {
+                product_name:  {
+                required: true,
+                minlength: 2,
+                maxlength: 50,
+                },
+                price: {
+                    required: true,
+                    number: true
+                },
+                upCountry:{
+                    required:true
+                },
+                description:{
+                    required:true
+                }
+            },
+
+            messages: {
+                product_name: {
+                required: "Vui lòng nhập tên sản phẩm",
+                minlength: "Vui lòng nhập tối thiểu 2 ký tự!",
+                maxlength: "Vui lòng nhập tối đa chỉ có 50 ký tự!"
+                },
+                price: {
+                    required: "Vui lòng nhập giá sản phẩm!",
+                    number: "Vui lòng chỉ nhập số"
+                },
+                upCountry: "Vui lòng chọn loại sản phẩm",
+                description:{
+                    required:"Vui lòng nhập mô tả!"
+                }
+            },
+
+            submitHandler : createProduct
+        });
+    });
+
+</script>
+
+
+
+</html>
