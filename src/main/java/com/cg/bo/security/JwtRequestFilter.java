@@ -51,8 +51,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             user = jwtUtil.getUserFromToken(jwt);
 //            token = verificationTokenService.findByToken(jwt);
             token = jwt;
-            System.out.println("jwt");
-            System.out.println(jwt);
 //            assert false;
 //            token.setToken(jwt);
         }
@@ -60,8 +58,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             if (authorizationCookie != null) {
 //                token = authorizationCookie.getValue();
 //                user = jwtUtil.getUserFromToken(token);
-                System.out.println("authorizationCookie");
-                System.out.println(authorizationCookie);
                 assert false;
                 token = authorizationCookie;
 //                token.setToken(authorizationCookie);

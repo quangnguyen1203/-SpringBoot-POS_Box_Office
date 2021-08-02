@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -77,7 +78,7 @@ public class AuthController {
     }
 
     @GetMapping("/users")
-//    @PreAuthorize("hasAnyAuthority('USER_READ')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<Iterable<User>> getAllUser() {
         return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }

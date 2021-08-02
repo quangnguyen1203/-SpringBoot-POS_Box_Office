@@ -30,7 +30,7 @@ public class HomeController {
     }
 
     @GetMapping("/hello")
-//    @PreAuthorize("hasAnyAuthority('USER_READ')")
+    @PreAuthorize("hasAnyAuthority('USER')")
     public ResponseEntity hello() {
         return ResponseEntity.ok("hello");
     }
@@ -54,13 +54,11 @@ public class HomeController {
         return new ModelAndView("register");
     }
 
-//    @GetMapping("/admin")
-//    @PreAuthorize("hasAnyAuthority('USER_READ')")
-//    public ModelAndView admin(HttpServletRequest request) {
-//        ModelAndView modelAndView = new ModelAndView("admin");
-//        modelAndView.addObject("userInfo", getPrincipal());
-//        return modelAndView;
-//    }
-
-
+    @GetMapping("/admin")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public ModelAndView admin(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView("admin");
+        modelAndView.addObject("userInfo", getPrincipal());
+        return modelAndView;
+    }
 }

@@ -48,6 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/admin")
                 .and().exceptionHandling().accessDeniedPage("/error-403")
                 .and().csrf().disable();
+
         http.logout()
                 .logoutSuccessUrl("/login")
                 .logoutUrl("/logout")
