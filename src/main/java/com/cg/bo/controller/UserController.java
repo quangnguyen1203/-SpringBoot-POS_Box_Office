@@ -61,5 +61,26 @@ public class UserController {
         return new ModelAndView("/dashboard/user/list");
     }
 
+    @GetMapping("/listUsers")
+    public ResponseEntity<Iterable<com.cg.bo.model.security.User>> listUsers(){
+        return new ResponseEntity<>(userService.findAllByDeletedFalse(),HttpStatus.OK);
+    }
 
+    @PostMapping("/delete/{id}")
+    public ResponseEntity<com.cg.bo.model.security.User> deleteUserById(@PathVariable Long id){
+        com.cg.bo.model.security.User user = userService.findUserById(id).get();
+        user.setDeleted(true);
+        return new ResponseEntity<>(userService.save(user),HttpStatus.OK);
+    }
+
+    @GetMapping("/getUser/{id}")
+    public ResponseEntity<com.cg.bo.model.security.User> getUserById(@PathVariable Long id){
+        return new ResponseEntity<>(userService.findUserById(id).get(),HttpStatus.OK);
+    }
+
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<com.cg.bo.model.security.User> editUser(@PathVariable Long id, @RequestBody com.cg.bo.model.security.User user){
+        user.setId(id);
+        return new ResponseEntity<>(userService.save(user),HttpStatus.OK);
+    }
 }

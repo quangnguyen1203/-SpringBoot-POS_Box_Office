@@ -79,6 +79,15 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
+    @Override
+    public Iterable<User> findAllByDeletedFalse() {
+        return userRepository.findAllByDeletedFalse();
+    }
+
+    @Override
+    public Optional<User> findUserById(Long id){
+        return userRepository.findById(id);
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -87,5 +96,10 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException(username);
         }
         return UserPrinciple.build(userOptional.get());
+    }
+
+    @Override
+    public User save(User user){
+        return userRepository.save(user);
     }
 }

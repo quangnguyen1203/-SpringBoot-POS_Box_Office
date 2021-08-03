@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="/dashboard/layout/head::resources">
+<head>
+  <title>Danh sách tài khoản</title>
+  <div th:replace="/dashboard/layout/head::resources"></div>
 </head>
 <body>
 <!-- Begin page -->
 <div id="wrapper">
-  <th:block th:replace="/dashboard/layout/side-bar::side-bar"></th:block>
+  <div th:replace="/dashboard/layout/side-bar::side-bar"></div>
   <!-- ============================================================== -->
   <!-- Start Page Content here -->
   <!-- ============================================================== -->
@@ -29,7 +31,7 @@
               <div class="card-body">
                 <h4 class="header-title mb-4">Danh sách tài khoản</h4>
                 <div class="table-responsive">
-                  <table class="table table-centered mb-0 table-nowrap" id="inline-editable listUsers">
+                  <table class="table table-centered mb-0 table-nowrap" id="inline-editable">
                     <thead>
                     <tr>
                       <th class="text-center">Họ và tên</th>
@@ -40,7 +42,7 @@
                       <th class="text-center"></th>
                     </tr>
                     </thead>
-                    <tbody >
+                    <tbody id="listUsers">
 
                     </tbody>
                   </table>
@@ -66,6 +68,9 @@
 <!-- END wrapper -->
 <div th:replace="/dashboard/layout/editModalUser::editModalUser"></div>
 </body>
-<th:block th:replace="/dashboard/layout/script::script"></th:block>
-<script th:replace="/dashboard/layout/script/user/listUser::listUser"></script>
+<div th:replace="/dashboard/layout/script::script"></div>
+
+
+<script src="/js/manager/user.js"></script>
+
 </html>
