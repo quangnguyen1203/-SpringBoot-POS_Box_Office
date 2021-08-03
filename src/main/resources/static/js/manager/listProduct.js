@@ -117,7 +117,7 @@ function saveProduct(){
                     editProduct(id);
                 })
                 $('#editModal').modal("hide");
-                App.showSuccessAlert("Edit product successfully!")
+                App.showSuccessAlert("Đã cập nhật thành công!")
                 $("#edit-product")[0].reset();
             }
         })
@@ -130,7 +130,7 @@ function deleteConfirm(productID) {
         url : `/products/${productID}`
     }).done(function (){
         $("#row" + productID).remove();
-        App.showSuccessAlert("Xóa")
+        App.showSuccessAlert("Đã xóa thành công!")
     }).fail(function (){
         App.showErrorAlert("Đã xảy ra lỗi!")
     })
@@ -151,35 +151,35 @@ $(() => {
     $("#edit-product").validate({
         errorElement: 'div',
         rules: {
-            product_name:  {
+            upProductName:  {
                 required: true,
                 minlength: 2,
                 maxlength: 50,
             },
-            price: {
+            upPrice: {
                 required: true,
                 number: true
             },
             upCountry:{
                 required:true
             },
-            inputImage: {
+            upDescription:{
                 required:true
             }
         },
 
         messages: {
-            product_name: {
+            upProductName: {
                 required: "Vui lòng nhập tên sản phẩm",
                 minlength: "Vui lòng nhập tối thiểu 2 ký tự!",
                 maxlength: "Vui lòng nhập tối đa chỉ có 50 ký tự!"
             },
-            price: {
+            upPrice: {
                 required: "Vui lòng nhập giá sản phẩm!",
                 number: "Vui lòng chỉ nhập số"
             },
             upCountry: "Vui lòng chọn loại sản phẩm",
-            description:{
+            upDescription:{
                 required:"Vui lòng nhập mô tả!"
             }
         },

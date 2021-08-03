@@ -92,3 +92,4 @@ $(() => {
         submitHandler : createProduct
     });
 });
+

@@ -4,6 +4,12 @@
 <head>
     <title>HOME</title>
     <div th:replace="/dashboard/layout/head::resources"></div>
+    <style>
+        .error{
+            color: red;
+            font-style: italic;
+        }
+    </style>
 </head>
 
 
@@ -32,15 +38,15 @@
                             <form class="parsley-examples" id="create-form">
                                 <div class="form-group">
                                     <label>Tên sản phẩm<span class="text-danger">*</span></label>
-                                    <input type="text" name="product_name" parsley-trigger="change" required placeholder="Enter product name" class="form-control" id="product_name">
+                                    <input type="text" name="product_name" parsley-trigger="change" required placeholder="Nhập tên sản phẩm" class="form-control" id="product_name">
                                 </div>
                                 <div class="form-group">
                                     <label>Giá<span class="text-danger">*</span></label>
-                                    <input type="number" name="price" parsley-trigger="change" required placeholder="Enter price" class="form-control" id="price">
+                                    <input type="number" name="price" parsley-trigger="change" required placeholder="Nhập giá sản phẩm" class="form-control" id="price">
                                 </div>
                                 <div class="form-group">
                                     <label>Mô tả<span class="text-danger">*</span></label>
-                                    <input id="description" type="text" placeholder="Enter description" required class="form-control">
+                                    <textarea name="description" id="description" type="text" placeholder="Nhập mô tả" required class="form-control"></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label>Loại sản phẩm</label>
@@ -81,46 +87,6 @@
 
 <script src="/js/manager/createProduct.js"></script>
 <script>
-    $(() => {
-        $("#create-form").validate({
-            errorElement: 'div',
-            rules: {
-                product_name:  {
-                required: true,
-                minlength: 2,
-                maxlength: 50,
-                },
-                price: {
-                    required: true,
-                    number: true
-                },
-                upCountry:{
-                    required:true
-                },
-                description:{
-                    required:true
-                }
-            },
-
-            messages: {
-                product_name: {
-                required: "Vui lòng nhập tên sản phẩm",
-                minlength: "Vui lòng nhập tối thiểu 2 ký tự!",
-                maxlength: "Vui lòng nhập tối đa chỉ có 50 ký tự!"
-                },
-                price: {
-                    required: "Vui lòng nhập giá sản phẩm!",
-                    number: "Vui lòng chỉ nhập số"
-                },
-                upCountry: "Vui lòng chọn loại sản phẩm",
-                description:{
-                    required:"Vui lòng nhập mô tả!"
-                }
-            },
-
-            submitHandler : createProduct
-        });
-    });
 
 </script>
 

@@ -67,6 +67,7 @@ public class ProductController {
         productService.remove(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
     @PutMapping("/edit/{id}")
     public ResponseEntity<Product> editProduct(@RequestBody Product product,@PathVariable Long id){
         product.setProduct_id(id); ;

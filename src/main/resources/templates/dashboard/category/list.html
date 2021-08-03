@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="/dashboard/layout/head::resources">
+<head>
+    <title>HOME</title>
+    <div th:replace="/dashboard/layout/head::resources"></div>
 </head>
 
 <body>
 
 <!-- Begin page -->
 <div id="wrapper">
-
-  <th:block th:replace="/dashboard/layout/side-bar::side-bar"></th:block>
+    <div th:replace="/dashboard/layout/side-bar::side-bar"></div>
 
   <!-- ============================================================== -->
   <!-- Start Page Content here -->
@@ -25,7 +26,7 @@
         <div class="row">
           <div class="col-12" style="margin-top: 10px;">
             <div class="page-title-box">
-              <h4 class="page-title">Category Table</h4>
+              <h4 class="page-title">Các loại sản phẩm</h4>
               <div class="clearfix"></div>
             </div>
           </div>
@@ -39,29 +40,22 @@
           <div class="col-12">
             <div class="card">
               <div class="card-body">
-                <h4 class="header-title mb-4">Category List</h4>
+                <h4 class="header-title mb-4">Danh sách loại sản phẩm</h4>
                 <div class="table-responsive">
                   <table class="table table-centered mb-0 table-nowrap" id="categoryList">
                     <thead>
                     <tr>
-                      <th class="text-center">Name</th>
-                      <th class="text-center">Actions</th>
+                      <th class="text-center">Tên loại sản phẩm</th>
+                      <th class="text-center"></th>
                     </tr>
                     </thead>
 
                     <tbody>
-                      <th:block th:each="category : ${categories}">
-                        <tr th:id="'row'+${category.category_id}">
-<!--                          <input hidden th:id="${category.category_id}">-->
-                          <td class="text-center" th:text="${category.category_name}"></td>
-                          <td class="text-center">
-                            <button th:value="${category.category_id}" class="btn btn-outline-primary mr-2 edit-button" ><i class="far fa-edit"></i>Edit</button>
-                            <button th:value="${category.category_id}" class="btn btn-outline-danger delete-button" ><i class="fas fa-trash-alt"></i>Delete</button>
-                          </td>
-                        </tr>
-                      </th:block>
+
                     </tbody>
+
                   </table>
+
                 </div>
                 <!-- end .table-responsive-->
               </div>
@@ -89,8 +83,8 @@
 <!-- END wrapper -->
 <div th:replace="/dashboard/layout/editModalCategory::editModalCategory"></div>
 </body>
-<th:block th:replace="/dashboard/layout/script::script"></th:block>
+<div th:replace="/dashboard/layout/script::script"></div>
 
-<script th:replace="/dashboard/layout/script/category/listCategory::listCategory">
+<script src="/js/manager/listCategory.js">
 </script>
 </html>
