@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>HOME</title>
+  <div th:replace="/projection/layout/head::resources-pro"></div>
+  <style>
+    .error{
+      color: red;
+    }
+  </style>
+</head>
+
+
+
+<body>
+
+<!-- Begin page -->
+<div id="wrapper">
+
+  <div th:replace="/projection/layout/side-bar::side-bar-pro"></div>
+
+  <!-- ============================================================== -->
+  <!-- Start Page Content here -->
+  <!-- ============================================================== -->
+
+  <div class="content-page">
+    <div class="content">
+
+      <!-- Start Content-->
+      <div class="row">
+        <div class="col-lg-12" style="margin-top: 10px;">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="header-title mb-4">Tạo Phim</h4>
+              <form class="parsley-examples" id="create-form">
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <input type="hidden" id="film_id">
+                    <input type="hidden" id="film_admit">
+                    <input type="hidden" id="film_status">
+                    <label>Tên Phim<span class="text-danger">*</span></label>
+                    <input type="text" name="film_name" parsley-trigger="change"  placeholder="Nhập tên phim" class="form-control" id="film_name">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>Thời lượng*(Giờ : Phút)<span class="text-danger">*</span></label>
+                    <input id="film_duration" name="film_duration"  type="String" placeholder="Nhập thời lượng theo định dạng"  class="form-control">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>Ngày công chiếu<span class="text-danger">*</span></label>
+                    <input id="rel_date" name="rel_date" type="date" placeholder="Nhập ngày công chiếu"  class="form-control">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>Ngày hết hạn<span class="text-danger">*</span></label>
+                    <input id="exp_date" name="exp_date" type="date" placeholder="Nhập ngày hết hạn"  class="form-control">
+                  </div>
+                  <div class="form-group col-md-12">
+                    <label>Mô tả</label>
+                    <textarea name="film_description" class="form-control" id="film_description" rows="3"></textarea>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <form id="singleUploadForm" name="singleUploadForm">
+                      <label>
+                        Chọn ảnh:
+                        <input id="singleFileUploadInput" type="file" name="file" class="file-input">
+                      </label>
+                      <input type="submit" class="upload" hidden>
+                    </form>
+                    <input hidden type="text" id="imageName" value="">
+                  </div>
+                </div>
+                <div class="form-group text-right mb-0">
+                  <button class="btn btn-primary waves-effect waves-light mr-1" id="create-button" type="submit">
+                    Tạo mới
+                  </button>
+                  <button type="reset" class="btn btn-secondary waves-effect waves-light">
+                    Thoát
+                  </button>
+                </div>
+
+              </form>
+            </div>
+          </div>
+          <!-- end card -->
+        </div>
+        <!-- end col -->
+      </div>
+      <!-- end container-fluid -->
+
+    </div>
+    <!-- end content -->
+
+    <!-- ============================================================== -->
+    <!-- End Page content -->
+    <!-- ============================================================== -->
+
+  </div>
+  <!-- END wrapper -->
+</div>
+
+</body>
+<div th:replace="/projection/layout/script::script-pro"></div>
+
+<script src="/js/projection/createFilm.js"></script>
+<script>
+
+  $(() => {
+    $("#create-form").validate({
+      errorElement: 'div',
+      rules: {
+        film_name:  {
+          required: true,
+          minlength: 2,
+          maxlength: 50,
+        },
+        film_duration: {
+          required: true,
+          validateTime: true,
+        },
+        film_description:{
+          required:true
+        },
+        exp_date:{
+          required:true
+        },
+        rel_date:{
+          required:true
+        },
+      },
+
+      messages: {
+        film_name: {
+          required: "Vui lòng nhập tên Phim",
+          minlength: "Vui lòng nhập tối thiểu 2 ký tự!",
+          maxlength: "Vui lòng nhập tối đa chỉ có 50 ký tự!"
+        },
+        film_duration: {
+          required: "Vui lòng nhập Thời lượng phim!",
+        },
+        film_description:{
+          required:"Vui lòng nhập mô tả!"
+        },
+        exp_date:{
+          required:"Vui chọn ngày công chiếu!"
+        },
+        rel_date:{
+          required:"Vui lòng chọn ngày kết thúc!"
+        },
+      },
+      submitHandler: function() {
+        createFilm();
+      }
+    });
+  });
+
+  $.validator.addMethod("validateTime",function (value, element){
+    return this.optional(element) ||/([01]?[0-9]|2[0-3]):[0-5][0-9]/.test(value);
+  }, "Hãy nhập giờ hợp lệ!!!");
+</script>
+
+
+
+</html>
