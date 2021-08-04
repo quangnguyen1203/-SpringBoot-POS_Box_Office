@@ -9,3 +9,5 @@ function uploadImg64(input){
         reader.readAsDataURL(input.files[0]);
     }
 }
+
+

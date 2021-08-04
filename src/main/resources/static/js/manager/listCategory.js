@@ -1,3 +1,4 @@
+App.getUser();
 function getAllCategory(){
         $.ajax({
             type: "GET",

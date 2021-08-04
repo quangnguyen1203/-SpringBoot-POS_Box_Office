@@ -1,29 +1,45 @@
 App.getUser();
-function getAllProduct(){
+
+function getAllClass(){
     $.ajax({
         type: "GET",
-        url: "/products/allHiddenProduct"
-    }).done(function (product){
+        url: "/members/allClass"
+    }).done(function (classes){
         let content = "";
-        for (let i = product.length-1; i >= 0; i--) {
+        for (let i = 0; i < classes.length; i++) {
             content += `
-                        <tr id="row${product[i].product_id}">
-                              <input hidden id="${product[i].product_id}">
-                              <td>${product[i].product_name}</td>
-                              <td>${product[i].price + "$"}</td>
-                              <td>${product[i].description}</td>
-                              <td>${product[i].category.category_name}</td>
+                    <option value="${classes[i].class_id}">${classes[i].class_name}</option>
+                `;
+        }
+        $("#classes").html(content);
+    })
+}
+
+function getAllMember(){
+    $.ajax({
+        type: "GET",
+        url: "/members/allMember"
+    }).done(function (member){
+        let content = "";
+        for (let i = member.length-1; i >= 0; i-- ) {
+            content += `
+                        <tr id="row${member[i].member_id}">
+                              <td>${member[i].member_name}</td>
+                              <td>${member[i].phoneNumber}</td>
+                              <td>${member[i].email}</td>
+                              <td>${member[i].aclass.class_name}</td>
                               <td class="text-center">
-                                <button value="${product[i].product_id}" class="btn btn-outline-primary delete-button" ><i class="fas fa-trash-restore"></i>Khôi phục</button>
+                                <button value="${member[i].member_id}" class="btn btn-outline-primary mr-2 edit-button" ><i class="far fa-edit"></i>Sửa</button>
+                                <button value="${member[i].member_id}" class="btn btn-outline-danger delete-button" ><i class="fas fa-trash-alt"></i>Xóa</button>
                               </td>
                         </tr>
                 `;
         }
-        $("#productList tbody").html(content);
-        $("#productList").DataTable({
+        $("#memberList tbody").html(content);
+        $("#memberList").DataTable({
             columnDefs: [
-                { orderable: false, targets: [1,2,3] },
-                { searchable: false, targets: [1,2,3] }
+                { orderable: false, targets: [4] },
+                { searchable: false, targets: [4] }
             ],
             "language": {
                 "processing": "Đang xử lý...",
@@ -160,28 +176,158 @@ function getAllProduct(){
             }
         })
         $(".delete-button").on("click", function (){
-            App.showRestoreConfirmDialog().then((result) => {
+            App.showDeleteConfirmDialog().then((result) => {
                 if (result.isConfirmed){
                     let id = $(this).attr("value");
                     deleteConfirm(id);
                 }
             });
         })
+        $(".edit-button").on("click",function (){
+            let id = $(this).attr("value");
+            editMember(id);
+        })
     })
 }
 
-function deleteConfirm(productID) {
+function editMember(memberID){
     $.ajax({
-        type : "POST",
-        url : `/products/${productID}`
-    }).done(function (){
-        $("#row" + productID).remove();
-        App.showSuccessAlert("Khôi phục thành công!")
+        type: "GET",
+        url: `/members/edit-member/${memberID}`,
+    }).done(function (member){
+        $('#upID').val(member.member_id);
+        $('#member_name').val(member.member_name);
+        $('#phoneNumber').val(member.phoneNumber);
+        $('#email').val(member.email);
+        $('#classes').val(member.aclass.class_id);
+        $('#editModal').modal('show');
     }).fail(function (){
         App.showErrorAlert("Đã xảy ra lỗi!")
     })
 }
 
-getAllProduct();
+function saveMember(){
+    let member_id = $("#upID").val();
+    console.log(member_id)
+    let member_name = $("#member_name").val();
+    let phoneNumber = $("#phoneNumber").val();
+    let email = $("#email").val();
+    let classes = $("#classes").val();
+
+    let newClasses = {
+        class_id : classes
+    }
+
+    let member = {
+        member_id: member_id,
+        member_name: member_name,
+        phoneNumber: phoneNumber,
+        email: email,
+        aclass: newClasses
+    }
+
+    console.log(member)
+    if ($("#edit-member").valid()){
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            type: "PUT",
+            data: JSON.stringify(member),
+            url: `/members/edit/${member_id}`,
+            success: function (members) {
+                console.log(members)
+                $('#row'+member_id+ ' td').remove();
+                $('#row'+member_id).html(`
+                        <td>${members.member_name}</td>
+                        <td>${members.phoneNumber}</td>
+                        <td>${members.email}</td>
+                        <td>${members.aclass.class_name}</td>
+                        <td class="text-center">
+                            <button value="${members.member_id}" class="btn btn-outline-primary mr-2 edit-button" ><i class="fas fa-edit"></i>Sửa</button>
+                            <button value="${members.member_id}" class="btn btn-outline-danger delete-button" ><i class="fas fa-trash-alt"></i>Xóa</button>
+                        </td>`);
+                $(".delete-button").on("click", function (){
+                    App.showDeleteConfirmDialog().then((result) => {
+                        if (result.isConfirmed){
+                            let id = $(this).attr("value");
+                            deleteConfirm(id);
+                        }
+                    });
+                })
+                $(".edit-button").on("click",function (){
+                    let id = $(this).attr("value");
+                    editMember(id);
+                })
+                $('#editModal').modal("hide");
+                App.showSuccessAlert("Đã cập nhật thành công!")
+                $("#edit-member")[0].reset();
+            }
+        })
+    }
+}
+
+function deleteConfirm(memberID) {
+    $.ajax({
+        type : "DELETE",
+        url : `/members/${memberID}`
+    }).done(function (){
+        $("#row" + memberID).remove();
+        App.showSuccessAlert("Đã xóa thành công!")
+    }).fail(function (){
+        App.showErrorAlert("Đã xảy ra lỗi!")
+    })
+}
+
+
+$(".edit-button").on("click",editMember);
+
+$(".save-member").on("click",saveMember);
 
 $(".delete-button").on("click",deleteConfirm);
+
+getAllClass()
+
+getAllMember();
+
+$(() => {
+    $("#edit-product").validate({
+        errorElement: 'div',
+        rules: {
+            upProductName:  {
+                required: true,
+                minlength: 2,
+                maxlength: 50,
+            },
+            upPrice: {
+                required: true,
+                number: true
+            },
+            upCountry:{
+                required:true
+            },
+            upDescription:{
+                required:true
+            }
+        },
+
+        messages: {
+            upProductName: {
+                required: "Vui lòng nhập tên sản phẩm",
+                minlength: "Vui lòng nhập tối thiểu 2 ký tự!",
+                maxlength: "Vui lòng nhập tối đa chỉ có 50 ký tự!"
+            },
+            upPrice: {
+                required: "Vui lòng nhập giá sản phẩm!",
+                number: "Vui lòng chỉ nhập số"
+            },
+            upCountry: "Vui lòng chọn loại sản phẩm",
+            upDescription:{
+                required:"Vui lòng nhập mô tả!"
+            }
+        },
+
+        submitHandler : saveMember
+    });
+});

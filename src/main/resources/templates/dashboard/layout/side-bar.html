@@ -1,4 +1,4 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <div th:fragment="side-bar">
     <div id="side-bar">
         <!-- Topbar Start -->
@@ -8,9 +8,10 @@
                     <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                         <img src="/assets/images/admin-avatar.jpg" alt="user-image" class="rounded-circle">
                         <span class="pro-user-name ml-1">
-                                <span > USER <i class="mdi mdi-chevron-down"></i>
+                            <span id="user">
+                                <i class="mdi mdi-chevron-down"></i>
                             </span>
-          </span>
+                        </span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
                         <!-- item-->
@@ -19,13 +20,13 @@
                         </div>
 
 
-                        <div class="dropdown-divider"></div>
+<!--                        <div class="dropdown-divider"></div>-->
 
-                        <!-- item-->
-                        <!--                    <div sec:authorize="isAuthenticated()">-->
-                        <!--                        <a th:href="@{/home}">Home</a> | <a th:href="@{/logout}">Logout</a>-->
-                        <!--                    </div>-->
-                        <a href="javascript:void(0);" class="dropdown-item notify-item">
+<!--                         item-->
+<!--                            <div sec:authorize="isAuthenticated()">-->
+<!--                                <a href="@{/logout}">Logout</a>-->
+<!--                            </div>-->
+                        <a href="/logout" class="dropdown-item notify-item">
                             <p> <i class="mdi mdi-logout-variant"></i> Đăng xuất</p>
                         </a>
 
@@ -135,13 +136,14 @@
 
                         <li>
                             <a href="javascript: void(0);" class="waves-effect">
-                                <i class="fas fa-users"></i>
-                                <span> Người dùng </span>
+                                <i class="fas fa-user-tie"></i>
+                                <span> Tài khoản </span>
                                 <span class="menu-arrow"></span>
                             </a>
                             <ul class="nav-second-level" aria-expanded="false">
-                                <li><a href="#">Danh sách người dùng</a></li>
-                                <li><a href="#">Tạo mới người dùng</a></li>
+                                <li><a href="/user/list">Danh sách tài khoản</a></li>
+                                <li><a href="/user/create">Tạo tài khoản mới</a></li>
+                                <li><a href="/user/user-deleted">Danh sách tài khoản bị xóa</a></li>
                             </ul>
                         </li>
 

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -17,6 +18,7 @@ public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long member_id;
+
     private String member_name;
     private String phoneNumber;
     private String email;
@@ -29,7 +31,6 @@ public class Member {
 //    @JoinColumn(name = "order_id")
 //    private List<Order> orders;
 
-    @JsonIgnore
     @ManyToOne(targetEntity = Class.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "class_id")
     private Class aClass;
@@ -56,4 +57,20 @@ public class Member {
         this.email = email;
         this.aClass = aClass;
     }
+
+    public Member(String member_name, String phoneNumber, String email) {
+        this.member_name = member_name;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+    }
+
+
+//    public Member(String member_name, String phoneNumber, String email, List<Visit> visits, List<Order> orders) {
+//        this.member_name = member_name;
+//        this.phoneNumber = phoneNumber;
+//        this.email = email;
+//        this.visits = new ArrayList<>();
+//        this.orders = new ArrayList<>();
+//    }
+
 }
