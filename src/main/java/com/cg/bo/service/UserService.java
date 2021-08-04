@@ -24,5 +24,7 @@ public interface UserService extends UserDetailsService {
 
     Iterable<User> findAllByDeletedFalse();
 
+    Iterable<User> findAllByDeletedTrue();
+
     User save(User user);
 }

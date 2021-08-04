@@ -45,6 +45,11 @@ public class UserController {
         return new ResponseEntity<>(userService.findByUsername(getPrincipal()), HttpStatus.OK);
     }
 
+    @GetMapping("/user-deleted")
+    public ModelAndView getDeletedUsersForm(){
+        return new ModelAndView("/dashboard/user/deleted");
+    }
+
     @PostMapping("/create")
     public ResponseEntity<User> createNewUser(@RequestBody com.cg.bo.model.security.User user){
         user.setRole(roleService.findById(user.getRole().getId()).get());
@@ -69,7 +74,7 @@ public class UserController {
     @PostMapping("/delete/{id}")
     public ResponseEntity<com.cg.bo.model.security.User> deleteUserById(@PathVariable Long id){
         com.cg.bo.model.security.User user = userService.findUserById(id).get();
-        user.setDeleted(true);
+        user.setDeleted(!user.isDeleted());
         return new ResponseEntity<>(userService.save(user),HttpStatus.OK);
     }
 
@@ -80,7 +85,15 @@ public class UserController {
 
     @PutMapping("/edit/{id}")
     public ResponseEntity<com.cg.bo.model.security.User> editUser(@PathVariable Long id, @RequestBody com.cg.bo.model.security.User user){
+        String password = userService.findUserById(id).get().getPassword();
         user.setId(id);
+        user.setPassword(password);
+        user.setRole(roleService.findById(user.getRole().getId()).get());
         return new ResponseEntity<>(userService.save(user),HttpStatus.OK);
+    }
+
+    @GetMapping("/getDeletedUser")
+    public ResponseEntity<Iterable<com.cg.bo.model.security.User>> getDeletedUsers(){
+        return new ResponseEntity<>(userService.findAllByDeletedTrue(),HttpStatus.OK);
     }
 }

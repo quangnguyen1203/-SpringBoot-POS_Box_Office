@@ -15,7 +15,6 @@ function user(){
     }
 
     if ($("#create-form").valid()){
-        console.log(user.email)
         $.ajax({
             headers: {
                 'Accept': 'application/json',
@@ -181,12 +180,16 @@ function deleteUser(id){
         url: `/user/delete/${id}`
     }).done((user) => {
         $(`#row${user.id}`).html("");
+        App.showSuccessAlert("Xóa tài khoản thành công!");
+    }).fail(() => {
+        App.showErrorAlert("Có lỗi xảy ra!");
     })
 }
 
 function saveUser(){
+    let userId = $("#userId").val();
+
     let newUser = {
-        id: $("#userId").val(),
         username: $("#edit-username").val(),
         phone: $("#edit-phone").val(),
         email: $("#edit-email").val(),
@@ -196,36 +199,39 @@ function saveUser(){
         }
     }
 
+
     $.ajax({
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
         type: "PUT",
-        url: `/user/edit/${newUser.id}`,
+        url: `/user/edit/${userId}`,
         data: JSON.stringify(newUser)
     }).done((user) =>{
         let content = `
-        <td class="text-center">${user.fullName}</td>
-                    <td class="text-center">${user.username}</td>
-                    <td class="text-center">${user.email}</td>
-                    <td class="text-center">${user.phone}</td>
-                    <td class="text-center">${user.role.name}</td>
-                    <td>
-                       <button value="${user.id}" class="btn btn-outline-primary mr-2 edit-button" ><i class="far fa-edit"></i>Sửa</button>
-                            <button value="${user.id}" class="btn btn-outline-danger delete-button" ><i class="fas fa-trash-alt"></i>Xóa</button>
-                    </td>
-        `;
-        $("#row" + user.id).html(content);
+    <td class="text-center">${user.fullName}</td>
+                <td class="text-center">${user.username}</td>
+                <td class="text-center">${user.email}</td>
+                <td class="text-center">${user.phone}</td>
+                <td class="text-center">${user.role.name}</td>
+                <td>
+                   <button value="${userId}" class="btn btn-outline-primary mr-2 edit-button" ><i class="far fa-edit"></i>Sửa</button>
+                        <button value="${userId}" class="btn btn-outline-danger delete-button" ><i class="fas fa-trash-alt"></i>Xóa</button>
+                </td>
+    `;
+        $("#row" + userId).html(content);
+
         $(".delete-button").on("click", function (){
             App.showDeleteConfirmDialog().then((result) => {
                 if (result.isConfirmed) {
                     let id = $(this).attr("value");
                     deleteUser(id);
+                    App.showSuccessAlert("Xóa thành viên thành công!")
                 }
-                App.showSuccessAlert("Xóa thành viên thành công!")
             })
         })
+
         $(".edit-button").on("click", function (){
             let id = $(this).attr("value");
             $.ajax({
@@ -242,8 +248,106 @@ function saveUser(){
             })
         })
     })
+
+
 }
 
-$(".save-user").on("click", saveUser);
+$(".save-user").on("click", function (){
+    if ($("#edit-form").valid()){
+        saveUser();
+        $("#editModal").modal("hide");
+        $("#edit-form")[0].reset();
+        App.showSuccessAlert("Cập nhật thông tin tài khoản thành công!");
+    }
+
+});
 
 getListUsers();
+
+//Danh sách tai khoản bị xóa
+
+function getDeletedUsers(){
+    $.ajax({
+        type: "GET",
+        url: "/user/getDeletedUser"
+    }).done((users) =>{
+        let content = "";
+        for (let i = users.length - 1; i >=0 ; i--) {
+            content += `
+                <tr id="row${users[i].id}">
+                    <td class="text-center">${users[i].fullName}</td>
+                    <td class="text-center">${users[i].username}</td>
+                    <td class="text-center">${users[i].email}</td>
+                    <td class="text-center">${users[i].phone}</td>
+                    <td class="text-center">${users[i].role.name}</td>
+                    <td>
+                       <button value="${users[i].id}" class="btn btn-outline-primary mr-2 restore-button" ><i class="far fa-window-restore"></i> Khôi phục</button>  
+                    </td>
+                </tr>   
+            `;
+        }
+        $("#deletedUsers").html(content);
+        $(".restore-button").on("click", function (){
+            App.showDeleteConfirmDialog().then((result) => {
+                if (result.isConfirmed) {
+                    let id = $(this).attr("value");
+                    deleteUser(id);
+                    // App.showSuccessAlert("Khôi phục thành viên thành công!")
+                }
+            })
+        })
+})
+}
+
+$(() => {
+    $("#edit-form").validate({
+        errorElement: 'div',
+        rules: {
+            username:  {
+                required: true,
+                minlength: 4,
+                maxlength: 20
+            },
+            phone: {
+                required: true,
+                minlength: 10,
+                maxlength: 11,
+                validatePhone: true
+            },
+            email:{
+                required: true,
+                validateEmail: true
+            },
+            fullName:{
+                required: true
+            },
+            role: {
+                required: true
+            }
+        },
+        messages: {
+            username: {
+                required: "Vui lòng nhập username",
+                minlength: "Vui lòng nhập tối thiểu 4 ký tự!",
+                maxlength: "Vui lòng nhập tối đa chỉ có 20 ký tự!"
+            },
+            phone: {
+                required: "Vui lòng nhập số điện thoại!",
+                minlength: "Vui lòng nhập tối thiểu 10 số!",
+                maxlength: "Vui lòng nhập tối đa 11 số!"
+            },
+            email: {
+                required: "Vui lòng nhập email!"
+            },
+            fullName: {
+                required: "Vui lòng họ tên!"
+            },
+            role: {
+                required: "Vui lòng chọn chức vụ"
+            }
+        },
+        submitHandler : saveUser
+    });
+});
+
+getDeletedUsers();

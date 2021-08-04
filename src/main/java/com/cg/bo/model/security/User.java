@@ -46,6 +46,14 @@ public class User {
         this.role = role;
     }
 
+    public User(String username, String fullName, String phone, String email, Role role) {
+        this.username = username;
+        this.fullName = fullName;
+        this.phone = phone;
+        this.email = email;
+        this.role = role;
+    }
+
     public User(Long id, String username, String fullName, String phone, String email, Role role) {
         this.id = id;
         this.username = username;

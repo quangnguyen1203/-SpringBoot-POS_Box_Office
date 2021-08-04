@@ -85,6 +85,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Iterable<User> findAllByDeletedTrue() {
+        return userRepository.findAllByDeletedTrue();
+    }
+
+    @Override
     public Optional<User> findUserById(Long id){
         return userRepository.findById(id);
     }
