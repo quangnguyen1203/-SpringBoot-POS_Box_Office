@@ -1,4 +1,4 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <div th:fragment="side-bar-pro">
     <div id="side-bar">
         <!-- Topbar Start -->
@@ -8,9 +8,10 @@
                     <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                         <img src="/assets/images/admin-avatar.jpg" alt="user-image" class="rounded-circle">
                         <span class="pro-user-name ml-1">
-                                <span > USER <i class="mdi mdi-chevron-down"></i>
+                            <span id="user">
+                                <i class="mdi mdi-chevron-down"></i>
                             </span>
-          </span>
+                        </span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
                         <!-- item-->
@@ -19,13 +20,13 @@
                         </div>
 
 
-                        <div class="dropdown-divider"></div>
+                        <!--                        <div class="dropdown-divider"></div>-->
 
-                        <!-- item-->
-                        <!--                    <div sec:authorize="isAuthenticated()">-->
-                        <!--                        <a th:href="@{/home}">Home</a> | <a th:href="@{/logout}">Logout</a>-->
-                        <!--                    </div>-->
-                        <a href="javascript:void(0);" class="dropdown-item notify-item">
+                        <!--                         item-->
+                        <!--                            <div sec:authorize="isAuthenticated()">-->
+                        <!--                                <a href="@{/logout}">Logout</a>-->
+                        <!--                            </div>-->
+                        <a href="/logout" class="dropdown-item notify-item">
                             <p> <i class="mdi mdi-logout-variant"></i> Đăng xuất</p>
                         </a>
 
@@ -92,58 +93,17 @@
                         <li class="menu-title">Navigation</li>
 
                         <li>
-                            <a  href="#" class="waves-effect">
-                                <i class="ion-md-speedometer"></i>
-                                <span > Thông số </span>
-                            </a>
-                        </li>
-
-                        <li>
                             <a href="javascript: void(0);" class="waves-effect">
                                 <i class="fas fa-money-check-alt"></i>
-                                <span> Mua hàng </span>
+                                <span> Phim </span>
                                 <span class="menu-arrow"></span>
                             </a>
                             <ul class="nav-second-level" aria-expanded="false">
-                                <li><a href="#">Lịch sử mua hàng</a></li>
+                                <li><a href="/films/listFilm">Danh sách các bộ phim</a></li>
+                                <li><a href="/films/createFilm">Tạo mới phim</a></li>
                             </ul>
                         </li>
 
-                        <li>
-                            <a href="javascript: void(0);" class="waves-effect">
-                                <i class="fas fa-tasks"></i>
-                                <span> Sản phẩm </span>
-                                <span class="menu-arrow"></span>
-                            </a>
-                            <ul class="nav-second-level" aria-expanded="false">
-                                <li><a href="/products/">Danh sách sản phẩm</a></li>
-                                <li><a href="/products/createNewProduct">Tạo mới sản phẩm</a></li>
-                                <li><a href="/products/hiddenProduct">Các sãn phẩm bị xóa</a></li>
-                            </ul>
-                        </li>
-
-                        <li>
-                            <a href="javascript: void(0);" class="waves-effect">
-                                <i class="fas fa-users"></i>
-                                <span> Người dùng </span>
-                                <span class="menu-arrow"></span>
-                            </a>
-                            <ul class="nav-second-level" aria-expanded="false">
-                                <li><a href="#">Danh sách người dùng</a></li>
-                                <li><a href="#">Tạo mới người dùng</a></li>
-                            </ul>
-                        </li>
-
-                        <li>
-                            <a href="javascript: void(0);" class="waves-effect">
-                                <i class="fas fa-clipboard-list"></i>
-                                <span> Loại sản phẩm </span>
-                                <span class="menu-arrow"></span>
-                            </a>
-                            <ul class="nav-second-level" aria-expanded="false">
-                                <li><a href="#">Danh sách loại sản phẩm</a></li>
-                            </ul>
-                        </li>
                     </ul>
 
                 </div>
