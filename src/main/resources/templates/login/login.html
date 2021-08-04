@@ -60,7 +60,7 @@
             url: "/api/login",
             data: JSON.stringify(customer)
         }).done((user) => {
-            App.showSuccessAlert("Login Successfully!");
+            App.showSuccessAlert("Đăng nhập thành công!");
             console.log(user);
             if  (user.roles[0].authority === "ADMIN"){
                 window.location.href = "/admin";
@@ -68,16 +68,13 @@
                 window.location.href = "/projection";
             }
         }).fail(() => {
-            App.showErrorAlert("An error occurred. Please try again later !");
+            App.showErrorAlert("Đã xảy ra lỗi. Vui lòng thử lại sau!");
         });
     }
 
 
     $("#btnLogin").on("click",loginHandle);
 
-    $("#btnRegisterPage").on("click", () => {
-        window.location.href = "/register";
-    });
 
 </script>
 

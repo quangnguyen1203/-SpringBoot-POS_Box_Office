@@ -1,3 +1,4 @@
+App.getUser();
 function getAllCategory(){
     $.ajax({
         type: "GET",
@@ -92,3 +93,4 @@ $(() => {
         submitHandler : createProduct
     });
 });
+

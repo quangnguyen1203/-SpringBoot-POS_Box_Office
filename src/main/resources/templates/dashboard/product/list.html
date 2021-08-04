@@ -3,6 +3,12 @@
 <head>
   <title>HOME</title>
   <div th:replace="/dashboard/layout/head::resources"></div>
+  <style>
+    .error{
+      color: red;
+      font-style: italic;
+    }
+  </style>
 </head>
 
 <body>
@@ -82,7 +88,7 @@
 
 </div>
 <!-- END wrapper -->
-<div th:replace="/dashboard/layout/editModalProduct"></div>
+<div th:replace="/dashboard/layout/editModalProduct::editModalProduct"></div>
 </body>
 <div th:replace="/dashboard/layout/script::script"></div>
 

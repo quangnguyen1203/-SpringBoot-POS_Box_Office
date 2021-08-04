@@ -18,6 +18,12 @@ public class Class {
     private Long class_id;
     private String class_name;
 
+
+
+    public Class(Long class_id) {
+        this.class_id = class_id;
+    }
+
     public Class(String class_name) {
         this.class_name = class_name;
     }
