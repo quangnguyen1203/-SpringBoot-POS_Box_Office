@@ -35,8 +35,11 @@ public class Film {
 
     private boolean status;
 
+    public Film(Long film_id) {
+        this.film_id = film_id;
+    }
 
-    public Film(String film_name,String image,String duration, Date rel_date, Date exp_date, Long admit, String description) {
+    public Film(String film_name, String image, String duration, Date rel_date, Date exp_date, Long admit, String description) {
         this.image = image;
         this.film_name = film_name;
         this.duration = duration;

@@ -48,3 +48,42 @@ function getAllFilm(){
 checkAvailable();
 
 getSchedules();
+
+
+//Tạo suất chiếu
+
+function createShow(){
+
+
+    let film_id = $("#film_name").val();
+
+    $.ajax({
+        type: "GET",
+        url: `/films/find/${film_id}`
+    }).done((film) => {
+        let room = {
+            room_name: $("#room_name").val()
+        }
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            type: "POST",
+            url: "/room/create",
+            data: JSON.stringify(room)
+        }).done((room1) =>{
+            $.ajax({
+                type: "POST",
+                url: `/room/initSeat/${room1.room_id}`
+            }).done((room2) =>{
+                let schedule = {
+                    schedule_id: $("#schedule_date").val()
+                }
+                
+            })
+        })
+
+    })
+
+}

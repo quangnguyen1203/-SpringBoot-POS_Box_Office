@@ -33,4 +33,9 @@ public class SeatServiceImpl implements SeatService {
     public void remove(Long id) {
         seatRepository.deleteById(id);
     }
+
+    @Override
+    public void initSeat(Long roomId) {
+        seatRepository.initSeat(roomId);
+    }
 }

@@ -30,6 +30,10 @@ public class Schedule{
     @JoinColumn(name = "user_id")
     private User user;
 
+    public Schedule(Long schedule_id) {
+        this.schedule_id = schedule_id;
+    }
+
     public Schedule(Date schedule_date, User user) {
         this.schedule_date = schedule_date;
         this.user = user;
