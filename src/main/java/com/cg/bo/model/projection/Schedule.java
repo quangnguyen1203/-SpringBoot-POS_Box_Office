@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 import javax.persistence.*;
 import java.sql.Date;
 
@@ -17,7 +19,12 @@ public class Schedule{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long schedule_id;
+    @Column(name = "schedule_date",unique = true)
     private Date schedule_date;
+
+    @OneToMany(targetEntity = Show.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "show_id")
+    private List<Show> shows;
 
     @OneToOne
     @JoinColumn(name = "user_id")

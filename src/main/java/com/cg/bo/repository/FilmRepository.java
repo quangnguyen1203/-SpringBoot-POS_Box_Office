@@ -20,8 +20,8 @@ public interface FilmRepository extends JpaRepository<Film,Long> {
     @Query("select f from Film f where f.isDelete = FALSE order by f.film_id asc ")
     Iterable<Film> findAllByOrderByFilm_idDesc();
 
-    @Query("select f from Film f where f.isDelete = FALSE order by f.film_id asc ")
-    Iterable<Film> findAllByHiddenFilm();
+    @Query("select f from Film f where f.status = TRUE")
+   Iterable<Film> findAllByStatusTrue();
 
 
     @Transactional

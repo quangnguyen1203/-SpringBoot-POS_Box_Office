@@ -33,8 +33,7 @@ public class Film {
     private boolean isDelete;
 
 
-    @Column(columnDefinition = "boolean default false")
-    private boolean isStatus;
+    private boolean status;
 
 
     public Film(String film_name,String image,String duration, Date rel_date, Date exp_date, Long admit, String description) {

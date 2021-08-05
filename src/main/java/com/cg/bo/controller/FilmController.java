@@ -2,11 +2,14 @@ package com.cg.bo.controller;
 
 import com.cg.bo.model.projection.Film;
 import com.cg.bo.service.FilmService;
+import com.cg.bo.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.sql.Date;
 
 @RestController
 @RequestMapping("/films")
@@ -15,15 +18,23 @@ public class FilmController {
     @Autowired
     private FilmService filmService;
 
+
     //listFilm
     @GetMapping("/listFilm")
     public ModelAndView listFilm(){
         return new ModelAndView("projection/film/list");
     }
 
+    @GetMapping("/checkAvailable")
+    public ResponseEntity<Iterable<Film>> checkAvailable(){
+        Iterable<Film> films = filmService.findAll();
+        filmService.checkAvailable(films);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @GetMapping("/allFilm")
     public ResponseEntity<Iterable<Film>> listAllFilm(){
-        return new ResponseEntity<>(filmService.findAllByOrderByFilm_idDesc(),HttpStatus.OK);
+        return new ResponseEntity<>(filmService.findAllByStatusTrue(),HttpStatus.OK);
     }
 
     @PostMapping("/createFilm")
@@ -55,5 +66,7 @@ public class FilmController {
         film.setImage(film.getImage());
         return new ResponseEntity<>(filmService.save(film),HttpStatus.OK);
     }
+
+
 
 }
