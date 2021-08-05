@@ -17,14 +17,14 @@ public class Schedule{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long schedule_id;
-    private Date date;
+    private Date schedule_date;
 
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Schedule(Date date, User user) {
-        this.date = date;
+    public Schedule(Date schedule_date, User user) {
+        this.schedule_date = schedule_date;
         this.user = user;
     }
 }

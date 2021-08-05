@@ -23,6 +23,8 @@ public class Film {
     private String duration;
     private Date rel_date;
     private Date exp_date;
+
+    @Column(name = "admit", columnDefinition = "bigint default 0")
     private Long admit;
     private String description;
 

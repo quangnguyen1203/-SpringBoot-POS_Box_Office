@@ -9,9 +9,9 @@ function getAllFilm(){
         for (let i = films.length-1; i >= 0; i--) {
             content += `
                             <div class="col-md-6" >
-                                <div class="ml-2 mr-2 row g-0 border rounded overflow-hidden flex-md-row  mb-4 shadow-sm h-md-300  position-relative ">
+                                <div class="ml-1 mr-1 row g-0 border rounded overflow-hidden flex-md-row  mb-4 shadow-sm h-md-300  position-relative ">
                                     <div class="col-auto d-none d-lg-block">
-                                     <img style="object-fit: cover"  width="220" height="310" src= "/uploads/${films[i].image}"  alt="${films[i].film_name}">
+                                     <img style="object-fit: cover"  width="220px" height="310px" src= "/uploads/${films[i].image}"  alt="${films[i].film_name}">
                                     </div>
                                     <div class="col p-4 d-flex flex-column position-static">
                                         <div>
@@ -41,43 +41,3 @@ getAllFilm();
 
 
 
-// $(() => {
-//     $("#edit-product").validate({
-//         errorElement: 'div',
-//         rules: {
-//             product_name:  {
-//                 required: true,
-//                 minlength: 2,
-//                 maxlength: 50,
-//             },
-//             price: {
-//                 required: true,
-//                 number: true
-//             },
-//             upCountry:{
-//                 required:true
-//             },
-//             inputImage: {
-//                 required:true
-//             }
-//         },
-//
-//         messages: {
-//             product_name: {
-//                 required: "Vui lòng nhập tên sản phẩm",
-//                 minlength: "Vui lòng nhập tối thiểu 2 ký tự!",
-//                 maxlength: "Vui lòng nhập tối đa chỉ có 50 ký tự!"
-//             },
-//             price: {
-//                 required: "Vui lòng nhập giá sản phẩm!",
-//                 number: "Vui lòng chỉ nhập số"
-//             },
-//             upCountry: "Vui lòng chọn loại sản phẩm",
-//             description:{
-//                 required:"Vui lòng nhập mô tả!"
-//             }
-//         },
-//
-//         submitHandler : saveProduct
-//     });
-// });

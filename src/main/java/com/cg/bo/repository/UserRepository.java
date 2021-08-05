@@ -9,4 +9,5 @@ public interface UserRepository extends JpaRepository<User, Long>{
     Iterable<User> findAllByDeletedFalse();
 
     Iterable<User> findAllByDeletedTrue();
+
 }
