@@ -18,11 +18,6 @@ $("#singleUploadForm").on("submit",function (){
     uploadSingleFile(files[0]);
 })
 
-function getTime(){
-    let duration =  $("#film_duration").val() + ":00"
-    return duration;
-}
-
 function createFilm(){
     let files = singleFileUploadInput.files;
     $("#imageName").val(files[0].name);
@@ -31,12 +26,11 @@ function createFilm(){
     let film_id = $('#film_id').val();
     let film_name = $("#film_name").val();
     let image = $("#imageName").val();
-    let duration = getTime();
+    let duration = $("#film_duration").val();
     let rel_date = $("#rel_date").val();
     let exp_date = $("#exp_date").val();
     let description = $("#film_description").val();
-    let admit = $("#film_admit").val();
-    let status = $("#film_status").val();
+    let admit = 0;
 
 
     let newFilm = {
@@ -48,8 +42,8 @@ function createFilm(){
         exp_date : exp_date,
         description : description,
         admit : admit,
-        isStatus : status
     }
+
     if ($("#create-form").valid()){
         $.ajax({
             headers: {
@@ -67,5 +61,59 @@ function createFilm(){
         })
     }
 }
+function updateDate(){
+    let date = $("#rel_date").val();
+    let release_date = date.split("-");
+    $("#exp_date").val(release_date[0]+"-"+release_date[1]+"-"+release_date[2]);
+}
+
+$('#rel_date').on("change",updateDate);
+
+
+
+$(() => {
+    $("#create-form").validate({
+        errorElement: 'div',
+        rules: {
+            film_name:  {
+                required: true,
+                maxlength: 100,
+            },
+            film_duration: {
+                required: true,
+            },
+            rel_date: {
+                required:true
+            },
+            exp_date: {
+                required:true
+            },
+            film_description:{
+                required:true
+            }
+        },
+
+        messages: {
+            film_name: {
+                required: "Vui lòng nhập tên phim!",
+                maxlength: "Vui lòng nhập tối đa chỉ có 100 ký tự!"
+            },
+            film_duration: {
+                required: "Vui lòng nhập thời lượng phim đúng định dạng!",
+            },
+            rel_date:{
+                required:"Vui lòng chọn ngày công chiếu!"
+            },
+            exp_date:{
+                required:"Vui lòng chọn ngày kết thúc chiếu!"
+            },
+            film_description: {
+                required:"Vui lòng nhập mô tả của phim!"
+            }
+        },
+
+        submitHandler : createFilm
+    });
+});
 
 $("#create-button").on("click",createFilm);

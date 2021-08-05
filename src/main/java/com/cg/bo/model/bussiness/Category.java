@@ -17,6 +17,7 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long category_id;
+
     private String category_name;
 
     @OneToMany(targetEntity = Product.class, fetch = FetchType.EAGER)

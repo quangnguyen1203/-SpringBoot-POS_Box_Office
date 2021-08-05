@@ -1,8 +1,6 @@
 package com.cg.bo.controller;
 
-
 import com.cg.bo.model.projection.Film;
-
 import com.cg.bo.service.FilmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,14 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/films")
 public class FilmController {
+
     @Autowired
     private FilmService filmService;
-
 
     //listFilm
     @GetMapping("/listFilm")

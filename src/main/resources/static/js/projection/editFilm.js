@@ -14,7 +14,7 @@ function editFilm(){
             content += `<div class="form-row">
                   <div class="form-group col-md-6">
                     <input type="hidden" id="up_id" value="${film.film_id}">
-                    <input type="hidden" id="up_admit">
+                    <input type="hidden" id="up_admit" value="${film.admit}">
                     <input type="hidden" id="up_status">
                     <label>Tên Phim<span class="text-danger">*</span></label>
                     <input type="text" name="up_name" parsley-trigger="change"  placeholder="Nhập tên phim" class="form-control" id="up_name" value="${film.film_name}">
@@ -35,18 +35,18 @@ function editFilm(){
                     <label>Mô tả</label>
                     <textarea name="up_description" class="form-control" id="up_description" rows="3">${film.description}</textarea>
                   </div>
-                 <div class="form-group col-md-6">
-<!--                    <form id="singleUploadForm" name="singleUploadForm">-->
-<!--                        <label>-->
-<!--                            Chọn ảnh:-->
-<!--                            <input id="singleFileUploadInput" type="file" name="file" class="file-input">-->
-<!--                        </label>-->
-<!--                        <input type="submit" class="upload" hidden>-->
-<!--                    </form>-->
-<!--                    <input type="text" hidden id="imageName" value="">-->
+                 <div class="form-group col-md-12">
+                    <form id="singleUploadForm" name="singleUploadForm">
+                        <label>
+                            Chọn ảnh:
+                            <input id="singleFileUploadInput" type="file" name="file" class="file-input">
+                        </label>
+                        <input type="submit" class="upload" hidden>
+                    </form>
+                    <input type="text" hidden id="imageName" value="">
                     <img disabled style="object-fit: cover"  width="100px" height="100px" src= "/uploads/${film.image}"  alt="${film.film_name}">
                 </div>
-                <div class="form-group text-right mb-0">
+                <div class="form-group text-right col-md-12">
                   <button class="btn btn-primary waves-effect waves-light mr-1" id="save-film" type="button">
                    Cập nhật
                   </button>
@@ -76,6 +76,7 @@ function saveFilm(){
     let exp_date = $("#up_expDate").val();
     let rel_date = $("#up_relDate").val();
     let description = $("#up_description").val();
+    let admit = $("#up_admit").val();
 
 
     let newFilm = {
@@ -86,6 +87,7 @@ function saveFilm(){
         exp_date : exp_date,
         rel_date : rel_date,
         description : description,
+        admit:admit
     }
 
     console.log(newFilm)

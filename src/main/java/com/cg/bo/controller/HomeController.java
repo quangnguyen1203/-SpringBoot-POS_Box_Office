@@ -53,13 +53,4 @@ public class HomeController {
         return new ModelAndView("/login/register");
     }
 
-//    @GetMapping("/admin")
-//    @PreAuthorize("hasAnyAuthority('USER_READ')")
-//    public ModelAndView admin(HttpServletRequest request) {
-//        ModelAndView modelAndView = new ModelAndView("admin");
-//        modelAndView.addObject("userInfo", getPrincipal());
-//        return modelAndView;
-//    }
-
-
 }
