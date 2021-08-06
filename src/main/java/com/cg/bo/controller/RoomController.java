@@ -27,7 +27,7 @@ public class RoomController {
     @PostMapping("/initSeat/{roomId}")
     public ResponseEntity<Room> initSeatForRoom(@PathVariable Long roomId){
         seatService.initSeat(roomId);
-        return new ResponseEntity<>(roomService.findById(roomId).get(), HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 }

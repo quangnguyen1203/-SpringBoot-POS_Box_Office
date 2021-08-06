@@ -34,13 +34,12 @@ public class Show {
     @JoinColumn(name = "room_id")
     private Room room;
 
-    @OneToMany
+    @OneToMany(targetEntity = Ticket.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "ticket_id")
     private List<Ticket> tickets;
 
-    @JsonIgnore
-    @Column(columnDefinition = "boolean default false")
-    private boolean isStatus;
+    @Column(name = "status",columnDefinition = "boolean default false")
+    private boolean status;
 
     public Show(Time time_start, Time time_end, Film film, Schedule schedule, Room room) {
         this.time_start = time_start;

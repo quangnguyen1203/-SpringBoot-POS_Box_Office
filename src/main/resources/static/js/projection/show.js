@@ -1,5 +1,6 @@
 App.getUser();
 
+
 function getSchedules(){
     $.ajax({
         type: "GET",
@@ -38,10 +39,10 @@ function getAllFilm(){
         let content = "";
         for (let i = films.length-1; i >= 0; i--) {
             content += `
-            <option value="${films[0].film_id}"> ${films[0].film_name}</option>
+            <option value="${films[i].film_id}"> ${films[i].film_name}</option>
                 `;
         }
-        $("#film_name").html(content);
+        $("#film_id").html(content);
     })
 }
 
@@ -55,7 +56,7 @@ getSchedules();
 function createShow(){
 
 
-    let film_id = $("#film_name").val();
+    let film_id = $("#film_id").val();
 
     $.ajax({
         type: "GET",
@@ -76,14 +77,43 @@ function createShow(){
             $.ajax({
                 type: "POST",
                 url: `/room/initSeat/${room1.room_id}`
-            }).done((room2) =>{
+            }).done(() =>{
                 let schedule = {
                     schedule_id: $("#schedule_date").val()
                 }
-                
+                let bonus_time = "00:30:00";
+                let time_start = $("#time_start").val();
+                let time_end = App.addTimes(App.addTimes(time_start,film.duration),bonus_time);
+                console.log(time_end)
+                let show = {
+                    schedule: schedule,
+                    film: film,
+                    room: room1,
+                    time_start: time_start,
+                    time_end: time_end
+                }
+                $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    type: "POST",
+                    url: "/show/create",
+                    data: JSON.stringify(show)
+                }).done(() =>{
+                    $("#create-form")[0].reset();
+                    App.showSuccessAlert("Tạo mới suất chiếu thành công!")
+                }).fail(() =>{
+                    App.showErrorAlert("Đã xảy ra lỗi!")
+                })
             })
         })
 
     })
 
+
+
 }
+
+$("#create-button").on("click",createShow);
+
