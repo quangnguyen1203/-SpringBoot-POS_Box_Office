@@ -20,9 +20,8 @@ public class Room {
     private Long room_id;
     private String room_name;
 
-    @OneToOne
-    @JoinColumn(name = "status_id")
-    private Status status;
+    @Column(name = "isFull", columnDefinition = "boolean default false")
+    private boolean isFull;
 
     @OneToMany
     @JoinColumn(name = "seat_id")

@@ -2,9 +2,11 @@ App.getUser();
 
 function createSchedule(){
     let schedule_date = $("#schedule_date").val();
+    let shows = [];
 
     let schedule = {
         schedule_date : schedule_date,
+        shows: shows
     }
 
     // if ($("#create-form").valid()){

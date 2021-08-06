@@ -1,4 +1,11 @@
-App.getUser();
+
+
+function checkAvailable(){
+    $.ajax({
+        type: "GET",
+        url: "/films/checkAvailable"
+    }).done(getAllFilm)
+}
 
 function getAllFilm(){
     $.ajax({
@@ -37,7 +44,10 @@ function getAllFilm(){
     })
 }
 
-getAllFilm();
+App.getUser();
+
+checkAvailable()
+
 
 
 
