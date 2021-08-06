@@ -55,7 +55,6 @@ getSchedules();
 
 function createShow(){
 
-
     let film_id = $("#film_id").val();
 
     $.ajax({
