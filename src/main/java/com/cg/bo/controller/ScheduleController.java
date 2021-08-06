@@ -44,7 +44,7 @@ public class ScheduleController {
 
     @GetMapping("/allSchedule")
     public ResponseEntity<Iterable<Schedule>> allSchedule(){
-        return new ResponseEntity<>(scheduleService.findAllByOrOrderBySchedule_dateAsc(), HttpStatus.OK);
+        return new ResponseEntity<>(scheduleService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/create-schedule")

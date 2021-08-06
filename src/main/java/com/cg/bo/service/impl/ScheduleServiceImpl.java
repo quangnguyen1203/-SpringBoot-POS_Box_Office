@@ -33,9 +33,8 @@ public class ScheduleServiceImpl implements ScheduleService {
         scheduleRepository.deleteById(id);
     }
 
-
     @Override
-    public Iterable<Schedule> findAllByOrOrderBySchedule_dateAsc() {
+    public Iterable<Schedule> findAllByOrderBySchedule_dateAsc() {
         return scheduleRepository.findAllByOrOrderBySchedule_dateAsc();
     }
 }

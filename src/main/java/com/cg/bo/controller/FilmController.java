@@ -39,6 +39,9 @@ public class FilmController {
 
     @PostMapping("/createFilm")
     public ResponseEntity<Film> createFilm(@RequestBody Film film){
+        if(film.getExp_date().compareTo(film.getRel_date())< 0 ){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(filmService.save(film),HttpStatus.CREATED);
     }
 
@@ -71,7 +74,5 @@ public class FilmController {
     public ResponseEntity<Film> getFilmById(@PathVariable Long id){
         return new ResponseEntity<>(filmService.findById(id).get(), HttpStatus.OK);
     }
-
-
 
 }

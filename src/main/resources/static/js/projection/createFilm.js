@@ -55,9 +55,9 @@ function createFilm(){
             url: "/films/createFilm"
         }).done(function (){
             $("#create-form")[0].reset();
-            App.showSuccessAlert("Tạo mới sản phẩm thành công");
+            App.showSuccessAlert("Tạo mới phim thành công");
         }).fail(()=>{
-            App.showErrorAlert("Đã xảy ra lỗi!");
+            App.showErrorAlert("Đã xảy ra lỗi. Vui lòng kiểm tra lại!");
         })
     }
 }

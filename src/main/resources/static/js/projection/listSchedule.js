@@ -6,7 +6,7 @@ function getAllSchedule(){
         url: "/schedules/allSchedule"
     }).done(function (schedules){
         let content = "";
-        for (let i = 0; i < schedules.length ; i++) {
+        for (let i = 0; i< schedules.length; i++) {
             content += `
                 <div class="col-lg-4">
                     <div class="our-team-main" style="background-color: rgb(225, 243, 245)">
