@@ -66,6 +66,8 @@
                 window.location.href = "/admin";
             } else if (user.roles[0].authority === "PROJECTION"){
                 window.location.href = "/projection";
+            } else {
+                window.location.href = "/app";
             }
         }).fail(() => {
             App.showErrorAlert("Đã xảy ra lỗi. Vui lòng thử lại sau!");

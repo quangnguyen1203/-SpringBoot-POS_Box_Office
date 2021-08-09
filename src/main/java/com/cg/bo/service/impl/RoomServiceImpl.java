@@ -1,6 +1,7 @@
 package com.cg.bo.service.impl;
 
 import com.cg.bo.model.projection.Room;
+import com.cg.bo.model.projection.Seat;
 import com.cg.bo.repository.RoomRepository;
 import com.cg.bo.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,10 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public void remove(Long id) {
         roomRepository.deleteById(id);
+    }
+
+    @Override
+    public Iterable<Seat> findSeatListRoom(Room room) {
+        return roomRepository.findSeatListRoom(room);
     }
 }

@@ -61,4 +61,9 @@ public class ScheduleController {
         schedule.setUser(userService.findByName(username));
         return new ResponseEntity<>(scheduleService.save(schedule),HttpStatus.CREATED);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Schedule> getScheduleById(@PathVariable Long id){
+        return new ResponseEntity<>(scheduleService.findById(id).get(), HttpStatus.OK);
+    }
 }
