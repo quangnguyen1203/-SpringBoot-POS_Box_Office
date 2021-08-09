@@ -37,7 +37,8 @@
                             <div class="navbar-collapse">
                                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                     <li class="nav-item">
-                                        <a class="nav-link btn-outline-warning allItemProduct fw-bold" aria-current="page" href="#" >Danh sách phim</a>
+                                        <select class="nav-link fw-bold" name="schedule" id="schedule">
+                                        </select>
                                     </li>
                                     <div>
                                         <li class="nav-item">
@@ -50,28 +51,28 @@
                     </nav>
                 </div>
                 <!-- MENU -->
-                <div class="row overflow-auto" style="height: 554px" id="menuProduct">
-                    <div id="listFilm" style="height: 509px">
-                        <div class="col-md-4 mb-5" >
-                            <div class="rounded card h-40 text-dark" >
-                                <div class="d-flex flex-column h-70 p-2 pb-3 text-shadow-1">
-                                    <div class="mb-1">
-                                        <h4 class="fw-bold" style="width: 150px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis">Name</h4>
-                                        <p class="text-muted">07/08/2021 08:00:00</p>
-                                    </div>
-                                    <ul class="d-flex list-unstyled mt-3">
-                                        <li class="me-auto">
-                                            <button class="btn btn-outline-warning addToOrder"><i class="fas fa-plus"></i></button></li>
+                <div class="row overflow-auto" style="height: 509px" id="menuProduct">
+<!--                    <div id="listFilm" style="height: 509px">-->
+<!--&lt;!&ndash;                        <div class="col-md-4 mb-5" >&ndash;&gt;-->
+<!--&lt;!&ndash;                            <div class="rounded card h-40 text-dark" >&ndash;&gt;-->
+<!--&lt;!&ndash;                                <div class="d-flex flex-column h-70 p-2 pb-3 text-shadow-1">&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <div class="mb-1">&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <h4 class="fw-bold" style="width: 150px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis">Name</h4>&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <p class="text-muted">07/08/2021 08:00:00</p>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <ul class="d-flex list-unstyled mt-3">&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <li class="me-auto">&ndash;&gt;-->
+<!--&lt;!&ndash;                                            <button class="btn btn-outline-warning addToOrder"><i class="fas fa-plus"></i></button></li>&ndash;&gt;-->
 
-                                        <li class="d-flex align-items-center">
-                                            <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"/></svg>
-                                            <small>0/100</small>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<!--&lt;!&ndash;                                        <li class="d-flex align-items-center">&ndash;&gt;-->
+<!--&lt;!&ndash;                                            <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"/></svg>&ndash;&gt;-->
+<!--&lt;!&ndash;                                            <small>0/100</small>&ndash;&gt;-->
+<!--&lt;!&ndash;                                        </li>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    </ul>&ndash;&gt;-->
+<!--&lt;!&ndash;                                </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
+<!--                    </div>-->
                 </div>
             </div>
             <!-- ORDER -->
@@ -163,4 +164,26 @@
     </div>
 </div>
 </body>
+<link rel="stylesheet" href="/resource/css/sweetalert2.min.css">
+<script type="text/javascript" src="/resource/js/sweetalert2.min.js"></script>
+<script src="/js/app.js"></script>
+<script src="/assets/js/vendor.min.js"></script>
+
+<!--Morris Chart-->
+<script src="/assets/libs/morris-js/morris.min.js"></script>
+<script src="/assets/libs/raphael/raphael.min.js"></script>
+
+<!-- Init js -->
+<script src="/assets/js/pages/morris.init.js"></script>
+
+<!-- App js -->
+<script src="/assets/js/app.min.js"></script>
+
+<!-- My Javascript -->
+<script src="/assets/js/myjs.js"></script>
+
+<script type="text/javascript" src="/resource/js/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="/resource/js/jquery.validate-1.19.3.min.js"></script>
+<script src="/resource/js/jquery.dataTables.min.js"></script>
+<script src="/js/staff/app.js"></script>
 </html>

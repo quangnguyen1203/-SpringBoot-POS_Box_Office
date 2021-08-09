@@ -1,6 +1,7 @@
 package com.cg.bo.model.projection;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,7 @@ public class Room {
     @Column(name = "isFull", columnDefinition = "boolean default false")
     private boolean isFull;
 
+    @JsonIgnore
     @OneToMany
     @JoinColumn(name = "seat_id")
     private List<Seat> seats;
