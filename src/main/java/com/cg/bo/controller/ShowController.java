@@ -1,7 +1,10 @@
 package com.cg.bo.controller;
 
+import com.cg.bo.model.projection.Schedule;
 import com.cg.bo.model.projection.Show;
+import com.cg.bo.service.impl.ScheduleServiceImpl;
 import com.cg.bo.service.impl.ShowServiceImpl;
+import com.cg.bo.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +16,12 @@ import org.springframework.web.servlet.ModelAndView;
 public class ShowController {
 
     @Autowired
+    private DateUtils dateUtils;
+
+    @Autowired
+    private ScheduleServiceImpl scheduleService;
+
+    @Autowired
     private ShowServiceImpl showService;
 
     @GetMapping("/create")
@@ -20,11 +29,63 @@ public class ShowController {
         return new ModelAndView("/projection/show/create");
     }
 
+
+
     @PostMapping("/create")
     public ResponseEntity<Show> createNewShow(@RequestBody Show show){
+        if(java.time.LocalTime.now().compareTo(show.getTime_start().toLocalTime()) > 0){
+            show.setStatus(true);
+        }
         return new ResponseEntity<>(showService.save(show), HttpStatus.CREATED);
     }
 
 
+    @GetMapping("/allShow")
+    public ModelAndView listAllShow(){
+        return new ModelAndView("/projection/show/list");
+    }
+
+
+    @GetMapping("/apiShow/{scheduleId}")
+    public ResponseEntity<Iterable<Show>> listShow(@PathVariable Long scheduleId){
+        Schedule schedule = scheduleService.findById(scheduleId).get();
+        return new ResponseEntity<>(showService.findShowsBySchedule(schedule),HttpStatus.OK);
+    }
+
+    @GetMapping("/allShowsToday/{scheduleId}")
+    public ResponseEntity<Iterable<Show>> findAllShowAndSchedule(@PathVariable Long scheduleId){
+        Schedule schedule  = scheduleService.findById(scheduleId).get();
+        Iterable<Show> shows = showService.findShowsBySchedule(schedule);
+        if(dateUtils.getCurrentDate().compareTo(schedule.getSchedule_date()) < 0){
+            setStatusShowAfterDate(shows);
+        }else {
+            setStatusForShow(shows);
+        }
+
+        return new ResponseEntity<>(showService.findShowsBySchedule(schedule), HttpStatus.OK);
+    }
+
+
+    @GetMapping("/allActiveShowsToday/{scheduleId}")
+    public ResponseEntity<Iterable<Show>> findAllShowStatusTrue(@PathVariable Long scheduleId){
+        Schedule schedule  = scheduleService.findById(scheduleId).get();
+        Iterable<Show> shows = showService.findShowsBySchedule(schedule);
+        setStatusForShow(shows);
+        return new ResponseEntity<>(showService.findAllByScheduleAndStatusTrue(schedule), HttpStatus.OK);
+    }
+
+    public void setStatusForShow(Iterable<Show> shows){
+        for (Show s: shows
+        ) {
+            s.setStatus(30 >= dateUtils.differentTimeInMinutes(s.getTime_start().toString()));
+            showService.save(s);
+        }
+    }
+    public void setStatusShowAfterDate(Iterable<Show> shows){
+        for(Show s :shows){
+            s.setStatus(true);
+            showService.save(s);
+        }
+    }
 
 }

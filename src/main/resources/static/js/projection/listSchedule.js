@@ -1,28 +1,141 @@
 App.getUser();
 
-function getAllSchedule(){
+function getAllSchedule() {
     $.ajax({
         type: "GET",
         url: "/schedules/allSchedule"
-    }).done(function (schedules){
+    }).done(function (schedules) {
         let content = "";
-        for (let i = 0; i< schedules.length; i++) {
+        for (let i = 0; i < schedules.length; i++) {
             content += `
                 <div class="col-lg-4">
-                    <div class="our-team-main" style="background-color: rgb(225, 243, 245)">
+                    <div value="${schedules[i].schedule_id}" class="btnSchedule btn our-team-main modalShows" style="background-color: rgb(225, 243, 245)" >
                         <div class="team-front">
-                            <h3>Lịch chiếu hôm: </h3>
-                            <h2>${schedules[i].schedule_date}</h2>
-                        </div>
-                        <div class="team-back">
-                            <button class="btn btn-primary mt-4 ml-3">Click để xem thông tin suất chiếu</button>
+                          <h3>Lịch chiếu ngày: </h3>
+                          <h2>${schedules[i].schedule_date}</h2>
                         </div>
                     </div>
                 </div>
                 `;
         }
         $("#listSchedule tbody").html(content);
+        $(".modalShows").on("click", function () {
+            let id = $(this).attr("value");
+            getShowList(id);
+        })
     })
 }
+
+
+function getShowList(id) {
+    $.ajax({
+        type: "GET",
+        url: `/show/allShowsToday/${id}`
+    }).done(function (shows) {
+        $.ajax({
+            type: "GET",
+            url: `/seat/getSeatsByRoom/${id}`
+        }).done(function (seats) {
+            let content = "";
+            for (let i = 0; i < shows.length; i++) {
+                content += `
+            <div class="col-md-4">
+                   <div value="${shows[i].room.room_id}" class="btnShow our-team-main modalShows" style="background-color: rgb(225, 243, 245)" >
+                        <div class="scheduleShow">
+                            <div class="col-lg-6"><h4 class="h4Schedule">${shows[i].schedule.schedule_date}</h4></div>
+                                <div class="setActive ${shows[i].status ? "btn-success" : "btn-secondary"}"
+                                    >${shows[i].status ? "Active" : "InActive"}
+                                </div>
+                                <div class="bodyShow">
+                                     <div class="c">
+                                        <a class="a">Phim:</a>
+                                        <a class="b1">${shows[i].film.film_name}</a> 
+                                     </div>
+                                    <div class="c">
+                                        <a class="a">Thời lượng: </a>
+                                        <a class="b2">${shows[i].film.duration} </a>
+                                    </div>
+                                    
+                                    <div class="c">
+                                        <a class="a">Rạp: </a>
+                                        <a class="b3">${shows[i].room.room_name} </a>
+                                    </div>
+                                    <div class="c">
+                                        <a class="a">Giờ bắt đầu: </a>
+                                         <a class="b4">${shows[i].time_start}</a>   
+                                    </div>
+                                    <div class="c">
+                                        <a class="b5">${App.countTakenSeat(seats)}/100</a>
+                                    </div> 
+                                </div>     
+                            </div>
+                        </div>  
+                   </div>
+            </div>
+        `;
+            }
+            $("#show-modal fieldset").html(content);
+            $("#editModal").modal('show');
+        })
+    })
+}
+
+
+function searchSchedule(schedule_date) {
+    if (schedule_date === "") {
+        $.ajax({
+            type: "GET",
+            url: `/schedules/allSchedule`
+        }).done(function (schedule) {
+            let content = "";
+            for (let i = 0; i < schedule.length; i++) {
+                content += `<div class="col-lg-4">
+                    <div value="${schedule[i].schedule_id}" class="btnSchedule btn our-team-main modalShows" style="background-color: rgb(225, 243, 245)" >
+                        <div class="team-front">
+                          <h3>Lịch chiếu ngày: </h3>
+                          <h2>${schedule[i].schedule_date}</h2>
+                        </div>
+                    </div>
+                </div>`;
+            }
+            $("#listSchedule tbody").html(content)
+            $(".modalShows").on("click", function () {
+                let id = $(this).attr("value");
+                getShowList(id);
+            })
+        })
+    }else {
+        $.ajax({
+            type: "GET",
+            url: `/schedules/searchSchedule/${schedule_date}`,
+        }).done(function (schedule) {
+            console.log(schedule)
+            let content = "";
+            for (let i = 0; i < schedule.length; i++) {
+                content += `<div class="col-lg-4">
+                    <div value="${schedule[i].schedule_id}" class="btnSchedule btn our-team-main modalShows" style="background-color: rgb(225, 243, 245)" >
+                        <div class="team-front">
+                          <h3>Lịch chiếu ngày: </h3>
+                          <h2>${schedule[i].schedule_date}</h2>
+                        </div>
+                    </div>
+                </div>`;
+            }
+            $("#listSchedule tbody").html(content)
+            $(".modalShows").on("click", function () {
+                let id = $(this).attr("value");
+                getShowList(id);
+            })
+        })
+    }
+}
+
+
+$("#search").on("input", function () {
+    let schedule_date = $("#search").val();
+    searchSchedule(schedule_date);
+
+})
+
 
 getAllSchedule();

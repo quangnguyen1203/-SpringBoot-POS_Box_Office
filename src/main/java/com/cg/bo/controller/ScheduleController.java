@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.sql.Date;
+
 @RestController
 @RequestMapping("/schedules")
 public class ScheduleController {
@@ -44,13 +46,14 @@ public class ScheduleController {
 
     @GetMapping("/allSchedule")
     public ResponseEntity<Iterable<Schedule>> allSchedule(){
-        return new ResponseEntity<>(scheduleService.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(scheduleService.findAllByOrderBySchedule_dateAsc(), HttpStatus.OK);
     }
 
     @GetMapping("/create-schedule")
     public ModelAndView listAll(){
         return new ModelAndView("projection/schedule/create");
     }
+
 
     @PostMapping("/create-schedule")
     public ResponseEntity<Schedule> listAllSchedules(@RequestBody Schedule schedule){
@@ -60,5 +63,10 @@ public class ScheduleController {
         String username = getPrincipal();
         schedule.setUser(userService.findByName(username));
         return new ResponseEntity<>(scheduleService.save(schedule),HttpStatus.CREATED);
+    }
+
+    @GetMapping("/searchSchedule/{schedule_date}")
+    public ResponseEntity<Iterable<Schedule>> searchBySchedule(@PathVariable String schedule_date){
+        return new ResponseEntity<>(scheduleService.searchBySchedule_date(schedule_date),HttpStatus.OK);
     }
 }

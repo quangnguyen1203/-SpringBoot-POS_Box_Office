@@ -32,4 +32,9 @@ public class MemberServiceImpl implements MemberService {
     public void remove(Long id) {
         memberRepository.deleteById(id);
     }
+
+    @Override
+    public Iterable<Member> searchByAllMember(String string) {
+        return memberRepository.searchByAllMember(string);
+    }
 }

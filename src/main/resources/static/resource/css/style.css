@@ -39,3 +39,6 @@ form {
     height: 300px;
 }
 
+.row1{
+    flex-wrap: nowrap !important;
+}

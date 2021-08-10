@@ -139,7 +139,7 @@ function getListUsers(){
                     <td class="text-center">${users[i].role.name}</td>
                     <td>
                        <button value="${users[i].id}" class="btn btn-outline-primary mr-2 edit-button" ><i class="far fa-edit"></i>Sửa</button>
-                            <button value="${users[i].id}" class="btn btn-outline-danger delete-button" ><i class="fas fa-trash-alt"></i>Xóa</button>
+                       <button value="${users[i].id}" class="btn btn-outline-danger delete-button" ><i class="fas fa-trash-alt"></i>Xóa</button>
                     </td>
                 </tr>   
             `;
@@ -418,12 +418,22 @@ function getDeletedUsers(){
                     <td class="text-center">${users[i].phone}</td>
                     <td class="text-center">${users[i].role.name}</td>
                     <td>
-                       <button value="${users[i].id}" class="btn btn-outline-primary mr-2 restore-button" ><i class="far fa-window-restore"></i> Khôi phục</button>  
+                       <button value="${users[i].id}" class="btn btn-outline-primary mr-2 restore-button" ><i class="far fa-window-restore"></i> Khôi phục</button> 
+                       <button value="${users[i].id}" class="btn btn-outline-danger delete-btn" ><i class="fas fa-trash-alt"></i>Xóa</button> 
                     </td>
                 </tr>   
             `;
         }
         $("#deletedUsers").html(content);
+        $(".delete-btn").on("click", function (){
+            App.showDeleteConfirmDialog().then((result) => {
+                if (result.isConfirmed) {
+                    let id = $(this).attr("value");
+                    removeUser(id);
+                    App.showSuccessAlert("Đã xóa thành viên thành công!")
+                }
+            })
+        })
         $(".restore-button").on("click", function (){
             App.showRestoreConfirmDialog().then((result) => {
                 if (result.isConfirmed) {
@@ -433,6 +443,18 @@ function getDeletedUsers(){
                 }
             })
         })
+    })
+}
+
+function removeUser(id){
+    $.ajax({
+        type : "DELETE",
+        url : `/user/${id}`
+    }).done(function (){
+        $("#row" + id).remove();
+        App.showSuccessAlert("Đã xóa thành viên thành công!")
+    }).fail(function (){
+        App.showErrorAlert("Đã xảy ra lỗi!")
     })
 }
 

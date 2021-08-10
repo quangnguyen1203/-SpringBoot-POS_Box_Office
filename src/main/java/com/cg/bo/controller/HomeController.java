@@ -45,7 +45,7 @@ public class HomeController {
         Cookie jwtCookieRemove = new Cookie("JWT", "");
         jwtCookieRemove.setMaxAge(0);
         response.addCookie(jwtCookieRemove);
-        return new ModelAndView("login");
+        return new ModelAndView("logincssjs");
     }
 
     @GetMapping("/register")

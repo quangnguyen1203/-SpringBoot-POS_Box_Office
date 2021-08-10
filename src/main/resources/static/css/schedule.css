@@ -1,5 +1,4 @@
 
-
 h1 {
     color: #fff;
     margin: 40px 0 60px 0;
@@ -55,15 +54,66 @@ h1 {
     bottom: 0px;
     transition: all 0.5s ease;
 }
-
-.our-team-main:hover .team-front {
-    bottom: -200px;
-    transition: all 0.5s ease;
+.btnSchedule{
+    border: none !important;
 }
-
-.our-team-main:hover {
-    border-color: #777;
-    transition: 0.5s;
+.btnShow{
+    border: none !important;
+    height: 295px;
 }
+.h4Schedule{
+    float: left;
+    padding-left: 20px;
+}
+.setActive{
+    position: relative;
+    left: 214px;
+    bottom: 42px;
+    width: 143px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: x-large;
+}
+.bodyShow .a{
+    font-weight: bold;
+    float: left;
+    padding-left: 30px;
+    font-size: 15px;
+}
+.bodyShow  .b1{
 
-/*our-team-main*/
+    padding-right: 40px;
+    font-size: larger;
+
+}
+.bodyShow .b2{
+    padding-right: 115px;
+    font-size: larger;
+
+}
+.bodyShow .b3{
+    padding-right: 100px;
+    font-size: larger;
+
+}
+.bodyShow .b4{
+    padding-right: 105px;
+    font-size: larger;
+}
+.bodyShow .b5{
+    font-size: larger;
+    float: right;
+    padding-right: 20px;
+}
+.bodyShow .c{
+    padding-bottom: 20px;
+}
+.bodyShow .d{
+    float: right;
+}
+.thInput{
+    padding-left: 500px;
+}
+.form-control{
+    width: 270px;
+}

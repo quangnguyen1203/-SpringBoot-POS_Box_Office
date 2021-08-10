@@ -1,5 +1,6 @@
 package com.cg.bo.service.impl;
 
+import com.cg.bo.model.projection.Schedule;
 import com.cg.bo.model.projection.Show;
 import com.cg.bo.repository.ShowRepository;
 import com.cg.bo.service.ShowService;
@@ -35,4 +36,18 @@ public class ShowServiceImpl implements ShowService {
     }
 
 
+    @Override
+    public Iterable<Show> findShowsBySchedule(Schedule schedule) {
+        return showRepository.findShowsBySchedule(schedule);
+    }
+
+    @Override
+    public Iterable<Show> findAllByScheduleAndStatusTrue(Schedule schedule) {
+        return showRepository.findAllByScheduleAndStatusTrue(schedule);
+    }
+
+    @Override
+    public Iterable<Show> findAllByOrderByTime_startAsc() {
+        return showRepository.findAllByOrderByTime_startAsc();
+    }
 }

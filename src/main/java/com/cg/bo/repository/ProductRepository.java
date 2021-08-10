@@ -32,6 +32,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Transactional
     @Modifying
-    @Query("select p from Product p where p.category.category_id = ?1")
-    Iterable<Product> findAllByCategoryCategory_id(Long id);
+    @Query("select p from Product p where p.category.category_id = :id")
+    Iterable<Product> findAllByCategoryCategory_id(@Param("id") Long id);
 }

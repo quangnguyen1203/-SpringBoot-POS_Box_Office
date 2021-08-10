@@ -38,7 +38,7 @@ public class Show {
     @JoinColumn(name = "ticket_id")
     private List<Ticket> tickets;
 
-    @Column(name = "status",columnDefinition = "boolean default false")
+    @Column(name = "status",columnDefinition = "boolean default true")
     private boolean status;
 
     public Show(Time time_start, Time time_end, Film film, Schedule schedule, Room room) {

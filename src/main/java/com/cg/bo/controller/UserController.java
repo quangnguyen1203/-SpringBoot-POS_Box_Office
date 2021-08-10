@@ -1,5 +1,6 @@
 package com.cg.bo.controller;
 
+import com.cg.bo.model.bussiness.Product;
 import com.cg.bo.security.UserPrincipal;
 import com.cg.bo.service.impl.RoleServiceImpl;
 import com.cg.bo.service.impl.UserServiceImpl;
@@ -12,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -95,5 +98,15 @@ public class UserController {
     @GetMapping("/getDeletedUser")
     public ResponseEntity<Iterable<com.cg.bo.model.security.User>> getDeletedUsers(){
         return new ResponseEntity<>(userService.findAllByDeletedTrue(),HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<User> deleteUser(@PathVariable Long id) {
+        Optional<com.cg.bo.model.security.User> userOptional = userService.findUserById(id);
+        if (!userOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        userService.remove(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
