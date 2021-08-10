@@ -91,29 +91,51 @@ function createShow(){
                     time_start: time_start,
                     time_end: time_end
                 }
-                if(time_end > App.getTime())
-                $.ajax({
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    type: "POST",
-                    url: "/show/create",
-                    data: JSON.stringify(show)
-                }).done(() =>{
-                    $("#create-form")[0].reset();
-                    App.showSuccessAlert("Tạo mới suất chiếu thành công!")
-                }).fail(() =>{
-                    App.showErrorAlert("Đã xảy ra lỗi!")
-                })
+                if ($("#create-form").valid()){
+                    $.ajax({
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        type: "POST",
+                        url: "/show/create",
+                        data: JSON.stringify(show)
+                    }).done(() =>{
+                        $("#create-form")[0].reset();
+                        App.showSuccessAlert("Tạo mới suất chiếu thành công!")
+                    }).fail(() =>{
+                        App.showErrorAlert("Xãy ra lỗi. Hoặc suất chiếu đã tồn tại!")
+                    })
+                }
             })
         })
-
     })
-
-
-
 }
 
 $("#create-button").on("click",createShow);
 
+$(()=>{
+    $("#create-form").validate({
+        onfocusout: false,
+        onkeyup: false,
+        onclick: false,
+        rules: {
+            time_start: {
+                required: true,
+                validateTime:true,
+            },
+        },
+        messages: {
+            time_start: {
+                required: "Hãy điền giờ bắt đầu",
+            },
+        },
+        submitHandler:createShow
+    });
+})
+$.validator.addMethod("validateTime", function(value, element) {
+    if (!/^\d{2}:\d{2}:\d{2}$/.test(value)) return false;
+    var parts = value.split(':');
+    if (parts[0] > 23 || parts[1] > 59 || parts[2] > 59) return false;
+    return true;
+}, "Hãy nhập theo đúng định dạng");

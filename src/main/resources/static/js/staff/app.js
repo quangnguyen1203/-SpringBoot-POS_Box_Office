@@ -50,7 +50,7 @@ function getShows(scheduleId){
                                     </div>
                                     <ul class="d-flex list-unstyled mt-3">
                                         <li class="me-auto">
-                                            <button class="btn btn-outline-warning addToOrder"><i class="fas fa-plus"></i></button></li>
+                                            <button class="btn btn-outline-warning addToProduct"><i class="fas fa-plus"></i></button></li>
 
                                         <li class="d-flex align-items-center">
                                             <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"/></svg>
@@ -255,43 +255,83 @@ $.validator.addMethod("validatePhone", function (value, element) {
 //Tìm kiếm thành viên
 function searchByMember(){
     let string = $("#search").val();
-    if(string !== ""){
         $.ajax({
             type:"GET",
             url: `/app/searchMember/${string}`
         }).done(function (member){
-            $(".searchMember").on("click",function (){
-                $("#searchModal").modal('show');
-                let content = "";
-                for (let i = 0; i < member.length ; i++) {
-                    content += `
-                <tr>
-                    <td>${member[i].member_name}</td>
-                    <td>${member[i].phoneNumber}</td>
-                    <td>${member[i].email}</td>
-                    <td>${member[i].aclass.class_name}</td>
-                    <td>
-                        <button type="button" class="btn btn-outline-primary text-center">Chọn</button>
-                    </td>
-                </tr>
-            `;
+                if(member !== "") {
+                    let content = "";
+                    for (let i = 0; i < member.length; i++) {
+                        content += `
+                            <tr>
+                                <td>${member[i].member_name}</td>
+                                <td>${member[i].phoneNumber}</td>
+                                <td>${member[i].email}</td>
+                                <td>${member[i].aclass.class_name}</td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-primary text-center">Chọn</button>
+                                </td>
+                            </tr>
+                        `;
+                    }
+                    $("#detailMember").html(content);
+                } else {
+                    App.showErrorAlert("Chưa đăng ký thành viên!")
                 }
-                $("#detailMember").html(content);
-            });
         }).fail(function (){
             App.showErrorAlert("Hãy nhập để tìm kiếm!")
         })
+}
+
+$(".searchMember").on("click",function (){
+    if($("#search").val() !== ""){
+        $("#searchModal").modal('show');
+        searchByMember();
     } else {
         App.showErrorAlert("Hãy nhập để tìm kiếm!")
     }
-}
 
-$(".searchMember").on("click",searchByMember);
+});
 $(".close-button").on("click",function (){
     $("#search").val("");
+    $("#editModal").modal('hide');
 });
 
+//Thêm vào danh sách bán hàng
 
+let order = {
+    total_price: 0,
+    order_time: 0,
+    order_date: 0,
+    products: [],
+    ticket: []
+};
+
+function checkSelected(arr, name){
+    for (let i = 0; i < arr.length; i++){
+        if (arr[i].product_name === name){
+            return i;
+        }
+    }
+    return -1;
+}
+
+function getProduct(id){
+    $.ajax({
+        type: "GET",
+        url: `/app/findProduct/${id}`,
+        success: function (data){
+            let productName = data.product_name;
+            let indexProduct = checkSelected(order.products,productName);
+            if (indexProduct === -1){
+                order.products.push(data);
+            } else {
+                order.products[indexProduct].amount++;
+            }
+            drawOrder(order);
+        }
+    })
+}
 
 $(".allProduct").on("click",allItems)
 $(".allProduct").on("click",getAllCategory)

@@ -53,6 +53,13 @@ public class AppController {
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
+    @GetMapping("/findProduct/{id}")
+    public ResponseEntity<Product> findById(@PathVariable Long id){
+        Product product = productService.findById(id).get();
+        product.setAmount(1L);
+        return new ResponseEntity<>(product, HttpStatus.OK);
+    }
+
     @PostMapping("/createNewMember")
     public ResponseEntity<Member> createNewMember(@RequestBody Member member){
         Class aClass = classService.findById(1L).get();

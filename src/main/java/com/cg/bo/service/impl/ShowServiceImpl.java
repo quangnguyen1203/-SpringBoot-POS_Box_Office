@@ -45,4 +45,9 @@ public class ShowServiceImpl implements ShowService {
     public Iterable<Show> findAllByScheduleAndStatusTrue(Schedule schedule) {
         return showRepository.findAllByScheduleAndStatusTrue(schedule);
     }
+
+    @Override
+    public Iterable<Show> findAllByOrderByTime_startAsc() {
+        return showRepository.findAllByOrderByTime_startAsc();
+    }
 }

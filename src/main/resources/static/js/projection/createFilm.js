@@ -43,7 +43,6 @@ function createFilm(){
         description : description,
         admit : admit,
     }
-
     if ($("#create-form").valid()){
         $.ajax({
             headers: {
@@ -66,7 +65,6 @@ function updateDate(){
     let release_date = date.split("-");
     $("#exp_date").val(release_date[0]+"-"+release_date[1]+"-"+release_date[2]);
 }
-
 $('#rel_date').on("change",updateDate);
 
 
@@ -81,6 +79,7 @@ $(() => {
             },
             film_duration: {
                 required: true,
+                validTime:true
             },
             rel_date: {
                 required:true
@@ -89,8 +88,8 @@ $(() => {
                 required:true
             },
             film_description:{
-                required:true
-            }
+                required:true,
+            },
         },
 
         messages: {
@@ -99,7 +98,7 @@ $(() => {
                 maxlength: "Vui lòng nhập tối đa chỉ có 100 ký tự!"
             },
             film_duration: {
-                required: "Vui lòng nhập thời lượng phim đúng định dạng!",
+                required: "Vui lòng nhập thời lượng phim !",
             },
             rel_date:{
                 required:"Vui lòng chọn ngày công chiếu!"
@@ -108,12 +107,17 @@ $(() => {
                 required:"Vui lòng chọn ngày kết thúc chiếu!"
             },
             film_description: {
-                required:"Vui lòng nhập mô tả của phim!"
+                required:"Vui lòng nhập mô tả của phim!",
             }
         },
-
         submitHandler : createFilm
     });
 });
 
 $("#create-button").on("click",createFilm);
+
+$.validator.addMethod("validTime", function(value, element) {
+    if (!/([01]?[0-9]|2[0-3]):[0-5][0-9]/.test(value)) return false;
+    let parts = value.split(':');
+    return !(parts[0] > 23 || parts[1] > 59 || parts[2] > 59);
+}, "Hãy nhập thời gian hợp lệ !");

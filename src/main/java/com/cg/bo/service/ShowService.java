@@ -8,4 +8,6 @@ public interface ShowService extends GeneralService<Show>{
 
     Iterable<Show> findAllByScheduleAndStatusTrue(Schedule schedule);
 
+    Iterable<Show> findAllByOrderByTime_startAsc();
+
 }
