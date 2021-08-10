@@ -8,4 +8,5 @@ public interface ShowService extends GeneralService<Show>{
 
     Iterable<Show> findAllByScheduleAndStatusTrue(Schedule schedule);
 
+    Iterable<Show> searchShowOfScheduleWhereShowNameLike(Long schedule_id, String film_name);
 }

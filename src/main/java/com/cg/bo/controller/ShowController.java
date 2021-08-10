@@ -43,11 +43,37 @@ public class ShowController {
         return new ResponseEntity<>(showService.findAllByScheduleAndStatusTrue(schedule), HttpStatus.OK);
     }
 
+    @GetMapping("/allShows/{scheduleId}")
+    public ResponseEntity<Iterable<Show>> findAllShows(@PathVariable Long scheduleId){
+        Schedule schedule  = scheduleService.findById(scheduleId).get();
+        Iterable<Show> shows = showService.findShowsBySchedule(schedule);
+        if (dateUtils.getCurrentDate().compareTo(schedule.getSchedule_date()) < 0){
+            for (Show s :
+                   shows) {
+                s.setStatus(true);
+                showService.save(s);
+            }
+        } else {
+            for (Show s :
+                    shows) {
+                s.setStatus(false);
+                showService.save(s);
+            }
+        }
+        return new ResponseEntity<>(shows, HttpStatus.OK);
+    }
+
     public void setStatusForShow(Iterable<Show> shows){
         for (Show s: shows
         ) {
             s.setStatus(dateUtils.differentTimeInMinutes(s.getTime_start().toString()) <= 30);
             showService.save(s);
         }
+    }
+
+    @GetMapping("/searchShow/{schedule_id}/{film_name}")
+    public ResponseEntity<Iterable<Show>> searchByScheduleAndFilmName(@PathVariable Long schedule_id, @PathVariable String film_name){
+        Iterable<Show> shows = showService.searchShowOfScheduleWhereShowNameLike(schedule_id,film_name);
+        return new ResponseEntity<>(shows, HttpStatus.OK);
     }
 }

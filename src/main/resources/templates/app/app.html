@@ -15,6 +15,9 @@
     <script type="text/javascript" src="/resource/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="/resource/css/style.css">
     <style>
+        li.nav-item:not(:last-child){
+            margin-right: 450px;
+        }
     </style>
 </head>
 <body>
@@ -34,17 +37,22 @@
                 <div class="row">
                     <nav class="navbar navbar-expand-lg navbar-light bg-light rounded mb-2">
                         <div class="container-fluid">
-                            <div class="navbar-collapse">
-                                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <div class="navbar-collapse d-flex ">
+                                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
                                     <li class="nav-item">
                                         <select class="nav-link fw-bold" name="schedule" id="schedule">
                                         </select>
                                     </li>
-                                    <div>
-                                        <li class="nav-item">
-                                            <a class="nav-link btn-outline-warning fw-bold searchByCategoryId" href="#" ></a>
-                                        </li>
-                                    </div>
+                                    <li class="nav-item">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="searchFilmName" placeholder="Tìm kiếm...">
+                                            <div class="input-group-append">
+                                                <button class="btn searchSchedule">
+                                                    <i class="fas fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -52,27 +60,7 @@
                 </div>
                 <!-- MENU -->
                 <div class="row overflow-auto" style="height: 509px" id="menuProduct">
-<!--                    <div id="listFilm" style="height: 509px">-->
-<!--&lt;!&ndash;                        <div class="col-md-4 mb-5" >&ndash;&gt;-->
-<!--&lt;!&ndash;                            <div class="rounded card h-40 text-dark" >&ndash;&gt;-->
-<!--&lt;!&ndash;                                <div class="d-flex flex-column h-70 p-2 pb-3 text-shadow-1">&ndash;&gt;-->
-<!--&lt;!&ndash;                                    <div class="mb-1">&ndash;&gt;-->
-<!--&lt;!&ndash;                                        <h4 class="fw-bold" style="width: 150px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis">Name</h4>&ndash;&gt;-->
-<!--&lt;!&ndash;                                        <p class="text-muted">07/08/2021 08:00:00</p>&ndash;&gt;-->
-<!--&lt;!&ndash;                                    </div>&ndash;&gt;-->
-<!--&lt;!&ndash;                                    <ul class="d-flex list-unstyled mt-3">&ndash;&gt;-->
-<!--&lt;!&ndash;                                        <li class="me-auto">&ndash;&gt;-->
-<!--&lt;!&ndash;                                            <button class="btn btn-outline-warning addToOrder"><i class="fas fa-plus"></i></button></li>&ndash;&gt;-->
 
-<!--&lt;!&ndash;                                        <li class="d-flex align-items-center">&ndash;&gt;-->
-<!--&lt;!&ndash;                                            <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"/></svg>&ndash;&gt;-->
-<!--&lt;!&ndash;                                            <small>0/100</small>&ndash;&gt;-->
-<!--&lt;!&ndash;                                        </li>&ndash;&gt;-->
-<!--&lt;!&ndash;                                    </ul>&ndash;&gt;-->
-<!--&lt;!&ndash;                                </div>&ndash;&gt;-->
-<!--&lt;!&ndash;                            </div>&ndash;&gt;-->
-<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
-<!--                    </div>-->
                 </div>
             </div>
             <!-- ORDER -->
@@ -86,7 +74,7 @@
                             </h4>
                         </div>
                         <div id="allList">
-                            <div class="current-order panel-body overflow-auto border" style="height: 200px; margin-bottom: 15px" id="orderProductList">
+                            <div class="current-order panel-body overflow-auto border" style="height: 200px; margin-bottom: 15px" id="ticket">
                             </div>
                             <div class="current-order panel-body overflow-auto border" style="height: 200px" id="orderProductList">
                             </div>
@@ -160,6 +148,13 @@
                     </div>
                 </div>
             </footer>
+        </div>
+    </div>
+</div>
+
+<div class="modal  fade" id="seatsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
         </div>
     </div>
 </div>

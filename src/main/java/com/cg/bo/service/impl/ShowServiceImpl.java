@@ -43,6 +43,11 @@ public class ShowServiceImpl implements ShowService {
 
     @Override
     public Iterable<Show> findAllByScheduleAndStatusTrue(Schedule schedule) {
-        return showRepository.findAllByScheduleAndStatusTrue(schedule);
+        return showRepository.findAllByScheduleAndStatusTrueOrderByScheduleDesc(schedule);
+    }
+
+    @Override
+    public Iterable<Show> searchShowOfScheduleWhereShowNameLike(Long schedule_id, String film_name) {
+        return showRepository.searchShowOfScheduleWhereShowNameLike(schedule_id,film_name);
     }
 }
