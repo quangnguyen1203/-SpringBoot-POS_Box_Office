@@ -1,3 +1,5 @@
+App.getUser();
+
 function getSchedules(){
     $.ajax({
         type: "GET",
@@ -66,6 +68,230 @@ function getShows(scheduleId){
     })
 }
 
-
-
 getSchedules();
+
+
+//Quầy đồ uống
+function allItems(){
+    $.ajax({
+        type: "GET",
+        url: "/app/allProduct"
+    }).done(function (product){
+        let content = "";
+        for (let i = 0; i < product.length ; i++) {
+            content += `
+                  <div class="col-md-4 mb-5" >
+                    <div class="rounded card h-40 text-dark" >
+                      <div class="d-flex flex-column h-80 p-2 pb-3 text-shadow-1">
+                        <div class="mb-1">
+                          <h4 class="fw-bold"  style="width: 150px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis">${product[i].product_name}</h4>
+                          <p class="text-muted" >${product[i].category.category_name}</p>
+                        </div>
+                        <ul class="d-flex list-unstyled mt-3">
+                          <li class="me-auto">
+                            <button class="btn btn-outline-warning addToOrder" value="${product[i].product_id}"><i class="fas fa-plus "></i></button></li>
+                          <li class="d-flex align-items-center">
+                            <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"/></svg>
+                            <strong><small >${product[i].price}</small> $</strong>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>`;
+            $('#menuProduct').html(content);
+            // $(".addToOrder").on("click",function (){
+            //     let id = $(this).attr("value");
+            //     getProduct(id);
+            // })
+        }
+    })
+}
+
+function getAllCategory(){
+    $.ajax({
+        type: "GET",
+        url: "/app/allCategory"
+    }).done(function (category){
+        let content = `<li class="nav-item">
+                           <a class="nav-link btn-outline-warning fw-bold allListProduct" aria-current="page" href="#" >Tất cả</a>
+                        </li>`;
+        for (let i = 0; i < category.length; i++) {
+            content += `
+                    <li class="nav-item">
+                    <a class="nav-link btn-outline-warning fw-bold searchByCategoryId" href="#" value="${category[i].category_id}">${category[i].category_name}</a>
+                  </li>
+                `;
+        }
+        $(".allItemProduct").html(content);
+        $(".allListProduct").on("click",allItems);
+        $(".searchByCategoryId").on("click",function (){
+            let id = $(this).attr("value");
+            searchProductByCategoryId(id);
+        })
+    }).fail(()=>{
+        App.showErrorAlert("Đã xảy ra lỗi!");
+    })
+}
+
+function searchProductByCategoryId(id){
+    console.log(id);
+    $.ajax({
+        type: "GET",
+        url: `/app/menuProductByCategory/${id}`
+    }).done(function (product){
+        console.log(product)
+        let content = "";
+        for (let i = 0; i < product.length ; i++) {
+            content += `
+                  <div class="col-md-4 mb-5" >
+                    <div class="rounded card h-40 text-dark" >
+                      <div class="d-flex flex-column h-80 p-2 pb-3 text-shadow-1">
+                        <div class="mb-1">
+                          <h4 class="fw-bold"  style="width: 150px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis">${product[i].product_name}</h4>
+                          <p class="text-muted">${product[i].category.category_name}</p>
+                        </div>
+                        <ul class="d-flex list-unstyled mt-3">
+                          <li class="me-auto">
+                            <button class="btn btn-outline-warning addToOrder" value="${product[i].product_id}"><i class="fas fa-plus "></i></button></li>
+                          <li class="d-flex align-items-center">
+                            <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"/></svg>
+                            <strong><small >${product[i].price}</small> $</strong>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>`;}
+        $('#menuProduct').html(content);
+    })
+}
+
+//Tạo mới thành viên
+$(".createMember").on("click",function (){
+    $("#editModal").modal('show');
+});
+
+function createMemberApp(){
+    let member_name = $("#member_name").val();
+    let phoneNumber = $("#phoneNumber").val();
+    let email = $("#email").val();
+
+
+    let member = {
+        member_name: member_name,
+        phoneNumber: phoneNumber,
+        email : email
+    }
+
+    if ($("#create-form").valid()){
+        console.log(member)
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            type: "POST",
+            data: JSON.stringify(member),
+            url: "/app/createNewMember"
+        }).done(function (e){
+            console.log(e)
+            $("#create-form")[0].reset();
+            App.showSuccessAlert("Tạo mới thành viên thành công");
+            $("#editModal").modal('hide');
+        }).fail(()=>{
+            App.showErrorAlert("Đã xảy ra lỗi!");
+        })
+    }
+}
+
+$("#create-button").on("click",createMemberApp);
+
+
+$(() => {
+    $("#create-form").validate({
+        errorElement: 'div',
+        rules: {
+            member_name:  {
+                required: true,
+                minlength: 5,
+                maxlength: 50,
+            },
+            phoneNumber: {
+                required: true,
+                number: true,
+                minlength:10,
+                maxlength:11,
+                validatePhone:true
+            },
+            email:{
+                required:true
+            }
+        },
+
+        messages: {
+            member_name: {
+                required: "Vui lòng nhập họ và tên",
+                minlength: "Vui lòng nhập tối thiểu 2 ký tự!",
+                maxlength: "Vui lòng nhập tối đa chỉ có 50 ký tự!"
+            },
+            phoneNumber: {
+                required: "Vui lòng nhập số điện thoại!",
+                number: "Vui lòng chỉ nhập số",
+                minlength: "Vui lòng nhập tối thiểu 10 số!",
+                maxlength: "Vui lòng nhập tối đa chỉ có 11 số!"
+            },
+            email:{
+                required:"Vui lòng nhập địa chỉ email"
+            }
+        },
+
+        submitHandler : createMemberApp
+    });
+});
+$.validator.addMethod("validatePhone", function (value, element) {
+    return this.optional(element) || /((09|03|07|08|05)+([0-9]{8})\b)/g.test(value);
+}, "Hãy nhập số điện thoại hợp lệ!!!");
+
+
+//Tìm kiếm thành viên
+function searchByMember(){
+    let string = $("#search").val();
+    if(string !== ""){
+        $.ajax({
+            type:"GET",
+            url: `/app/searchMember/${string}`
+        }).done(function (member){
+            $(".searchMember").on("click",function (){
+                $("#searchModal").modal('show');
+                let content = "";
+                for (let i = 0; i < member.length ; i++) {
+                    content += `
+                <tr>
+                    <td>${member[i].member_name}</td>
+                    <td>${member[i].phoneNumber}</td>
+                    <td>${member[i].email}</td>
+                    <td>${member[i].aclass.class_name}</td>
+                    <td>
+                        <button type="button" class="btn btn-outline-primary text-center">Chọn</button>
+                    </td>
+                </tr>
+            `;
+                }
+                $("#detailMember").html(content);
+            });
+        }).fail(function (){
+            App.showErrorAlert("Hãy nhập để tìm kiếm!")
+        })
+    } else {
+        App.showErrorAlert("Hãy nhập để tìm kiếm!")
+    }
+}
+
+$(".searchMember").on("click",searchByMember);
+$(".close-button").on("click",function (){
+    $("#search").val("");
+});
+
+
+
+$(".allProduct").on("click",allItems)
+$(".allProduct").on("click",getAllCategory)

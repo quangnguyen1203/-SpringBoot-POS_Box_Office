@@ -91,6 +91,7 @@ function createShow(){
                     time_start: time_start,
                     time_end: time_end
                 }
+                if(time_end > App.getTime())
                 $.ajax({
                     headers: {
                         'Accept': 'application/json',

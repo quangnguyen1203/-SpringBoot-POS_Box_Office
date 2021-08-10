@@ -107,6 +107,7 @@ function saveFilm(){
         })
     }
 }
+
 function getFilm(){
     $.ajax({
         type: "GET",
@@ -158,3 +159,47 @@ function uploadEditSingleFile(file) {
     xhr.open("POST", "/uploadFile");
     xhr.send(formData);
 }
+
+$(() => {
+    $("#edit-film").validate({
+        errorElement: 'div',
+        rules: {
+            up_name:  {
+                required: true,
+                maxlength: 100,
+            },
+            up_duration: {
+                required: true,
+            },
+            up_relDate: {
+                required:true
+            },
+            up_expDate: {
+                required:true
+            },
+            up_description:{
+                required:true
+            }
+        },
+
+        messages: {
+            up_name: {
+                required: "Vui lòng nhập tên phim!",
+                maxlength: "Vui lòng nhập tối đa chỉ có 100 ký tự!"
+            },
+            up_duration: {
+                required: "Vui lòng nhập thời lượng phim đúng định dạng!",
+            },
+            up_relDate:{
+                required:"Vui lòng chọn ngày công chiếu!"
+            },
+            up_expDate:{
+                required:"Vui lòng chọn ngày kết thúc chiếu!"
+            },
+            up_description: {
+                required:"Vui lòng nhập mô tả của phim!"
+            }
+        },
+        submitHandler : saveFilm
+    });
+});
