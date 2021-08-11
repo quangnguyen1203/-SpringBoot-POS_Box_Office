@@ -4,10 +4,8 @@ import com.cg.bo.model.bussiness.Category;
 import com.cg.bo.model.bussiness.Class;
 import com.cg.bo.model.bussiness.Member;
 import com.cg.bo.model.bussiness.Product;
-import com.cg.bo.service.CategoryService;
-import com.cg.bo.service.ClassService;
-import com.cg.bo.service.MemberService;
-import com.cg.bo.service.ProductService;
+import com.cg.bo.model.projection.Schedule;
+import com.cg.bo.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +28,9 @@ public class AppController {
 
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    private ScheduleService scheduleService;
 
     @GetMapping
     public ModelAndView pageApp(){
@@ -70,5 +71,15 @@ public class AppController {
     @GetMapping("/searchMember/{string}")
     public ResponseEntity<Iterable<Member>> searchByMember(@PathVariable String string){
         return new ResponseEntity<>(memberService.searchByAllMember(string), HttpStatus.OK);
+    }
+
+    @GetMapping("/chooseByMember/{id}")
+    public ResponseEntity<Member> chooseByMember(@PathVariable Long id){
+        return new ResponseEntity<>(memberService.findById(id).get(),HttpStatus.OK);
+    }
+
+    @GetMapping("/allSchedules")
+    public ResponseEntity<Iterable<Schedule>> allSchedule(){
+        return new ResponseEntity<>(scheduleService.findAllByOrOrderBySchedule_dateAsc(),HttpStatus.OK);
     }
 }

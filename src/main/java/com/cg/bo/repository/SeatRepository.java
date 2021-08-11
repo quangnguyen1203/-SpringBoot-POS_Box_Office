@@ -10,5 +10,4 @@ public interface SeatRepository extends JpaRepository<Seat, Long> {
 
     @Procedure
     void initSeat(Long roomId);
-
 }

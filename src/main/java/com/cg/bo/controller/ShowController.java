@@ -29,8 +29,6 @@ public class ShowController {
         return new ModelAndView("/projection/show/create");
     }
 
-
-
     @PostMapping("/create")
     public ResponseEntity<Show> createNewShow(@RequestBody Show show){
         if(java.time.LocalTime.now().compareTo(show.getTime_start().toLocalTime()) > 0){
@@ -39,12 +37,10 @@ public class ShowController {
         return new ResponseEntity<>(showService.save(show), HttpStatus.CREATED);
     }
 
-
     @GetMapping("/allShow")
     public ModelAndView listAllShow(){
         return new ModelAndView("/projection/show/list");
     }
-
 
     @GetMapping("/apiShow/{scheduleId}")
     public ResponseEntity<Iterable<Show>> listShow(@PathVariable Long scheduleId){
@@ -61,10 +57,28 @@ public class ShowController {
         }else {
             setStatusForShow(shows);
         }
-
         return new ResponseEntity<>(showService.findShowsBySchedule(schedule), HttpStatus.OK);
     }
 
+    @GetMapping("/allShows/{scheduleId}")
+    public ResponseEntity<Iterable<Show>> findAllShows(@PathVariable Long scheduleId){
+        Schedule schedule  = scheduleService.findById(scheduleId).get();
+        Iterable<Show> shows = showService.findShowsBySchedule(schedule);
+        if (dateUtils.getCurrentDate().compareTo(schedule.getSchedule_date()) < 0){
+            for (Show s :
+                    shows) {
+                s.setStatus(true);
+                showService.save(s);
+            }
+        } else {
+            for (Show s :
+                    shows) {
+                s.setStatus(false);
+                showService.save(s);
+            }
+        }
+        return new ResponseEntity<>(shows, HttpStatus.OK);
+    }
 
     @GetMapping("/allActiveShowsToday/{scheduleId}")
     public ResponseEntity<Iterable<Show>> findAllShowStatusTrue(@PathVariable Long scheduleId){
@@ -81,6 +95,7 @@ public class ShowController {
             showService.save(s);
         }
     }
+
     public void setStatusShowAfterDate(Iterable<Show> shows){
         for(Show s :shows){
             s.setStatus(true);
@@ -88,4 +103,15 @@ public class ShowController {
         }
     }
 
+    @GetMapping("/findById/{id}")
+    public ResponseEntity<Show> findShowById(@PathVariable Long id){
+        return new ResponseEntity<>(showService.findById(id).get(), HttpStatus.OK);
+    }
+
+    @GetMapping("/searchShow/{schedule_id}/{film_name}")
+    public ResponseEntity<Iterable<Show>> searchByScheduleAndFilmName(@PathVariable Long schedule_id, @PathVariable String film_name){
+        Iterable<Show> shows = showService.searchShowOfScheduleWhereShowNameLike(schedule_id,film_name);
+        setStatusForShow(shows);
+        return new ResponseEntity<>(shows, HttpStatus.OK);
+    }
 }

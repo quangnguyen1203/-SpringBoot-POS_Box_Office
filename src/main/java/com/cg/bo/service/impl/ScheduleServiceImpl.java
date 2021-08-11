@@ -35,7 +35,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public Iterable<Schedule> findAllByOrderBySchedule_dateAsc() {
+    public Iterable<Schedule> findAllByOrOrderBySchedule_dateAsc() {
         return scheduleRepository.findAllByOrOrderBySchedule_dateAsc();
     }
 

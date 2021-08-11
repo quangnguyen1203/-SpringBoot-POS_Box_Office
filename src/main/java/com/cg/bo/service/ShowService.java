@@ -10,4 +10,5 @@ public interface ShowService extends GeneralService<Show>{
 
     Iterable<Show> findAllByOrderByTime_startAsc();
 
+    Iterable<Show> searchShowOfScheduleWhereShowNameLike(Long schedule_id, String film_name);
 }

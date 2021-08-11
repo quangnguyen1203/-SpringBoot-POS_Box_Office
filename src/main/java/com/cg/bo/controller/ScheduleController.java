@@ -46,7 +46,7 @@ public class ScheduleController {
 
     @GetMapping("/allSchedule")
     public ResponseEntity<Iterable<Schedule>> allSchedule(){
-        return new ResponseEntity<>(scheduleService.findAllByOrderBySchedule_dateAsc(), HttpStatus.OK);
+        return new ResponseEntity<>(scheduleService.findAllByOrOrderBySchedule_dateAsc(), HttpStatus.OK);
     }
 
     @GetMapping("/create-schedule")
@@ -68,5 +68,10 @@ public class ScheduleController {
     @GetMapping("/searchSchedule/{schedule_date}")
     public ResponseEntity<Iterable<Schedule>> searchBySchedule(@PathVariable String schedule_date){
         return new ResponseEntity<>(scheduleService.searchBySchedule_date(schedule_date),HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Schedule> getScheduleById(@PathVariable Long id){
+        return new ResponseEntity<>(scheduleService.findById(id).get(), HttpStatus.OK);
     }
 }

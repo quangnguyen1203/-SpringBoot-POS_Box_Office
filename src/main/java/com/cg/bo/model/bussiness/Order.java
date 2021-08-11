@@ -21,6 +21,9 @@ public class Order {
     private String film_name;
     private Date order_date;
     private Time order_time;
+    private double total_product;
+    private double total_ticket;
+    private double total_price;
 
     @OneToMany
     @JoinColumn(name = "ticket_id")
@@ -30,7 +33,7 @@ public class Order {
     @JoinColumn(name = "orderDetail_id")
     private List<OrderDetail> orderDetails;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
 }
