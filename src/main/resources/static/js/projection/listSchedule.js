@@ -1,5 +1,7 @@
 App.getUser();
 
+
+
 function getAllSchedule() {
     $.ajax({
         type: "GET",
@@ -26,21 +28,17 @@ function getAllSchedule() {
     })
 }
 
-
 function getShowList(id) {
     $.ajax({
         type: "GET",
         url: `/show/allShowsToday/${id}`
     }).done(function (shows) {
-        $.ajax({
-            type: "GET",
-            url: `/seat/getSeatsByRoom/${id}`
-        }).done(function (seats) {
-            let content = "";
-            for (let i = 0; i < shows.length; i++) {
-                content += `
+        let content = "";
+        for (let i = 0; i < shows.length; i++) {
+            let room_id = shows[i].room.room_id;
+            content += `
             <div class="col-md-4">
-                   <div value="${shows[i].room.room_id}" class="btnShow our-team-main modalShows" style="background-color: rgb(225, 243, 245)" >
+                   <div value="${room_id}" class="btnShow our-team-main modalShows" style="background-color: rgb(225, 243, 245)" >
                         <div class="scheduleShow">
                             <div class="col-lg-6"><h4 class="h4Schedule">${shows[i].schedule.schedule_date}</h4></div>
                                 <div class="setActive ${shows[i].status ? "btn-success" : "btn-secondary"}"
@@ -64,8 +62,8 @@ function getShowList(id) {
                                         <a class="a">Giờ bắt đầu: </a>
                                          <a class="b4">${shows[i].time_start}</a>   
                                     </div>
-                                    <div class="c">
-                                        <a class="b5">${App.countTakenSeat(seats)}/100</a>
+                                    <div class="d">
+                                       <span id="statusSeat${shows[i].room.room_id}" class="admit" value="${shows[i].room.room_id}"></span>
                                     </div> 
                                 </div>     
                             </div>
@@ -73,13 +71,22 @@ function getShowList(id) {
                    </div>
             </div>
         `;
-            }
-            $("#show-modal fieldset").html(content);
-            $("#editModal").modal('show');
-        })
+        }
+        for (let i = 0; i <shows.length ; i++) {
+            $.ajax({
+                type: "GET",
+                url: `/seat/getSeatsByRoom/${shows[i].room.room_id}`
+            }).done(function (seats) {
+                $(`#statusSeat${shows[i].room.room_id}`).html(`
+                <p>${App.countTakenSeat(seats)}/100</p>
+        `)
+            })
+        }
+
+        $("#show-modal fieldset").html(content);
+        $("#editModal").modal('show');
     })
 }
-
 
 function searchSchedule(schedule_date) {
     if (schedule_date === "") {
@@ -104,7 +111,7 @@ function searchSchedule(schedule_date) {
                 getShowList(id);
             })
         })
-    }else {
+    } else {
         $.ajax({
             type: "GET",
             url: `/schedules/searchSchedule/${schedule_date}`,
@@ -130,12 +137,9 @@ function searchSchedule(schedule_date) {
     }
 }
 
-
 $("#search").on("input", function () {
     let schedule_date = $("#search").val();
     searchSchedule(schedule_date);
-
 })
-
 
 getAllSchedule();

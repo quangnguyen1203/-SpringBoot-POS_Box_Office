@@ -50,4 +50,14 @@ public class ShowServiceImpl implements ShowService {
     public Iterable<Show> findAllByOrderByTime_startAsc() {
         return showRepository.findAllByOrderByTime_startAsc();
     }
+
+    @Override
+    public Iterable<Show> searchShowOfScheduleWhereShowNameLike(Long schedule_id, String film_name) {
+        return showRepository.searchShowOfScheduleWhereShowNameLike(schedule_id,film_name);
+    }
+
+    @Override
+    public Iterable<Show> findShowsByRoomName(String room_name, Long id) {
+        return showRepository.findShowsByRoomName(room_name,id);
+    }
 }

@@ -10,7 +10,7 @@ function getAllProduct(){
                         <tr id="row${product[i].product_id}">
                               <input hidden id="${product[i].product_id}">
                               <td>${product[i].product_name}</td>
-                              <td>${product[i].price + "$"}</td>
+                              <td>${product[i].price.toLocaleString('vi', {style : 'currency', currency : 'VND'})}</td>
                               <td>${product[i].description}</td>
                               <td>${product[i].category.category_name}</td>
                               <td class="text-center">

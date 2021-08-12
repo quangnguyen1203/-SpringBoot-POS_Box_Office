@@ -12,10 +12,8 @@ import java.util.Optional;
 
 public interface FilmRepository extends JpaRepository<Film,Long> {
 
-
     @Query("select f from Film f where f.film_id = :id")
     Optional<Film> findByIdFilm(Long id);
-
 
     @Query("select f from Film f where f.isDelete = FALSE order by f.film_id asc ")
     Iterable<Film> findAllByOrderByFilm_idDesc();
@@ -23,9 +21,4 @@ public interface FilmRepository extends JpaRepository<Film,Long> {
     @Query("select f from Film f where f.status = TRUE")
    Iterable<Film> findAllByStatusTrue();
 
-
-    @Transactional
-    @Modifying
-    @Query("update Film f set f.isDelete = true where f.film_id = :id")
-    void deleteProductById(@Param("id") Long id);
 }

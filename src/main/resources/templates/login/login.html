@@ -66,8 +66,8 @@
             url: "/api/login",
             data: JSON.stringify(customer)
         }).done((user) => {
-            App.showSuccessAlert("Đăng nhập thành công!");
-            console.log(user);
+            // App.showSuccessAlert("Đăng nhập thành công!");
+            // console.log(user);
             if  (user.roles[0].authority === "ADMIN"){
                 window.location.href = "/admin";
             } else if (user.roles[0].authority === "PROJECTION"){
@@ -76,7 +76,7 @@
                 window.location.href = "/app";
             }
         }).fail(() => {
-            App.showErrorAlert("Đã xảy ra lỗi. Vui lòng thử lại sau!");
+            App.showErrorAlert("Đã xảy ra lỗi. Vui lòng kiểm tra tên đăng nhập hoặc mật khẩu!");
         });
     }
 

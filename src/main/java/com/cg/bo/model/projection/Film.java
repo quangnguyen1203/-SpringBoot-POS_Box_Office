@@ -32,7 +32,7 @@ public class Film {
     @Column(columnDefinition = "boolean default false")
     private boolean isDelete;
 
-
+    @Column(columnDefinition = "boolean default true")
     private boolean status;
 
     public Film(Long film_id) {

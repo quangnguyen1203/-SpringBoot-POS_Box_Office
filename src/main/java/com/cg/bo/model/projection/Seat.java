@@ -1,5 +1,6 @@
 package com.cg.bo.model.projection;
 
+import com.cg.bo.model.security.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,10 @@ public class Seat {
     @ManyToOne
     @JoinColumn(name= "type_id")
     private TypeSeat typeSeat;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", columnDefinition = "bigint default 1")
+    private User user;
 
     public Seat(String seat_name, SeatStatus seatStatus, Room room, TypeSeat typeSeat) {
         this.seat_name = seat_name;

@@ -25,7 +25,7 @@ function getAllProduct(){
                         <tr id="row${product[i].product_id}">
                               <input hidden id="${product[i].product_id}">
                               <td>${product[i].product_name}</td>
-                              <td>${product[i].price + "$"}</td>
+                              <td>${product[i].price.toLocaleString('vi', {style : 'currency', currency : 'VND'})}</td>
                               <td>${product[i].description}</td>
                               <td>${product[i].category.category_name}</td>
                               <td class="text-center">
@@ -237,7 +237,7 @@ function saveProduct(){
                 $('#row'+product_id+ ' td').remove();
                 $('#row'+product_id).html(`
                         <td>${product.product_name}</td>
-                        <td>${product.price} $</td>
+                        <td>${product.price.toLocaleString('vi', {style : 'currency', currency : 'VND'})}</td>
                         <td>${product.description}</td>
                         <td>${product.category.category_name}</td>
                         <td class="text-center">

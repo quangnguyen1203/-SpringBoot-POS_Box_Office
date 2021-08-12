@@ -19,6 +19,9 @@ function getAllFilm(){
                                      <img style="object-fit: cover"  width="220px" height="310px" src= "/uploads/${films[i].image}"  alt="${films[i].film_name}">
                                     </div>
                                     <div class="col p-4 d-flex flex-column position-static">
+                                    
+                                        <div class="btn buttonStatus ${films[i].status ? "btn" : "btn-secondary" }">${films[i].status ?'':"Phim đã hết hạn"}</div>
+                                    
                                         <div>
                                         <h4 class="mb-5"><b>${films[i].film_name}</b></h4>
                                         </div>

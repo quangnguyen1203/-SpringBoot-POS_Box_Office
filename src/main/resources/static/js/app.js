@@ -1,5 +1,17 @@
 
 class App {
+    static showCreateConfirmDialog(){
+        return Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes',
+        })
+    }
+
     static showDeleteConfirmDialog() {
         return Swal.fire({
             icon: 'warning',
@@ -48,6 +60,7 @@ class App {
             url: "/user/getUser"
         }).done(function (user){
             $("#user").html(`${user.username}`);
+            $("#username-hidden").val(user.username);
         })
     }
 
@@ -104,8 +117,7 @@ class App {
         return ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2)
     }
 
-    static countTakenSeat(seats)
-    {
+    static countTakenSeat(seats) {
         let count = 0;
         for (let i = 0; i < seats.length; i++){
             if (seats[i].seatStatus.id === 3){
