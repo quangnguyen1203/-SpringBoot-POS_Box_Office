@@ -3,8 +3,10 @@ package com.cg.bo.controller;
 import com.cg.bo.model.bussiness.*;
 import com.cg.bo.model.bussiness.Class;
 import com.cg.bo.model.projection.Schedule;
+import com.cg.bo.model.projection.Seat;
 import com.cg.bo.model.security.User;
 import com.cg.bo.service.*;
+import com.cg.bo.service.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,31 +33,34 @@ public class AppController {
     }
 
     @Autowired
-    private ProductService productService;
+    private ProductServiceImpl productService;
 
     @Autowired
-    private CategoryService categoryService;
+    private CategoryServiceImpl categoryService;
 
     @Autowired
-    private ClassService classService;
+    private ClassServiceImpl classService;
 
     @Autowired
-    private MemberService memberService;
+    private MemberServiceImpl memberService;
 
     @Autowired
-    private ScheduleService scheduleService;
+    private ScheduleServiceImpl scheduleService;
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Autowired
-    private OrderService orderService;
+    private OrderServiceImpl orderService;
 
     @Autowired
-    private OrderDetailService orderDetailService;
+    private OrderDetailServiceImpl orderDetailService;
 
     @Autowired
-    private TicketService ticketService;
+    private TicketServiceImpl ticketService;
+
+    @Autowired
+    private SeatServiceImpl seatService;
 
     @GetMapping
     public ModelAndView pageApp(){
@@ -113,7 +118,8 @@ public class AppController {
         String username = getPrincipal();
         User user = userService.findByName(username);
         order.setUser(user);
-        return new ResponseEntity<>(orderService.save(order),HttpStatus.CREATED);
+        orderService.save(order);
+        return new ResponseEntity<>(order, HttpStatus.CREATED);
     }
 
     @PostMapping("/saveOrderDetail")
@@ -124,5 +130,14 @@ public class AppController {
     @PostMapping("/saveTicket")
     public ResponseEntity<Ticket> saveTicket(@RequestBody Ticket ticket){
         return new ResponseEntity<>(ticketService.save(ticket),HttpStatus.CREATED);
+    }
+
+    @PutMapping("/setTakenSeat/{seatId}")
+    public ResponseEntity<Seat> setTakenSeat(@PathVariable Long seatId){
+        Seat seat = seatService.findById(seatId).get();
+        if (seat.getSeatStatus().getId() == 2) {
+            seat.getSeatStatus().setId(3L);
+        }
+        return new ResponseEntity<>(seatService.save(seat), HttpStatus.OK);
     }
 }

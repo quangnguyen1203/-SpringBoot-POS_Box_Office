@@ -352,7 +352,6 @@ function deleteTicketFromOrder(seatId){
         type: "PUT",
         url: `/seat/setEmpty/${seatId}`
     }).done((seat) => {
-        console.log(seat);
         for (let i = 0; i < order.ticket.length; i++) {
             if (order.ticket[i].seat.seat_id === seat.seat_id){
                 order.ticket.splice(i,1);
@@ -629,8 +628,7 @@ function createMemberApp(){
             type: "POST",
             data: JSON.stringify(member),
             url: "/app/createNewMember"
-        }).done(function (e){
-            console.log(e)
+        }).done(function (){
             $("#create-form")[0].reset();
             App.showSuccessAlert("Tạo mới thành viên thành công");
             $("#editModal").modal('hide');
@@ -942,7 +940,6 @@ function drawOrder(){
                   <h5 id="balanced"></h5>
                 </div>
               </div>`;
-    // order.total_price = total_price;
     $("#allList").html(content);
 
 
@@ -1120,91 +1117,180 @@ function createOrder(){
         username: user
     }
 
-    let newOrder = {
-        order_date : order_date,
-        order_time : order_time,
-        total_product: total_product,
-        total_ticket: total_ticket,
-        total_price: total_price,
-        member : newMember,
-        user: newUser
-    }
-
-    App.showCreateConfirmDialog().then((result) =>{
-        if (result.isConfirmed){
-            $.ajax({
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                type: "POST",
-                data: JSON.stringify(newOrder),
-                url: "/app/saveOrder"
-            }).done((resp) => {
-
-                for (let i = 0; i < order.products.length ; i++) {
-                    let newOrderDetail = {
-                        order :{
-                            order_id : resp.order_id
-                        },
-                        product_name: order.products[i].product_name,
-                        product_amount: order.products[i].amount,
-                        price: order.products[i].amount*order.products[i].price
-                    }
+        if (member === undefined){
+            let newOrder = {
+                order_date : order_date,
+                order_time : order_time,
+                total_product: total_product,
+                total_ticket: total_ticket,
+                total_price: total_price,
+                user: newUser
+            }
+            App.showCreateConfirmDialog().then((result) =>{
+                if (result.isConfirmed){
                     $.ajax({
                         headers: {
                             'Accept': 'application/json',
                             'Content-Type': 'application/json'
                         },
                         type: "POST",
-                        data: JSON.stringify(newOrderDetail),
-                        url: "/app/saveOrderDetail",
-                        // success: function (data){
-                        //   console.log(data)
-                        //   deleteOrder();
-                        //   App.showSuccessAlert("Create new order successfully!");
+                        data: JSON.stringify(newOrder),
+                        url: "/app/saveOrder"
+                    }).done((resp) => {
+                        console.log(resp);
+
+                        // for (let i = 0; i < order.products.length ; i++) {
+                        //     let newOrderDetail = {
+                        //         order :{
+                        //             order_id : resp.order_id
+                        //         },
+                        //         product_name: order.products[i].product_name,
+                        //         product_amount: order.products[i].amount,
+                        //         price: order.products[i].amount*order.products[i].price
+                        //     }
+                        //     $.ajax({
+                        //         headers: {
+                        //             'Accept': 'application/json',
+                        //             'Content-Type': 'application/json'
+                        //         },
+                        //         type: "POST",
+                        //         data: JSON.stringify(newOrderDetail),
+                        //         url: "/app/saveOrderDetail"
+                        //     })
                         // }
-                    }).done(() => {
-                        deleteOrder();
-                        App.showSuccessAlert("Create new order successfully!");
+
+                        for (let i = 0; i < order.ticket.length ; i++) {
+                            let newTicket = {
+                                order :{
+                                    order_id : resp.order_id
+                                },
+                                price: order.ticket[i].seat.typeSeat.price,
+                                show: {
+                                    show_id:order.ticket[i].show.show_id
+                                },
+                                seat: {
+                                    seat_id:order.ticket[i].seat.seat_id
+                                }
+                            }
+                            $.ajax({
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json'
+                                },
+                                type: "POST",
+                                data: JSON.stringify(newTicket),
+                                url: "/app/saveTicket"
+                            }).done((ticket) => {
+                                console.log(ticket)
+
+                                $.ajax({
+                                    type: "PUT",
+                                    url: `/app/setTakenSeat/${ticket.seat.seat_id}`
+                                })
+                                App.showSuccessAlert("Create new order successfully!");
+                            })
+                        }
+
                     })
                 }
-
-                for (let i = 0; i < order.ticket.length ; i++) {
-                    let newTicket = {
-                        order :{
-                            order_id : resp.order_id
-                        },
-                        price: order.ticket[i].seat.typeSeat.price,
-                        show: {
-                            show_id:order.ticket[i].show.show_id
-                        },
-                        user: {
-                            user: order.user.id
-                        },
-                        member:{
-                            member_id:resp.member.member_id
-                        },
-                        seat: {
-                            seat_id:order.ticket[i].seat.seat_id
-                        }
-                    }
+            })
+        } else {
+            let newOrder = {
+                order_date : order_date,
+                order_time : order_time,
+                total_product: total_product,
+                total_ticket: total_ticket,
+                total_price: total_price,
+                member : newMember,
+                user: newUser
+            }
+            App.showCreateConfirmDialog().then((result) =>{
+                if (result.isConfirmed){
                     $.ajax({
                         headers: {
                             'Accept': 'application/json',
                             'Content-Type': 'application/json'
                         },
                         type: "POST",
-                        data: JSON.stringify(newTicket),
-                        url: "/app/saveTicket"
-                    }).done(() => {
-                        deleteOrder();
-                        App.showSuccessAlert("Create new order successfully!");
+                        data: JSON.stringify(newOrder),
+                        url: "/app/saveOrder"
+                    }).done((resp) => {
+                        console.log(resp);
+
+                        // for (let i = 0; i < order.products.length ; i++) {
+                        //     let newOrderDetail = {
+                        //         order :{
+                        //             order_id : resp.order_id
+                        //         },
+                        //         product_name: order.products[i].product_name,
+                        //         product_amount: order.products[i].amount,
+                        //         price: order.products[i].amount*order.products[i].price
+                        //     }
+                        //     $.ajax({
+                        //         headers: {
+                        //             'Accept': 'application/json',
+                        //             'Content-Type': 'application/json'
+                        //         },
+                        //         type: "POST",
+                        //         data: JSON.stringify(newOrderDetail),
+                        //         url: "/app/saveOrderDetail",
+                        //         // success: function (data){
+                        //         //   console.log(data)
+                        //         //   deleteOrder();
+                        //         //   App.showSuccessAlert("Create new order successfully!");
+                        //         // }
+                        //     }).done(() => {
+                        //         deleteOrder();
+                        //         App.showSuccessAlert("Create new order successfully!");
+                        //     })
+                        // }
+
+                        for (let i = 0; i < order.ticket.length ; i++) {
+                            let newTicket = {
+                                order :{
+                                    order_id : resp.order_id
+                                },
+                                price: order.ticket[i].seat.typeSeat.price,
+                                show: {
+                                    show_id:order.ticket[i].show.show_id
+                                },
+                                user: {
+                                    user: order.user.id
+                                },
+                                member:{
+                                    member_id:resp.member.member_id
+                                },
+                                seat: {
+                                    seat_id:order.ticket[i].seat.seat_id
+                                }
+                            }
+                            $.ajax({
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json'
+                                },
+                                type: "POST",
+                                data: JSON.stringify(newTicket),
+                                url: "/app/saveTicket"
+                            }).done((ticket) => {
+                                console.log(ticket)
+                                // $.ajax({
+                                //     type: "PUT",
+                                //     url: `/app/setTakenSeat/${ticket.seat.seat_id}`
+                                // })
+                                deleteOrder();
+                                App.showSuccessAlert("Create new order successfully!");
+                            })
+                        }
                     })
                 }
             })
         }
-    })
+
+
+
+
+
 }
 
 function deleteOrder(){

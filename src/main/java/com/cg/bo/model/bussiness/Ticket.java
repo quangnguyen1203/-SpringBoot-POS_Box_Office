@@ -33,20 +33,11 @@ public class Ticket {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
 
-    @OneToOne
-    @JoinColumn(name = "member_id")
-    private Member member;
-
-    public Ticket(double price, Show show, Seat seat, Order order, User user, Member member) {
+    public Ticket(double price, Show show, Seat seat, Order order) {
         this.price = price;
         this.show = show;
         this.seat = seat;
         this.order = order;
-        this.user = user;
-        this.member = member;
     }
 }
