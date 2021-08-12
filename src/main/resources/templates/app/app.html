@@ -18,6 +18,10 @@
         li.nav-item:not(:last-child){
             margin-right: 450px;
         }
+
+        .seat, .seat-view {
+            width: 75px;
+        }
     </style>
 </head>
 <body>
@@ -129,7 +133,8 @@
                     <div class="row">
                         <div class="col-lg-4 p-1 border-right d-flex justify-content-around align-items-center">
                             <div class="">
-                                <h5><span id="userInfo">userInfo</span></h5>
+                                <h5><span id="user"></span></h5>
+                                <input type="hidden" id="username-hidden" value="">
                                 <i class="fas fa-user"></i>
                             </div>
                             <a href="#" class="btn btn-warning text-white">Đăng xuất</a>

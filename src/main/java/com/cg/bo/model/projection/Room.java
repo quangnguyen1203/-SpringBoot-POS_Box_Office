@@ -24,6 +24,7 @@ public class Room {
     @Column(name = "isFull", columnDefinition = "boolean default false")
     private boolean isFull;
 
+
     @JsonIgnore
     @OneToMany
     @JoinColumn(name = "seat_id")

@@ -34,6 +34,11 @@ public class ShowController {
         return new ResponseEntity<>(showService.save(show), HttpStatus.CREATED);
     }
 
+    @GetMapping("/findById/{id}")
+    public ResponseEntity<Show> findShowById(@PathVariable Long id){
+        return new ResponseEntity<>(showService.findById(id).get(), HttpStatus.OK);
+    }
+
 
     @GetMapping("/allActiveShowsToday/{scheduleId}")
     public ResponseEntity<Iterable<Show>> findAllShowStatusTrue(@PathVariable Long scheduleId){

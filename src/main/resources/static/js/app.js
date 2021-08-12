@@ -48,6 +48,7 @@ class App {
             url: "/user/getUser"
         }).done(function (user){
             $("#user").html(`${user.username}`);
+            $("#username-hidden").val(user.username);
         })
     }
 
