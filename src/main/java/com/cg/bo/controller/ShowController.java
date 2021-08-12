@@ -31,10 +31,33 @@ public class ShowController {
 
     @PostMapping("/create")
     public ResponseEntity<Show> createNewShow(@RequestBody Show show){
-        if(java.time.LocalTime.now().compareTo(show.getTime_start().toLocalTime()) > 0){
-            show.setStatus(true);
+        Schedule schedule = scheduleService.findById(show.getSchedule().getSchedule_id()).get();
+        if (schedule.getSchedule_date().compareTo(dateUtils.getCurrentDate()) >= 0 ){
+            if(java.time.LocalTime.now().compareTo(show.getTime_start().toLocalTime()) > 0){
+                show.setStatus(true);
+            }
+            Iterable<Show> shows = showService.findShowsByRoomName(show.getRoom().getRoom_name(),show.getSchedule().getSchedule_id());
+            int count = 0;
+            for (Show s :
+                    shows) {
+                count++;
+            }
+            if (count == 0){
+                return new ResponseEntity<>(showService.save(show), HttpStatus.CREATED);
+            } else {
+                int check = 0;
+                for(Show s :shows){
+                    if(show.getTime_end().compareTo(s.getTime_start()) < 0 || show.getTime_start().compareTo(s.getTime_end()) >0){
+                        check++;
+                    }
+                }
+                if(check == count){
+                    return new ResponseEntity<>(showService.save(show),HttpStatus.CREATED);
+                }
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(showService.save(show), HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/allShow")

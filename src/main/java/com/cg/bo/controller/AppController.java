@@ -1,21 +1,34 @@
 package com.cg.bo.controller;
 
-import com.cg.bo.model.bussiness.Category;
+import com.cg.bo.model.bussiness.*;
 import com.cg.bo.model.bussiness.Class;
-import com.cg.bo.model.bussiness.Member;
-import com.cg.bo.model.bussiness.Product;
 import com.cg.bo.model.projection.Schedule;
+import com.cg.bo.model.security.User;
 import com.cg.bo.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
 @RequestMapping("/app")
 public class AppController {
+
+    private String getPrincipal() {
+        String userName = null;
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            userName = ((UserDetails) principal).getUsername();
+        } else {
+            userName = principal.toString();
+        }
+        return userName;
+    }
 
     @Autowired
     private ProductService productService;
@@ -31,6 +44,18 @@ public class AppController {
 
     @Autowired
     private ScheduleService scheduleService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private OrderService orderService;
+
+    @Autowired
+    private OrderDetailService orderDetailService;
+
+    @Autowired
+    private TicketService ticketService;
 
     @GetMapping
     public ModelAndView pageApp(){
@@ -81,5 +106,23 @@ public class AppController {
     @GetMapping("/allSchedules")
     public ResponseEntity<Iterable<Schedule>> allSchedule(){
         return new ResponseEntity<>(scheduleService.findAllByOrOrderBySchedule_dateAsc(),HttpStatus.OK);
+    }
+
+    @PostMapping("/saveOrder")
+    public ResponseEntity<Order> saveOrder(@RequestBody Order order){
+        String username = getPrincipal();
+        User user = userService.findByName(username);
+        order.setUser(user);
+        return new ResponseEntity<>(orderService.save(order),HttpStatus.CREATED);
+    }
+
+    @PostMapping("/saveOrderDetail")
+    public ResponseEntity<OrderDetail> saveOrderDetail(@RequestBody OrderDetail orderDetail){
+        return new ResponseEntity<>(orderDetailService.save(orderDetail),HttpStatus.CREATED);
+    }
+
+    @PostMapping("/saveTicket")
+    public ResponseEntity<Ticket> saveTicket(@RequestBody Ticket ticket){
+        return new ResponseEntity<>(ticketService.save(ticket),HttpStatus.CREATED);
     }
 }

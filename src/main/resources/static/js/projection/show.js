@@ -5,7 +5,7 @@ function getSchedules(){
     $.ajax({
         type: "GET",
         url: "/schedules/allSchedule"
-    }).done((schedules) => {
+    }).done(function (schedules) {
         let content = "";
         for (let i = 0; i < schedules.length ; i++) {
             let d1 = Date.parse(schedules[i].schedule_date);
@@ -34,7 +34,7 @@ function checkAvailable(){
 function getAllFilm(){
     $.ajax({
         type: "GET",
-        url: "/films/allFilm"
+        url: "/films/allStatusTrueFilm"
     }).done(function (films){
         let content = "";
         for (let i = films.length-1; i >= 0; i--) {

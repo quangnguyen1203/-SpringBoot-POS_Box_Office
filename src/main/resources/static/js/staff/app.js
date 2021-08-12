@@ -8,9 +8,8 @@ let order = {
     total_ticket: 0,
     products: [],
     ticket: [],
-    member:{
-        member_id:0,
-    }
+    member: "",
+    user:""
 };
 
 function getSchedules(){
@@ -345,8 +344,6 @@ function selectSeat(seatId){
         if (seat.seatStatus.id === 1){
             deleteTicketFromOrder(seat.seat_id);
         }
-
-
     })
 }
 
@@ -397,6 +394,90 @@ $("#searchFilmName").on("input", function (){
 
 getSchedules();
 
+function getScheduleChangeTab(){
+    $.ajax({
+        type: "GET",
+        url: "/schedules/allSchedule"
+    }).done(function (schedules) {
+        let content = ``;
+        for (let i = 0; i < schedules.length ; i++) {
+            let d1 = Date.parse(schedules[i].schedule_date);
+            let d2 = Date.parse(App.getToday());
+            if (d1 === d2){
+                content += `
+                <option value="${schedules[i].schedule_id}" selected>${schedules[i].schedule_date}</option>
+            `;
+            } else {
+                content += `
+                <option value="${schedules[i].schedule_id}">${schedules[i].schedule_date}</option>
+            `;
+            }
+        }
+        $("#schedule").html(content);
+        $("#schedule").on("change",function (){
+            let id = $(this).val();
+            getShows(id);
+        })
+        getCurrentShowChangeTab();
+    })
+}
+
+function getCurrentShowChangeTab(){
+    let id = $("#schedule").val();
+    $.ajax({
+        type: "GET",
+        url: `/schedules/${id}`
+    }).done((schedule) =>{
+        if (schedule.schedule_date === App.getToday()){
+            $.ajax({
+                type: "GET",
+                url: `/show/allActiveShowsToday/${schedule.schedule_id}`
+            }).done((shows) => {
+                let content =``;
+                for (let i = 0; i < shows.length; i++) {
+                    content += `
+                        <div class="col-md-4 mb-3" >
+                            <div class="rounded card h-40 text-dark" >
+                                <div class="d-flex flex-column h-70 p-2 pb-3 text-shadow-1">
+                                    <div class="mb-1">
+                                        <h4 class="fw-bold" style="width: 150px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis">${shows[i].film.film_name}</h4>
+                                        <p class="text-muted">${schedule.schedule_date} ${shows[i].time_start}</p>
+                                        <p class="badge ${(shows[i].status) ? 'bg-success text-white' : 'bg-danger text-white'}">${shows[i].status ? 'ACTIVE' : 'IN-ACTIVE'}</p>   
+                                    </div>
+                                    <ul class="d-flex list-unstyled mt-3">
+                                        <li class="me-auto">
+                                            <button class="btn btn-outline-warning showSeats" value="${shows[i].room.room_id}"><i class="fas fa-plus"></i></button></li>
+
+                                        <li class="d-flex align-items-center">
+                                            <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"/></svg>
+                                            <span id="admit${shows[i].room.room_id}" class="admit" value="${shows[i].room.room_id}"></span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                $("#menuProduct").html(content);
+                $(".showSeats").on("click", function (){
+                    let roomId = $(this).val();
+                    showListSeats(roomId);
+                })
+                for (let i =0; i < shows.length; i++){
+                    $.ajax({
+                        type: "GET",
+                        url: `/seat/getSeatsByRoom/${shows[i].room.room_id}`
+                    }).done((seats) =>{
+                        $(`#admit${shows[i].room.room_id}`).html(`
+                            <p>${App.countTakenSeat(seats)}/100</p>
+                        `)
+                    })
+                }
+            })
+        }
+    })
+}
+
 //Quầy vé
 function getScheduleOfTicket(){
     let content = `
@@ -416,7 +497,7 @@ function getScheduleOfTicket(){
                       </div>
                     </div>
                   </li>`;
-    getSchedules();
+    getScheduleChangeTab();
     $(".allItemProduct").html(content);
 }
 
@@ -712,35 +793,10 @@ function drawProduct() {
               </ul>`;
         }
         content += "</div>";
+
         order.total_product = total;
-      //   let subtotal = order.total_price;
-      //   // let tax = Math.round((((order.total_price*(1-order.voucher.percent_discount/100))*0.1) + Number.EPSILON) * 100) / 100;
-      //   // let total_product = Math.round((((order.total_price *(1- order.voucher.percent_discount/100)) + (Math.round((((order.total_price*(1-order.voucher.percent_discount/100))*0.1) + Number.EPSILON) * 100) / 100)) + Number.EPSILON)* 100) / 100 ;
-      //
-      //   content += `
-      //       <div class="panel-body border" style="height: 145px; margin-top: 15px">
-      //         <div class="d-flex justify-content-between p-2 pb-0">
-      //           <h5>Tổng</h5>
-      //           <input hidden id="total" value="">
-      //           <h5><strong>${total}</strong></h5>
-      //         </div>
-      //         <div class="d-flex justify-content-between p-2 pb-0">
-      //           <h5>Khách đưa</h5>
-      //           <div class="d-flex justify-content-between">
-      //             <input type="text" value="" id="received">
-      //             <span class="input-group-text">Vnd</span>
-      //           </div>
-      //         </div>
-      //         <div class="d-flex justify-content-between p-2 pb-0">
-      //           <h5>Tiền thừa</h5>
-      //           <h5 id="balanced"></h5>
-      //         </div>
-      //       </div>
-      // `;
-      //   order.total_price = total;
 
         $('#orderProductList').html(content);
-        // $('#allList').html(content);
 
         $(".addMoreProduct").on("click",function (){
             let id = $(this).attr("value");
@@ -763,7 +819,7 @@ function drawTicket() {
           <ul class="list-group mb-1 ">
             <li class=" d-flex justify-content-between p-1 btn delete-ticket" value="${order.ticket[i].seat.seat_id}">
               <div >
-                <h6 class="my-0" style="width: 150px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis">${order.ticket[i].show.film.film_name}</h6>
+                <h6 class="my-0" style="width: 150px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis" id="film_name">${order.ticket[i].show.film.film_name}</h6>
                 <p>${order.ticket[i].show.schedule.schedule_date} ${order.ticket[i].show.time_start}</p>
               </div>
               <div>
@@ -800,7 +856,7 @@ function drawOrder(){
           <ul class="list-group mb-1 ">
             <li class=" d-flex justify-content-between p-1 btn delete-ticket" value="${order.ticket[i].seat.seat_id}">
               <div >
-                <h6 class="my-0" style="width: 150px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis">${order.ticket[i].show.film.film_name}</h6>
+                <h6 class="my-0" style="width: 150px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis" id="film_name">${order.ticket[i].show.film.film_name}</h6>
                 <p>${order.ticket[i].show.schedule.schedule_date} ${order.ticket[i].show.time_start}</p>
               </div>
               <div>
@@ -847,10 +903,26 @@ function drawOrder(){
 
     order.total_product = total_product;
 
-    content += `<div class="current-order panel-body border" style="height: 50px;margin-bottom: 10px " id="chooseMemberName">
-            
+    if(order.member !== ""){
+        content += `<div class="current-order panel-body border" style="height: 50px;margin-bottom: 10px " id="chooseMemberName">
+                <input type="hidden" id="memberId" value="">
+                    <ul class="list-group mb-3 ">
+                        <li class=" d-flex justify-content-between p-2 pb-0 ">
+                          <div>
+                            <h5>Thành viên: </h5>
+                          </div>
+                          <h5 class="btn text-muted deleteMember" value="${order.member.member_id}">${order.member.member_name}</h5>
+                        </li>
+                    </ul>
                 </div>`;
+    } else {
+        content += `<div class="current-order panel-body border" style="height: 50px;margin-bottom: 10px " id="chooseMemberName">
+                <input type="hidden" id="memberId" value="">
+              </div>`;
+    }
+
     order.total_price = order.total_ticket + order.total_product;
+
     content += `
       <div class="panel-body border" style="height: 150px; margin-top: 10px">
                 <div class="d-flex justify-content-between p-2 pb-0">
@@ -873,6 +945,7 @@ function drawOrder(){
     // order.total_price = total_price;
     $("#allList").html(content);
 
+
     $(".delete-ticket").on("click", function (){
         let seatId = $(this).attr("value");
         App.showDeleteConfirmDialog().then((result) => {
@@ -890,6 +963,11 @@ function drawOrder(){
     $(".subToProduct").on("click",function (){
         let id = $(this).attr("value");
         subProduct(id);
+    })
+    $("#received").on("input",function (){
+        $("#balanced").html(
+            `<strong style="color: red;">${$("#received").val() - order.total_price}</strong> đ`
+        )
     })
 }
 
@@ -989,14 +1067,6 @@ function emptyOrder(){
     drawTicket();
 }
 
-$("#received").on("change",function (){
-    let balanced = Math.round((($("#received").val() - $("#total").val()) + Number.EPSILON)*100)/100;
-
-    $("#balanced").html(
-        `<strong style="color: red;" >${balanced}</strong> $`
-    )
-})
-
 $(".addToProduct").on("click",function (){
     let id = $(this).attr("value");
     getProduct(id);
@@ -1010,6 +1080,7 @@ function getMember(id){
         url: `/app/chooseByMember/${id}`
     }).done(function (members){
         console.log(members)
+        order.member = members;
         $("#chooseMemberName").html(`<ul class="list-group mb-3 ">
                 <li class=" d-flex justify-content-between p-2 pb-0 ">
                   <div>
@@ -1024,11 +1095,134 @@ function getMember(id){
                 if (result.isConfirmed){
                     order.member.member_id = 0;
                     $("#chooseMemberName").html("")
+                    $("#memberId").val(members.member_id);
                 }
             });
         })
     })
 }
 
+//Tạo order
+
+function createOrder(){
+    let order_date = App.getToday();
+    let order_time = App.getTime();
+    let total_product = order.total_product;
+    let total_ticket = order.total_ticket;
+    let total_price = order.total_price;
+    let member = order.member.member_id
+    let user = $("#username-hidden").val();
+
+    let newMember = {
+        member_id : member
+    }
+    let newUser = {
+        username: user
+    }
+
+    let newOrder = {
+        order_date : order_date,
+        order_time : order_time,
+        total_product: total_product,
+        total_ticket: total_ticket,
+        total_price: total_price,
+        member : newMember,
+        user: newUser
+    }
+
+    App.showCreateConfirmDialog().then((result) =>{
+        if (result.isConfirmed){
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                type: "POST",
+                data: JSON.stringify(newOrder),
+                url: "/app/saveOrder"
+            }).done((resp) => {
+
+                for (let i = 0; i < order.products.length ; i++) {
+                    let newOrderDetail = {
+                        order :{
+                            order_id : resp.order_id
+                        },
+                        product_name: order.products[i].product_name,
+                        product_amount: order.products[i].amount,
+                        price: order.products[i].amount*order.products[i].price
+                    }
+                    $.ajax({
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        type: "POST",
+                        data: JSON.stringify(newOrderDetail),
+                        url: "/app/saveOrderDetail",
+                        // success: function (data){
+                        //   console.log(data)
+                        //   deleteOrder();
+                        //   App.showSuccessAlert("Create new order successfully!");
+                        // }
+                    }).done(() => {
+                        deleteOrder();
+                        App.showSuccessAlert("Create new order successfully!");
+                    })
+                }
+
+                for (let i = 0; i < order.ticket.length ; i++) {
+                    let newTicket = {
+                        order :{
+                            order_id : resp.order_id
+                        },
+                        price: order.ticket[i].seat.typeSeat.price,
+                        show: {
+                            show_id:order.ticket[i].show.show_id
+                        },
+                        user: {
+                            user: order.user.id
+                        },
+                        member:{
+                            member_id:resp.member.member_id
+                        },
+                        seat: {
+                            seat_id:order.ticket[i].seat.seat_id
+                        }
+                    }
+                    $.ajax({
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        type: "POST",
+                        data: JSON.stringify(newTicket),
+                        url: "/app/saveTicket"
+                    }).done(() => {
+                        deleteOrder();
+                        App.showSuccessAlert("Create new order successfully!");
+                    })
+                }
+            })
+        }
+    })
+}
+
+function deleteOrder(){
+    order.products = [];
+    order.total_price = 0;
+    order.order_date = "";
+    order.order_time = "";
+    order.user.username = "";
+    order.member = "";
+    order.total_product = 0;
+    order.total_ticket = 0;
+    $("#received").val("");
+    $("#balanced").html("");
+    emptyOrder(order)
+}
+
+$("#createToOrder").on("click",createOrder);
+
 $(".allProduct").on("click",allItems)
 $(".allProduct").on("click",getAllCategory)
+

@@ -54,7 +54,7 @@ public class FilmServiceImpl implements FilmService {
         Date currentDate = dateUtils.getCurrentDate();
         for (Film f: films
         ) {
-            f.setStatus(currentDate.compareTo(f.getRel_date()) >= 0 && currentDate.compareTo(f.getExp_date()) <= 0);
+            f.setStatus(currentDate.compareTo(f.getExp_date()) <= 0);
             filmRepository.save(f);
         }
     }

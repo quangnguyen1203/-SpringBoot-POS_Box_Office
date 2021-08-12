@@ -27,9 +27,10 @@ public class Member {
 //    @JoinColumn(name = "visit_id")
 //    private List<Visit> visits;
 //
-//    @OneToMany
-//    @JoinColumn(name = "order_id")
-//    private List<Order> orders;
+    @JsonIgnore
+    @OneToMany
+    @JoinColumn(name = "order_id")
+    private List<Order> orders;
 
     @ManyToOne(targetEntity = Class.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "class_id")
@@ -73,4 +74,7 @@ public class Member {
 //        this.orders = new ArrayList<>();
 //    }
 
+    public Member(Long member_id) {
+        this.member_id = member_id;
+    }
 }

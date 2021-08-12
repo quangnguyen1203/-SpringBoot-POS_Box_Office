@@ -18,6 +18,8 @@ public class FilmController {
     @Autowired
     private FilmService filmService;
 
+    @Autowired
+    private DateUtils dateUtils;
 
     //listFilm
     @GetMapping("/listFilm")
@@ -34,12 +36,15 @@ public class FilmController {
 
     @GetMapping("/allFilm")
     public ResponseEntity<Iterable<Film>> listAllFilm(){
-        return new ResponseEntity<>(filmService.findAllByStatusTrue(),HttpStatus.OK);
+        return new ResponseEntity<>(filmService.findAllByOrderByFilm_idDesc(),HttpStatus.OK);
     }
 
     @PostMapping("/createFilm")
     public ResponseEntity<Film> createFilm(@RequestBody Film film){
         if(film.getExp_date().compareTo(film.getRel_date())< 0 ){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        if(dateUtils.getCurrentDate().compareTo(film.getRel_date()) >0 ){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(filmService.save(film),HttpStatus.CREATED);
@@ -75,4 +80,8 @@ public class FilmController {
         return new ResponseEntity<>(filmService.findById(id).get(), HttpStatus.OK);
     }
 
+    @GetMapping("/allStatusTrueFilm")
+    public ResponseEntity<Iterable<Film>> listFilmTrue(){
+        return new ResponseEntity<>(filmService.findAllByStatusTrue(),HttpStatus.OK);
+    }
 }

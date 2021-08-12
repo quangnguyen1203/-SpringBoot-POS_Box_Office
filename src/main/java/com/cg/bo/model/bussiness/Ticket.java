@@ -40,4 +40,13 @@ public class Ticket {
     @OneToOne
     @JoinColumn(name = "member_id")
     private Member member;
+
+    public Ticket(double price, Show show, Seat seat, Order order, User user, Member member) {
+        this.price = price;
+        this.show = show;
+        this.seat = seat;
+        this.order = order;
+        this.user = user;
+        this.member = member;
+    }
 }
