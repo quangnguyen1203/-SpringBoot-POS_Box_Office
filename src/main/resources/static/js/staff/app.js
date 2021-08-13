@@ -378,7 +378,6 @@ function selectSeat(seatId){
         type: "PUT",
         url: `/seat/selectSeatById/${seatId}`
     }).done((seat) => {
-        console.log(seat)
         showListSeats(seat.room.room_id);
         if (seat.seatStatus.id === 2){
             $.ajax({
@@ -550,6 +549,13 @@ function getScheduleOfTicket(){
                   </li>`;
     getScheduleChangeTab();
     $(".allItemProduct").html(content);
+    $("#searchFilmName").on("input", function (){
+        if ($("#searchFilmName").val() === ""){
+            getCurrentShow();
+        } else {
+            searchFilmName();
+        }
+    })
 }
 
 
@@ -764,10 +770,16 @@ function searchByMember(){
                     $("#detailMember").html(content);
                     $(".chooseMember").on("click", function (){
                         let id = $(this).attr("value");
-                        console.log(id);
-                        getMember(id);
-                        $("#search").val("");
-                        $("#searchModal").modal('hide');
+
+                        $.ajax({
+                            type: "GET",
+                            url: `/app/chooseByMember/${id}`
+                        }).done(function (member){
+                            order.member = member;
+                            $("#search").val("");
+                            $("#searchModal").modal('hide');
+                            drawOrder();
+                        })
                     })
                 } else {
                     App.showErrorAlert("Chưa đăng ký thành viên!")
@@ -961,10 +973,16 @@ function drawOrder(){
                           <div>
                             <h5>Thành viên: </h5>
                           </div>
-                          <h5 class="btn text-muted deleteMember" value="${order.member.member_id}">${order.member.member_name}</h5>
+                          <h5 class="btn text-muted deleteMember" value="${order.member.member_id}">${order.member.member_name} (-${order.member.aclass.percent_discount}% CO)</h5>
+                          <input type="hidden" id="discount-hidden" value="${order.member.aclass.percent_discount}">
                         </li>
                     </ul>
                 </div>`;
+        let percent_discount = $("#discount-hidden").val();
+        if  (order.total_product !== 0){
+            order.total_product = total_product*(100-percent_discount)/100;
+        }
+
     } else {
         content += `<div class="current-order panel-body border" style="height: 50px;margin-bottom: 10px " id="chooseMemberName">
                 <input type="hidden" id="memberId" value="">
@@ -992,9 +1010,17 @@ function drawOrder(){
                   <h5 id="balanced"></h5>
                 </div>
               </div>`;
+
     $("#allList").html(content);
+    $(".deleteMember").on("click", function (){
+        App.showDeleteConfirmDialog().then((result) => {
+            if (result.isConfirmed){
+                order.member = "";
+                drawOrder();
 
-
+            }
+        });
+    })
     $(".delete-ticket").on("click", function (){
         let seatId = $(this).attr("value");
         App.showDeleteConfirmDialog().then((result) => {
@@ -1003,12 +1029,10 @@ function drawOrder(){
             }
         })
     })
-
     $(".addMoreProduct").on("click",function (){
         let id = $(this).attr("value");
         getProduct(id);
     })
-
     $(".subToProduct").on("click",function (){
         let id = $(this).attr("value");
         subProduct(id);
@@ -1031,13 +1055,13 @@ function subProduct(id){
             if (order.products[indexProduct].amount === 1){
                 order.products.splice(indexProduct,1);
                 if (order.products.length === 0){
-                    emptyOrder(order);
+                    emptyOrder();
                 } else {
-                    drawOrder(order);
+                    drawOrder();
                 }
             } else if(order.products[indexProduct].amount > 1){
                 order.products[indexProduct].amount--;
-                drawOrder(order);
+                drawOrder();
             }
         }
     })
@@ -1122,34 +1146,6 @@ $(".addToProduct").on("click",function (){
 })
 //Kết thúc order
 
-//Chọn thành viên vào order
-function getMember(id){
-    $.ajax({
-        type: "GET",
-        url: `/app/chooseByMember/${id}`
-    }).done(function (members){
-        console.log(members)
-        order.member = members;
-        $("#chooseMemberName").html(`<ul class="list-group mb-3 ">
-                <li class=" d-flex justify-content-between p-2 pb-0 ">
-                  <div>
-                    <h5 class="my-0" style="width: 150px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis">Thành viên: </h5>
-                  </div>
-                  <h5 class="btn text-muted deleteMember" value="${members.member_id}">${members.member_name}</h5>
-                </li>
-              </ul>`);
-
-        $(".deleteMember").on("click", function (){
-            App.showDeleteConfirmDialog().then((result) => {
-                if (result.isConfirmed){
-                    order.member.member_id = 0;
-                    $("#chooseMemberName").html("")
-                    $("#memberId").val(members.member_id);
-                }
-            });
-        })
-    })
-}
 
 //Tạo order
 
@@ -1189,7 +1185,6 @@ function createOrder(){
                         data: JSON.stringify(newOrder),
                         url: "/app/saveOrder"
                     }).done((resp) => {
-                        console.log(resp);
 
                         for (let i = 0; i < order.products.length ; i++) {
                             let newOrderDetail = {
@@ -1233,14 +1228,12 @@ function createOrder(){
                                 data: JSON.stringify(newTicket),
                                 url: "/app/saveTicket"
                             }).done((ticket) => {
-                                console.log(ticket)
-                                $.ajax({
-                                    type: "PUT",
-                                    url: `/app/setTakenSeat/${ticket.seat.seat_id}`
-                                })
-                                App.showSuccessAlert("Create new order successfully!");
+                                saveTicket(ticket);
                             })
                         }
+                        App.showSuccessAlert("Create new order successfully!");
+                        deleteOrder();
+                        $(".allSchedule").click();
 
                     })
                 }
@@ -1266,8 +1259,6 @@ function createOrder(){
                         data: JSON.stringify(newOrder),
                         url: "/app/saveOrder"
                     }).done((resp) => {
-                        console.log(resp);
-
                         for (let i = 0; i < order.products.length ; i++) {
                             let newOrderDetail = {
                                 order :{
@@ -1324,20 +1315,35 @@ function createOrder(){
                                 App.showSuccessAlert("Create new order successfully!");
                             })
                         }
+
+                        deleteOrder();
                     })
-                    deleteOrder();
                 }
             })
         }
 
+}
 
+function saveTicket(ticket){
+    $.ajax({
+        type: "PUT",
+        url: `/app/setTakenSeat/${ticket.seat.seat_id}`
+    })
 
-
-
+    $.ajax({
+        type: "GET",
+        url: `/show/findById/${ticket.show.show_id}`
+    }).done((show) => {
+        $.ajax({
+            type: "PUT",
+            url: `/films/addAdmit/${show.film.film_id}`
+        })
+    })
 }
 
 function deleteOrder(){
     order.products = [];
+    order.ticket = [];
     order.total_price = 0;
     order.order_date = "";
     order.order_time = "";
@@ -1347,7 +1353,7 @@ function deleteOrder(){
     order.total_ticket = 0;
     $("#received").val("");
     $("#balanced").html("");
-    emptyOrder(order)
+    emptyOrder()
 }
 
 $("#createToOrder").on("click",createOrder);
