@@ -23,4 +23,11 @@ public class OrderDetail {
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
+
+    public OrderDetail(String product_name, String product_amount, double price, Order order) {
+        this.product_name = product_name;
+        this.product_amount = product_amount;
+        this.price = price;
+        this.order = order;
+    }
 }
