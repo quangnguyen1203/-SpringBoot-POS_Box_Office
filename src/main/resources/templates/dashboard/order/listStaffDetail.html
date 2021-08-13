@@ -4,7 +4,6 @@
   <title>HOME</title>
   <div th:replace="/dashboard/layout/head::resources"></div>
 </head>
-
 <body>
 
 <!-- Begin page -->
@@ -20,6 +19,39 @@
       <div class="container-fluid">
 
         <div class="row">
+          <div class="col-lg-12" style="margin-top: 10px;">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="header-title mb-4">Tìm kiếm nhân viên</h4>
+
+                <form class="parsley-examples row" id="create-form">
+                  <div class="form-group col-lg-6">
+                    <label>Ngày <span class="text-danger">*</span></label>
+                    <select class="form-control" name="order_date" id="order_date" value="">
+
+                    </select>
+                  </div>
+                  <div class="form-group col-lg-6">
+                    <label>Tên nhân viên <span class="text-danger">*</span></label>
+                    <select class="form-control" name="username" id="username" value="">
+
+                    </select>
+                  </div>
+                  <div class="form-group text-right mb-0">
+                    <button class="btn btn-primary waves-effect waves-light mr-1" id="search-button" type="button">
+                      Tìm kiếm
+                    </button>
+                  </div>
+
+                </form>
+              </div>
+            </div>
+            <!-- end card -->
+          </div>
+          <!-- end col -->
+        </div>
+
+        <div class="row">
           <!-- end col -->
 
           <div class="col-lg-12">
@@ -30,7 +62,7 @@
                   <a data-toggle="collapse" href="#cardCollpase4" role="button" aria-expanded="false" aria-controls="cardCollpase4"><i class="mdi mdi-minus"></i></a>
                   <a href="#" data-toggle="remove"><i class="mdi mdi-close"></i></a>
                 </div>
-                <h5 class="header-title mb-0"> List Order</h5>
+                <h5 class="header-title mb-0">Doanh thu bán hàng của nhân viên </h5>
               </div>
               <div id="cardCollpase4" class="collapse show">
                 <div class="card-body">
@@ -39,22 +71,18 @@
                       <thead>
                       <tr>
                         <th>#</th>
-                        <th>Order Date</th>
                         <th>Order Time</th>
                         <th>Total Price</th>
                         <th>Staff Name</th>
-                        <th>Voucher</th>
                       </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td class="detail" type="button" data-toggle="modal" data-target="#exampleModal" th:text="${order.order_id}" th:value="${order.order_id}"></td>
-                          <td th:text="${order.order_date}"></td>
-                          <td th:text="${order.order_time}"></td>
-                          <td th:text="${order.total_price}"></td>
-                          <td th:text="${order.user.username}"></td>
-                          <td th:text="${order.voucher.voucher_name}"></td>
-                        </tr>
+<!--                        <tr>-->
+<!--                          <td th:text="${order.order_id}"></td>-->
+<!--                          <td th:text="${order.order_time}"></td>-->
+<!--                          <td th:text="${order.total_price}"></td>-->
+<!--                          <td th:text="${order.user.username}"></td>-->
+<!--                        </tr>-->
                       </tbody>
                     </table>
                   </div>
@@ -83,8 +111,6 @@
 </div>
 <!-- END wrapper -->
 
-<th:block th:replace="/dashboard/layout/script::script"></th:block>
-
+<div th:replace="/dashboard/layout/script::script"></div>
 </body>
-
 </html>

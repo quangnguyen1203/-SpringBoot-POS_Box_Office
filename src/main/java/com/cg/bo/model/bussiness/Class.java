@@ -17,6 +17,7 @@ public class Class {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long class_id;
     private String class_name;
+    private int percent_discount;
 
 
 

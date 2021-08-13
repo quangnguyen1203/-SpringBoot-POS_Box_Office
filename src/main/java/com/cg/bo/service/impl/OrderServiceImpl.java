@@ -33,4 +33,9 @@ public class OrderServiceImpl implements OrderService {
     public void remove(Long id) {
         orderRepository.deleteById(id);
     }
+
+    @Override
+    public Iterable<Order> findByOrderDateAndRoleStaff(String order_date, Long id) {
+        return orderRepository.findByOrderDateAndRoleStaff(order_date,id);
+    }
 }
