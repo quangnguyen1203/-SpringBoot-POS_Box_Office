@@ -59,4 +59,23 @@ public class Order {
         this.total_price = total_price;
         this.member = member;
     }
+
+    public Order(Date order_date, Time order_time, double total_product, double total_ticket, double total_price, User user, Member member) {
+        this.order_date = order_date;
+        this.order_time = order_time;
+        this.total_product = total_product;
+        this.total_ticket = total_ticket;
+        this.total_price = total_price;
+        this.user = user;
+        this.member = member;
+    }
+
+    public Order(Date order_date, Time order_time, double total_product, double total_ticket, double total_price, User user) {
+        this.order_date = order_date;
+        this.order_time = order_time;
+        this.total_product = total_product;
+        this.total_ticket = total_ticket;
+        this.total_price = total_price;
+        this.user = user;
+    }
 }

@@ -33,8 +33,10 @@ function getSchedules(){
         }
         $("#schedule").html(content);
         $("#schedule").on("change",function (){
-            let id = $(this).val();
-            getShows(id);
+            // let id = $('option:selected',this).attr("value");
+            let id = $("#schedule option:selected").attr('value');
+            console.log(id);
+            getShows(id)
         })
         getCurrentShow();
     })
@@ -97,7 +99,7 @@ function getShows(scheduleId){
         else {
             $.ajax({
                 type: "GET",
-                url: `/show/allShows/${schedule.schedule_id}`
+                url: `/show/allShowsToday/${schedule.schedule_id}`
             }).done((shows) => {
                 let content =``;
                 for (let i = 0; i < shows.length; i++) {
@@ -106,7 +108,9 @@ function getShows(scheduleId){
                             <div class="rounded card h-40 text-dark" >
                                 <div class="d-flex flex-column h-70 p-2 pb-3 text-shadow-1">
                                     <div class="mb-1">
-                                        <h4 class="fw-bold" style="width: 150px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis">${shows[i].film.film_name}</h4>
+                                        <h4 class="fw-bold" style="width: 150px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis">${shows[i].film.film_name}
+                                  
+                                        </h4>
                                         <p class="text-muted">${schedule.schedule_date} ${shows[i].time_start}</p>
                                         <p class="badge ${(shows[i].status) ? 'bg-success text-white' : 'bg-danger text-white'}">${shows[i].status ? 'ACTIVE' : 'IN-ACTIVE'}</p>
                                     </div>
@@ -145,7 +149,7 @@ function getShows(scheduleId){
 }
 
 function getCurrentShow(){
-    let id = $("#schedule").val();
+    let id = $("#schedule option:selected").attr('value');
     $.ajax({
         type: "GET",
         url: `/schedules/${id}`
@@ -196,6 +200,53 @@ function getCurrentShow(){
                     })
                 }
                 checkChoosingSeat();
+            })
+        }
+        else {
+            $.ajax({
+                type: "GET",
+                url: `/show/allShowsToday/${schedule.schedule_id}`
+            }).done((shows) => {
+                let content =``;
+                for (let i = 0; i < shows.length; i++) {
+                    content += `
+                        <div class="col-md-4 mb-3" >
+                            <div class="rounded card h-40 text-dark" >
+                                <div class="d-flex flex-column h-70 p-2 pb-3 text-shadow-1">
+                                    <div class="mb-1">
+                                        <h4 class="fw-bold" style="width: 150px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis">${shows[i].film.film_name}</h4>
+                                        <p class="text-muted">${schedule.schedule_date} ${shows[i].time_start}</p>
+                                        <p class="badge ${(shows[i].status) ? 'bg-success text-white' : 'bg-danger text-white'}">${shows[i].status ? 'ACTIVE' : 'IN-ACTIVE'}</p>   
+                                    </div>
+                                    <ul class="d-flex list-unstyled mt-3">
+                                        <li class="me-auto">
+                                            <button class="btn btn-outline-warning showSeats" value="${shows[i].room.room_id}"><i class="fas fa-plus"></i></button></li>
+
+                                        <li class="d-flex align-items-center">
+                                            <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"/></svg>
+                                            <span id="admit${shows[i].room.room_id}" class="admit" value="${shows[i].room.room_id}"></span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                $("#menuProduct").html(content);
+                $(".showSeats").on("click", function (){
+                    let roomId = $(this).val();
+                    showListSeats(roomId);
+                })
+                for (let i =0; i < shows.length; i++){
+                    $.ajax({
+                        type: "GET",
+                        url: `/seat/getSeatsByRoom/${shows[i].room.room_id}`
+                    }).done((seats) =>{
+                        $(`#admit${shows[i].room.room_id}`).html(`
+                            <p>${App.countTakenSeat(seats)}/100</p>
+                        `)
+                    })
+                }
             })
         }
     })
@@ -327,6 +378,7 @@ function selectSeat(seatId){
         type: "PUT",
         url: `/seat/selectSeatById/${seatId}`
     }).done((seat) => {
+        console.log(seat)
         showListSeats(seat.room.room_id);
         if (seat.seatStatus.id === 2){
             $.ajax({
@@ -352,7 +404,6 @@ function deleteTicketFromOrder(seatId){
         type: "PUT",
         url: `/seat/setEmpty/${seatId}`
     }).done((seat) => {
-        console.log(seat);
         for (let i = 0; i < order.ticket.length; i++) {
             if (order.ticket[i].seat.seat_id === seat.seat_id){
                 order.ticket.splice(i,1);
@@ -415,8 +466,8 @@ function getScheduleChangeTab(){
         }
         $("#schedule").html(content);
         $("#schedule").on("change",function (){
-            let id = $(this).val();
-            getShows(id);
+            let id = $("#schedule option:selected").attr('value');
+            getShows(id)
         })
         getCurrentShowChangeTab();
     })
@@ -629,8 +680,7 @@ function createMemberApp(){
             type: "POST",
             data: JSON.stringify(member),
             url: "/app/createNewMember"
-        }).done(function (e){
-            console.log(e)
+        }).done(function (){
             $("#create-form")[0].reset();
             App.showSuccessAlert("Tạo mới thành viên thành công");
             $("#editModal").modal('hide');
@@ -942,7 +992,6 @@ function drawOrder(){
                   <h5 id="balanced"></h5>
                 </div>
               </div>`;
-    // order.total_price = total_price;
     $("#allList").html(content);
 
 
@@ -1120,91 +1169,180 @@ function createOrder(){
         username: user
     }
 
-    let newOrder = {
-        order_date : order_date,
-        order_time : order_time,
-        total_product: total_product,
-        total_ticket: total_ticket,
-        total_price: total_price,
-        member : newMember,
-        user: newUser
-    }
-
-    App.showCreateConfirmDialog().then((result) =>{
-        if (result.isConfirmed){
-            $.ajax({
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                type: "POST",
-                data: JSON.stringify(newOrder),
-                url: "/app/saveOrder"
-            }).done((resp) => {
-
-                for (let i = 0; i < order.products.length ; i++) {
-                    let newOrderDetail = {
-                        order :{
-                            order_id : resp.order_id
-                        },
-                        product_name: order.products[i].product_name,
-                        product_amount: order.products[i].amount,
-                        price: order.products[i].amount*order.products[i].price
-                    }
+        if (member === undefined){
+            let newOrder = {
+                order_date : order_date,
+                order_time : order_time,
+                total_product: total_product,
+                total_ticket: total_ticket,
+                total_price: total_price,
+                user: newUser
+            }
+            App.showCreateConfirmDialog().then((result) =>{
+                if (result.isConfirmed){
                     $.ajax({
                         headers: {
                             'Accept': 'application/json',
                             'Content-Type': 'application/json'
                         },
                         type: "POST",
-                        data: JSON.stringify(newOrderDetail),
-                        url: "/app/saveOrderDetail",
-                        // success: function (data){
-                        //   console.log(data)
-                        //   deleteOrder();
-                        //   App.showSuccessAlert("Create new order successfully!");
+                        data: JSON.stringify(newOrder),
+                        url: "/app/saveOrder"
+                    }).done((resp) => {
+                        console.log(resp);
+
+                        // for (let i = 0; i < order.products.length ; i++) {
+                        //     let newOrderDetail = {
+                        //         order :{
+                        //             order_id : resp.order_id
+                        //         },
+                        //         product_name: order.products[i].product_name,
+                        //         product_amount: order.products[i].amount,
+                        //         price: order.products[i].amount*order.products[i].price
+                        //     }
+                        //     $.ajax({
+                        //         headers: {
+                        //             'Accept': 'application/json',
+                        //             'Content-Type': 'application/json'
+                        //         },
+                        //         type: "POST",
+                        //         data: JSON.stringify(newOrderDetail),
+                        //         url: "/app/saveOrderDetail"
+                        //     })
                         // }
-                    }).done(() => {
-                        deleteOrder();
-                        App.showSuccessAlert("Create new order successfully!");
+
+                        for (let i = 0; i < order.ticket.length ; i++) {
+                            let newTicket = {
+                                order :{
+                                    order_id : resp.order_id
+                                },
+                                price: order.ticket[i].seat.typeSeat.price,
+                                show: {
+                                    show_id:order.ticket[i].show.show_id
+                                },
+                                seat: {
+                                    seat_id:order.ticket[i].seat.seat_id
+                                }
+                            }
+                            $.ajax({
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json'
+                                },
+                                type: "POST",
+                                data: JSON.stringify(newTicket),
+                                url: "/app/saveTicket"
+                            }).done((ticket) => {
+                                console.log(ticket)
+
+                                $.ajax({
+                                    type: "PUT",
+                                    url: `/app/setTakenSeat/${ticket.seat.seat_id}`
+                                })
+                                App.showSuccessAlert("Create new order successfully!");
+                            })
+                        }
+
                     })
                 }
-
-                for (let i = 0; i < order.ticket.length ; i++) {
-                    let newTicket = {
-                        order :{
-                            order_id : resp.order_id
-                        },
-                        price: order.ticket[i].seat.typeSeat.price,
-                        show: {
-                            show_id:order.ticket[i].show.show_id
-                        },
-                        user: {
-                            user: order.user.id
-                        },
-                        member:{
-                            member_id:resp.member.member_id
-                        },
-                        seat: {
-                            seat_id:order.ticket[i].seat.seat_id
-                        }
-                    }
+            })
+        } else {
+            let newOrder = {
+                order_date : order_date,
+                order_time : order_time,
+                total_product: total_product,
+                total_ticket: total_ticket,
+                total_price: total_price,
+                member : newMember,
+                user: newUser
+            }
+            App.showCreateConfirmDialog().then((result) =>{
+                if (result.isConfirmed){
                     $.ajax({
                         headers: {
                             'Accept': 'application/json',
                             'Content-Type': 'application/json'
                         },
                         type: "POST",
-                        data: JSON.stringify(newTicket),
-                        url: "/app/saveTicket"
-                    }).done(() => {
-                        deleteOrder();
-                        App.showSuccessAlert("Create new order successfully!");
+                        data: JSON.stringify(newOrder),
+                        url: "/app/saveOrder"
+                    }).done((resp) => {
+                        console.log(resp);
+
+                        // for (let i = 0; i < order.products.length ; i++) {
+                        //     let newOrderDetail = {
+                        //         order :{
+                        //             order_id : resp.order_id
+                        //         },
+                        //         product_name: order.products[i].product_name,
+                        //         product_amount: order.products[i].amount,
+                        //         price: order.products[i].amount*order.products[i].price
+                        //     }
+                        //     $.ajax({
+                        //         headers: {
+                        //             'Accept': 'application/json',
+                        //             'Content-Type': 'application/json'
+                        //         },
+                        //         type: "POST",
+                        //         data: JSON.stringify(newOrderDetail),
+                        //         url: "/app/saveOrderDetail",
+                        //         // success: function (data){
+                        //         //   console.log(data)
+                        //         //   deleteOrder();
+                        //         //   App.showSuccessAlert("Create new order successfully!");
+                        //         // }
+                        //     }).done(() => {
+                        //         deleteOrder();
+                        //         App.showSuccessAlert("Create new order successfully!");
+                        //     })
+                        // }
+
+                        for (let i = 0; i < order.ticket.length ; i++) {
+                            let newTicket = {
+                                order :{
+                                    order_id : resp.order_id
+                                },
+                                price: order.ticket[i].seat.typeSeat.price,
+                                show: {
+                                    show_id:order.ticket[i].show.show_id
+                                },
+                                user: {
+                                    user: order.user.id
+                                },
+                                member:{
+                                    member_id:resp.member.member_id
+                                },
+                                seat: {
+                                    seat_id:order.ticket[i].seat.seat_id
+                                }
+                            }
+                            $.ajax({
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json'
+                                },
+                                type: "POST",
+                                data: JSON.stringify(newTicket),
+                                url: "/app/saveTicket"
+                            }).done((ticket) => {
+                                console.log(ticket)
+                                // $.ajax({
+                                //     type: "PUT",
+                                //     url: `/app/setTakenSeat/${ticket.seat.seat_id}`
+                                // })
+                                deleteOrder();
+                                App.showSuccessAlert("Create new order successfully!");
+                            })
+                        }
                     })
                 }
             })
         }
-    })
+
+
+
+
+
 }
 
 function deleteOrder(){

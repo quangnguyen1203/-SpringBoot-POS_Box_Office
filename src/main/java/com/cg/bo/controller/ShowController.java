@@ -52,7 +52,7 @@ public class ShowController {
                     }
                 }
                 if(check == count){
-                    return new ResponseEntity<>(showService.save(show),HttpStatus.CREATED);
+                    return new ResponseEntity<>(show,HttpStatus.CREATED);
                 }
             }
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -128,7 +128,8 @@ public class ShowController {
 
     @GetMapping("/findById/{id}")
     public ResponseEntity<Show> findShowById(@PathVariable Long id){
-        return new ResponseEntity<>(showService.findById(id).get(), HttpStatus.OK);
+        Show show = showService.findById(id).get();
+        return new ResponseEntity<>(show, HttpStatus.OK);
     }
 
     @GetMapping("/searchShow/{schedule_id}/{film_name}")

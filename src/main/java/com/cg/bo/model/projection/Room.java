@@ -21,6 +21,10 @@ public class Room {
     private Long room_id;
     private String room_name;
 
+    @OneToOne
+    @JoinColumn(name = "show_id")
+    private Show show;
+
     @Column(name = "isFull", columnDefinition = "boolean default false")
     private boolean isFull;
 
