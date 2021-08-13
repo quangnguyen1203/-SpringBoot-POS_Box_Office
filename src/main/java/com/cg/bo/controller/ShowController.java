@@ -52,7 +52,7 @@ public class ShowController {
                     }
                 }
                 if(check == count){
-                    return new ResponseEntity<>(show,HttpStatus.CREATED);
+                    return new ResponseEntity<>(showService.save(show),HttpStatus.CREATED);
                 }
             }
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
