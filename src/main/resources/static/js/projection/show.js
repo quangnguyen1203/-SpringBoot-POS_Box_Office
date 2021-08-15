@@ -83,7 +83,6 @@ function createShow(){
                 let bonus_time = "00:30:00";
                 let time_start = $("#time_start").val();
                 let time_end = App.addTimes(App.addTimes(time_start,film.duration),bonus_time);
-                console.log(time_end)
                 let show = {
                     schedule: schedule,
                     film: film,
@@ -100,7 +99,24 @@ function createShow(){
                         type: "POST",
                         url: "/show/create",
                         data: JSON.stringify(show)
-                    }).done(() =>{
+                    }).done((newShow) =>{
+                        let newRoom = {
+                            room_id: room1.room_id,
+                            isFull: room1.isFull,
+                            room_name: room1.room_name,
+                            show: newShow
+                        }
+
+                        $.ajax({
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            type: "PUT",
+                            url: "/room/update",
+                            data: JSON.stringify(newRoom)
+                        })
+
                         $("#create-form")[0].reset();
                         App.showSuccessAlert("Tạo mới suất chiếu thành công!")
                     }).fail(() =>{

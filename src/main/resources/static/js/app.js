@@ -80,6 +80,12 @@ class App {
             return `${yyyy}-${mm}-${dd}`;
     }
 
+    static addDays(date, days) {
+        let result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return `${result.getFullYear()}-${String(result.getMonth() + 1).padStart(2, '0')}-${String(result.getDate()).padStart(2, '0')}`;
+    }
+
     static addTimes (startTime, endTime) {
         let times = [ 0, 0, 0 ]
         let max = times.length
