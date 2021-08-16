@@ -20,7 +20,7 @@ function createSchedule(){
             url: "/schedules/create-schedule"
         }).done(function (){
             $("#create-form")[0].reset();
-            App.showSuccessAlert("Tạo mới sản phẩm thành công");
+            App.showSuccessAlert("Tạo mới lịch chiếu thành công");
         }).fail(()=>{
             App.showErrorAlert("Đã xảy ra lỗi. Lịch chiếu đã tồn tại hoặc đã quá hạn! Vui lòng kiểm tra lại!");
         })

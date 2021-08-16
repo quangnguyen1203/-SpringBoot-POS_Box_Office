@@ -31,4 +31,6 @@ public interface UserService extends UserDetailsService {
     User findByName(String username);
 
     void remove(Long id);
+
+    Iterable<User> findByUserRoleStaff(Long id);
 }

@@ -1,28 +1,25 @@
 App.getUser();
 
 
-function getSchedules(){
+function getSchedules() {
     $.ajax({
         type: "GET",
         url: "/schedules/allSchedule"
     }).done(function (schedules) {
         let content = "";
-        for (let i = 0; i < schedules.length ; i++) {
-            let d1 = Date.parse(schedules[i].schedule_date);
-            let d2 = Date.parse(App.getToday());
-            if (d1 === d2){
-                content += `
+        for (let i = 0; i < schedules.length; i++) {
+            content += `
                 <option value="${schedules[i].schedule_id}" selected>${schedules[i].schedule_date}</option>
             `;
-            } else {
-                content += `
-                <option value="${schedules[i].schedule_id}">${schedules[i].schedule_date}</option>
-            `;
-            }
         }
         $("#schedule_date").html(content);
+        $("#schedule_date").on("change",function (){
+            getAllFilm()
+        });
     })
 }
+
+getSchedules();
 
 function checkAvailable(){
     $.ajax({
@@ -32,12 +29,15 @@ function checkAvailable(){
 }
 
 function getAllFilm(){
+    let schedule_id = $("#schedule_date").val();
+    console.log(schedule_id)
     $.ajax({
         type: "GET",
-        url: "/films/allStatusTrueFilm"
-    }).done(function (films){
+        url: `/films/allStatusTrueFilm/${schedule_id}`
+    }).done(function (films) {
+        console.log(films)
         let content = "";
-        for (let i = films.length-1; i >= 0; i--) {
+        for (let i = films.length - 1; i >= 0; i--) {
             content += `
             <option value="${films[i].film_id}"> ${films[i].film_name}</option>
                 `;
@@ -48,7 +48,6 @@ function getAllFilm(){
 
 checkAvailable();
 
-getSchedules();
 
 
 //Tạo suất chiếu
@@ -82,7 +81,7 @@ function createShow(){
                 }
                 let bonus_time = "00:30:00";
                 let time_start = $("#time_start").val();
-                let time_end = App.addTimes(App.addTimes(time_start,film.duration),bonus_time);
+                let time_end = App.addTimes(App.addTimes(time_start, film.duration), bonus_time);
                 let show = {
                     schedule: schedule,
                     film: film,
