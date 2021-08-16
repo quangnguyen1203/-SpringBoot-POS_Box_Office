@@ -19,8 +19,6 @@ public class Class {
     private String class_name;
     private int percent_discount;
 
-
-
     public Class(Long class_id) {
         this.class_id = class_id;
     }

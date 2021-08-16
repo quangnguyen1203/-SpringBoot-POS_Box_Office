@@ -117,4 +117,9 @@ public class UserServiceImpl implements UserService {
     public void remove(Long id) {
         userRepository.deleteById(id);
     }
+
+    @Override
+    public Iterable<User> findByUserRoleStaff(Long id) {
+        return userRepository.findByUserRoleStaff(id);
+    }
 }

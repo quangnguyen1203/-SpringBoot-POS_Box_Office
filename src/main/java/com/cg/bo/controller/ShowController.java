@@ -84,10 +84,10 @@ public class ShowController {
     }
 
     @GetMapping("/allShows/{scheduleId}")
-    public ResponseEntity<Iterable<Show>> findAllShows(@PathVariable Long scheduleId){
-        Schedule schedule  = scheduleService.findById(scheduleId).get();
+    public ResponseEntity<Iterable<Show>> findAllShows(@PathVariable Long scheduleId) {
+        Schedule schedule = scheduleService.findById(scheduleId).get();
         Iterable<Show> shows = showService.findShowsBySchedule(schedule);
-        if (dateUtils.getCurrentDate().compareTo(schedule.getSchedule_date()) < 0){
+        if (dateUtils.getCurrentDate().compareTo(schedule.getSchedule_date()) < 0) {
             for (Show s :
                     shows) {
                 s.setStatus(true);

@@ -3,6 +3,11 @@
 <head>
   <title>HOME</title>
   <div th:replace="/dashboard/layout/head::resources"></div>
+  <style>
+    #search-button{
+      margin-top: 7px;
+    }
+  </style>
 </head>
 <body>
 
@@ -25,20 +30,19 @@
                 <h4 class="header-title mb-4">Tìm kiếm nhân viên</h4>
 
                 <form class="parsley-examples row" id="create-form">
-                  <div class="form-group col-lg-6">
+                  <div class="form-group col-lg-5">
                     <label>Ngày <span class="text-danger">*</span></label>
-                    <select class="form-control" name="order_date" id="order_date" value="">
-
-                    </select>
+                    <input type="date" name="order_date" parsley-trigger="change" required placeholder="Nhập ngày để tìm kiếm" class="form-control" id="order_date">
                   </div>
-                  <div class="form-group col-lg-6">
+                  <div class="form-group col-lg-5">
                     <label>Tên nhân viên <span class="text-danger">*</span></label>
                     <select class="form-control" name="username" id="username" value="">
 
                     </select>
                   </div>
-                  <div class="form-group text-right mb-0">
-                    <button class="btn btn-primary waves-effect waves-light mr-1" id="search-button" type="button">
+                  <div class="form-group col-lg-2">
+                    <br>
+                    <button class="btn btn-primary form-control waves-effect waves-light mr-1" id="search-button" type="button">
                       Tìm kiếm
                     </button>
                   </div>
@@ -67,23 +71,20 @@
               <div id="cardCollpase4" class="collapse show">
                 <div class="card-body">
                   <div class="table-responsive">
-                    <table class="table table-nowrap mb-0">
+                    <table class="table table-nowrap mb-0" id="orderByStaff">
                       <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>Order Time</th>
-                        <th>Total Price</th>
-                        <th>Staff Name</th>
-                      </tr>
+                        <tr>
+                          <th>#</th>
+                          <th>Ngày bán</th>
+                          <th>Giờ bán</th>
+                          <th>Tổng tiền</th>
+                          <th>Tên nhân viên</th>
+                        </tr>
                       </thead>
                       <tbody>
-<!--                        <tr>-->
-<!--                          <td th:text="${order.order_id}"></td>-->
-<!--                          <td th:text="${order.order_time}"></td>-->
-<!--                          <td th:text="${order.total_price}"></td>-->
-<!--                          <td th:text="${order.user.username}"></td>-->
-<!--                        </tr>-->
+
                       </tbody>
+                      <tfoot>
                     </table>
                   </div>
 
@@ -111,6 +112,8 @@
 </div>
 <!-- END wrapper -->
 
-<div th:replace="/dashboard/layout/script::script"></div>
 </body>
+<div th:replace="/dashboard/layout/script::script"></div>
+
+<script src="/js/manager/orderStaff.js"></script>
 </html>

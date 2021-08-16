@@ -27,7 +27,10 @@ function getAllFilm(){
                                         </div>
                                         <div class="mb-2"><strong>Thời lượng:</strong></br> ${films[i].duration}</div>
                                         <p class=" mb-2">
-                                           <strong>Ngày công chiếu:</strong></br> ${films[i].exp_date}
+                                           <strong>Ngày công chiếu:</strong></br> ${films[i].rel_date}
+                                        </p>
+                                        <p class=" mb-2">
+                                           <strong>Ngày kết thúc:</strong></br> ${films[i].exp_date}
                                         </p>
                                           <p class="mb-2">
                                            <strong>Lượt xem: ${films[i].admit}</strong></br>

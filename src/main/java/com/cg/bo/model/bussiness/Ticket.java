@@ -3,6 +3,7 @@ package com.cg.bo.model.bussiness;
 import com.cg.bo.model.projection.Seat;
 import com.cg.bo.model.security.User;
 import com.cg.bo.model.projection.Show;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,7 @@ public class Ticket {
     @JoinColumn(name = "seat_id")
     private Seat seat;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;

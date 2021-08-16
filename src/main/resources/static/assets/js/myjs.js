@@ -1,13 +1,42 @@
-function uploadImg64(input){
-    if (input.files && input.files[0]){
-        let reader = new FileReader;
-        reader.onload = function(e){
-            // $("#img64").val("");
-            $('#avatar').attr("src",e.target.result);
-            $("#img64").attr("value",e.target.result);
-        };
-        reader.readAsDataURL(input.files[0]);
-    }
+// $(document).ready(function() {
+//     barChart();
+//
+//     $(window).resize(function() {
+//         window.barChart.redraw();
+//     });
+// });
+//
+barChart();
+
+$(window).resize(function() {
+    window.barChart.redraw();
+});
+
+function barChart() {
+    $.ajax({
+        type:"GET",
+        url: "/orders/monthlyRevenue"
+    }).done(function (orders){
+        let dataArr = [];
+        for (let i = 0; i < orders.length; i++) {
+               dataArr[i] = {
+                   y: orders[i].month,
+                   a: orders[i].total_product,
+                   b: orders[i].total_ticket
+               }
+            }
+
+        window.barChart = Morris.Bar({
+            element: 'bar-chart',
+            data: dataArr,
+            xkey: 'y',
+            ykeys: ['a', 'b'],
+            labels: ['Series A', 'Series B'],
+            lineColors: ['#1e88e5','#ff3321'],
+            lineWidth: '3px',
+            resize: true,
+            redraw: true
+        });
+    })
+
 }
-
-

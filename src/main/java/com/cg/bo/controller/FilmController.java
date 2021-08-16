@@ -1,7 +1,9 @@
 package com.cg.bo.controller;
 
 import com.cg.bo.model.projection.Film;
-import com.cg.bo.service.FilmService;
+import com.cg.bo.model.projection.Schedule;
+import com.cg.bo.service.impl.FilmServiceImpl;
+import com.cg.bo.service.impl.ScheduleServiceImpl;
 import com.cg.bo.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,13 +12,17 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.Date;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/films")
 public class FilmController {
 
     @Autowired
-    private FilmService filmService;
+    private FilmServiceImpl filmService;
+
+    @Autowired
+    protected ScheduleServiceImpl scheduleService;
 
     @Autowired
     private DateUtils dateUtils;
@@ -80,8 +86,20 @@ public class FilmController {
         return new ResponseEntity<>(filmService.findById(id).get(), HttpStatus.OK);
     }
 
-    @GetMapping("/allStatusTrueFilm")
-    public ResponseEntity<Iterable<Film>> listFilmTrue(){
-        return new ResponseEntity<>(filmService.findAllByStatusTrue(),HttpStatus.OK);
+    @GetMapping("/allStatusTrueFilm/{schedule_id}")
+    public ResponseEntity<Iterable<Film>> listFilmTrue(@PathVariable Long schedule_id) {
+        Optional<Schedule> schedules = scheduleService.findById(schedule_id);
+        Iterable<Film> films = filmService.findAll();
+        for (Film f:films
+        ) {
+            if(f.getExp_date().compareTo(schedules.get().getSchedule_date()) > 0){
+                f.setStatus(true);
+                filmService.save(f);
+            }else {
+                f.setStatus(false);
+                filmService.save(f);
+            }
+        }
+        return new ResponseEntity<>(filmService.findAllByStatusTrue(), HttpStatus.OK);
     }
 }

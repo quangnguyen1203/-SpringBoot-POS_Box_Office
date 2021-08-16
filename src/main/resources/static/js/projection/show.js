@@ -1,43 +1,42 @@
 App.getUser();
 
 
-function getSchedules(){
+function getSchedules() {
     $.ajax({
         type: "GET",
         url: "/schedules/allSchedule"
     }).done(function (schedules) {
         let content = "";
-        for (let i = 0; i < schedules.length ; i++) {
-            let d1 = Date.parse(schedules[i].schedule_date);
-            let d2 = Date.parse(App.getToday());
-            if (d1 === d2){
-                content += `
+        for (let i = 0; i < schedules.length; i++) {
+            content += `
                 <option value="${schedules[i].schedule_id}" selected>${schedules[i].schedule_date}</option>
             `;
-            } else {
-                content += `
-                <option value="${schedules[i].schedule_id}">${schedules[i].schedule_date}</option>
-            `;
-            }
         }
         $("#schedule_date").html(content);
+        $("#schedule_date").on("change",function (){
+            getAllFilm()
+        });
     })
 }
+getSchedules();
 
-function checkAvailable(){
+function checkAvailable() {
     $.ajax({
         type: "GET",
         url: "/films/checkAvailable"
     }).done(getAllFilm)
 }
 
-function getAllFilm(){
+function getAllFilm() {
+    let schedule_id = $("#schedule_date").val();
+    console.log(schedule_id)
     $.ajax({
         type: "GET",
-        url: "/films/allStatusTrueFilm"
-    }).done(function (films){
+        url: `/films/allStatusTrueFilm/${schedule_id}`
+    }).done(function (films) {
+        console.log(films)
         let content = "";
-        for (let i = films.length-1; i >= 0; i--) {
+        for (let i = films.length - 1; i >= 0; i--) {
             content += `
             <option value="${films[i].film_id}"> ${films[i].film_name}</option>
                 `;
@@ -48,15 +47,13 @@ function getAllFilm(){
 
 checkAvailable();
 
-getSchedules();
-
-
 //Tạo suất chiếu
 
-function createShow(){
+$("#create-button").on("click", createShow);
 
+
+function createShow() {
     let film_id = $("#film_id").val();
-
     $.ajax({
         type: "GET",
         url: `/films/find/${film_id}`
@@ -72,17 +69,17 @@ function createShow(){
             type: "POST",
             url: "/room/create",
             data: JSON.stringify(room)
-        }).done((room1) =>{
+        }).done((room1) => {
             $.ajax({
                 type: "POST",
                 url: `/room/initSeat/${room1.room_id}`
-            }).done(() =>{
+            }).done(() => {
                 let schedule = {
                     schedule_id: $("#schedule_date").val()
                 }
                 let bonus_time = "00:30:00";
                 let time_start = $("#time_start").val();
-                let time_end = App.addTimes(App.addTimes(time_start,film.duration),bonus_time);
+                let time_end = App.addTimes(App.addTimes(time_start, film.duration), bonus_time);
                 console.log(time_end)
                 let show = {
                     schedule: schedule,
@@ -91,7 +88,7 @@ function createShow(){
                     time_start: time_start,
                     time_end: time_end
                 }
-                if ($("#create-form").valid()){
+                if ($("#create-form").valid()) {
                     $.ajax({
                         headers: {
                             'Accept': 'application/json',
@@ -100,10 +97,10 @@ function createShow(){
                         type: "POST",
                         url: "/show/create",
                         data: JSON.stringify(show)
-                    }).done(() =>{
+                    }).done(() => {
                         $("#create-form")[0].reset();
                         App.showSuccessAlert("Tạo mới suất chiếu thành công!")
-                    }).fail(() =>{
+                    }).fail(() => {
                         App.showErrorAlert("Xãy ra lỗi. Hoặc suất chiếu đã tồn tại!")
                     })
                 }
@@ -112,9 +109,9 @@ function createShow(){
     })
 }
 
-$("#create-button").on("click",createShow);
 
-$(()=>{
+
+$(() => {
     $("#create-form").validate({
         onfocusout: false,
         onkeyup: false,
@@ -122,7 +119,7 @@ $(()=>{
         rules: {
             time_start: {
                 required: true,
-                validateTime:true,
+                validateTime: true,
             },
         },
         messages: {
@@ -130,10 +127,10 @@ $(()=>{
                 required: "Hãy điền giờ bắt đầu",
             },
         },
-        submitHandler:createShow
+        submitHandler: createShow
     });
 })
-$.validator.addMethod("validateTime", function(value, element) {
+$.validator.addMethod("validateTime", function (value, element) {
     if (!/^\d{2}:\d{2}:\d{2}$/.test(value)) return false;
     var parts = value.split(':');
     if (parts[0] > 23 || parts[1] > 59 || parts[2] > 59) return false;
