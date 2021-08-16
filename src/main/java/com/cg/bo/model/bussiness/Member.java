@@ -23,10 +23,11 @@ public class Member {
     private String phoneNumber;
     private String email;
 
-//    @OneToMany
-//    @JoinColumn(name = "visit_id")
-//    private List<Visit> visits;
-//
+    @JsonIgnore
+    @OneToMany
+    @JoinColumn(name = "visit_id")
+    private List<Visit> visits;
+
     @JsonIgnore
     @OneToMany
     @JoinColumn(name = "order_id")

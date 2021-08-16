@@ -102,4 +102,12 @@ public class FilmController {
         }
         return new ResponseEntity<>(filmService.findAllByStatusTrue(), HttpStatus.OK);
     }
+
+    @PutMapping("/addAdmit/{film_id}")
+    public void addAdmit(@PathVariable Long film_id){
+        Film film = filmService.findById(film_id).get();
+        film.setAdmit(film.getAdmit()+1);
+        filmService.save(film);
+
+    }
 }

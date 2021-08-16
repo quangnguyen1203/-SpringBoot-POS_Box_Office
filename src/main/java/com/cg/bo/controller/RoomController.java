@@ -30,4 +30,9 @@ public class RoomController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<Room> updateShowForRoom(@RequestBody Room room){
+        return new ResponseEntity<>(roomService.save(room),HttpStatus.OK);
+    }
+
 }

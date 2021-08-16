@@ -59,7 +59,7 @@ function getShows(scheduleId){
                             <div class="rounded card h-40 text-dark" >
                                 <div class="d-flex flex-column h-70 p-2 pb-3 text-shadow-1">
                                     <div class="mb-1">
-                                        <h4 class="fw-bold" style="width: 150px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis">${shows[i].film.film_name}
+                                        <h4 class="fw-bold" style="width: 250px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis">${shows[i].film.film_name}
                                   
                                         </h4>
                                         <p class="text-muted">${schedule.schedule_date} ${shows[i].time_start}</p>
@@ -82,7 +82,16 @@ function getShows(scheduleId){
                 $("#menuProduct").html(content);
                 $(".showSeats").on("click", function (){
                     let roomId = $(this).val();
-                    showListSeats(roomId);
+                    $.ajax({
+                        type: "GET",
+                        url: `/show/findShowByRoomId/${roomId}`
+                    }).done((show) => {
+                        if (show.status) {
+                            showListSeats(roomId);
+                        } else {
+                            showListSeatsFromInActiveShow(roomId);
+                        }
+                    })
                 })
                 for (let i =0; i < shows.length; i++){
                     $.ajax({
@@ -99,7 +108,7 @@ function getShows(scheduleId){
         else {
             $.ajax({
                 type: "GET",
-                url: `/show/allShowsToday/${schedule.schedule_id}`
+                url: `/show/allShows/${schedule.schedule_id}`
             }).done((shows) => {
                 let content =``;
                 for (let i = 0; i < shows.length; i++) {
@@ -108,7 +117,7 @@ function getShows(scheduleId){
                             <div class="rounded card h-40 text-dark" >
                                 <div class="d-flex flex-column h-70 p-2 pb-3 text-shadow-1">
                                     <div class="mb-1">
-                                        <h4 class="fw-bold" style="width: 150px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis">${shows[i].film.film_name}
+                                        <h4 class="fw-bold" style="width: 250px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis">${shows[i].film.film_name}
                                   
                                         </h4>
                                         <p class="text-muted">${schedule.schedule_date} ${shows[i].time_start}</p>
@@ -131,7 +140,16 @@ function getShows(scheduleId){
                 $("#menuProduct").html(content);
                 $(".showSeats").on("click", function (){
                     let roomId = $(this).val();
-                    showListSeats(roomId);
+                    $.ajax({
+                        type: "GET",
+                        url: `/show/findShowByRoomId/${roomId}`
+                    }).done((show) => {
+                        if (show.status) {
+                            showListSeats(roomId);
+                        } else {
+                            showListSeatsFromInActiveShow(roomId);
+                        }
+                    })
                 })
                 for (let i =0; i < shows.length; i++){
                     $.ajax({
@@ -166,7 +184,7 @@ function getCurrentShow(){
                             <div class="rounded card h-40 text-dark" >
                                 <div class="d-flex flex-column h-70 p-2 pb-3 text-shadow-1">
                                     <div class="mb-1">
-                                        <h4 class="fw-bold" style="width: 150px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis">${shows[i].film.film_name}</h4>
+                                        <h4 class="fw-bold" style="width: 250px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis">${shows[i].film.film_name}</h4>
                                         <p class="text-muted">${schedule.schedule_date} ${shows[i].time_start}</p>
                                         <p class="badge ${(shows[i].status) ? 'bg-success text-white' : 'bg-danger text-white'}">${shows[i].status ? 'ACTIVE' : 'IN-ACTIVE'}</p>   
                                     </div>
@@ -214,7 +232,7 @@ function getCurrentShow(){
                             <div class="rounded card h-40 text-dark" >
                                 <div class="d-flex flex-column h-70 p-2 pb-3 text-shadow-1">
                                     <div class="mb-1">
-                                        <h4 class="fw-bold" style="width: 150px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis">${shows[i].film.film_name}</h4>
+                                        <h4 class="fw-bold" style="width: 250px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis">${shows[i].film.film_name}</h4>
                                         <p class="text-muted">${schedule.schedule_date} ${shows[i].time_start}</p>
                                         <p class="badge ${(shows[i].status) ? 'bg-success text-white' : 'bg-danger text-white'}">${shows[i].status ? 'ACTIVE' : 'IN-ACTIVE'}</p>   
                                     </div>
@@ -235,7 +253,16 @@ function getCurrentShow(){
                 $("#menuProduct").html(content);
                 $(".showSeats").on("click", function (){
                     let roomId = $(this).val();
-                    showListSeats(roomId);
+                    $.ajax({
+                        type: "GET",
+                        url: `/show/findShowByRoomId/${roomId}`
+                    }).done((show) => {
+                        if (show.status) {
+                            showListSeats(roomId);
+                        } else {
+                            showListSeatsFromInActiveShow(roomId);
+                        }
+                    })
                 })
                 for (let i =0; i < shows.length; i++){
                     $.ajax({
@@ -268,7 +295,7 @@ function searchFilmName(){
                             <div class="rounded card h-40 text-dark" >
                                 <div class="d-flex flex-column h-70 p-2 pb-3 text-shadow-1">
                                     <div class="mb-1">
-                                        <h4 class="fw-bold" style="width: 150px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis">${shows[i].film.film_name}
+                                        <h4 class="fw-bold" style="width: 250px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis">${shows[i].film.film_name}
                                   
                                         </h4>
                                         <p class="text-muted">${shows[i].schedule.schedule_date} ${shows[i].time_start}</p>
@@ -291,7 +318,16 @@ function searchFilmName(){
         $("#menuProduct").html(content);
         $(".showSeats").on("click", function (){
             let roomId = $(this).val();
-            showListSeats(roomId);
+            $.ajax({
+                type: "GET",
+                url: `/show/findShowByRoomId/${roomId}`
+            }).done((show) => {
+                if (show.status) {
+                    showListSeats(roomId);
+                } else {
+                    showListSeatsFromInActiveShow(roomId);
+                }
+            })
         })
         for (let i =0; i < shows.length; i++){
             $.ajax({
@@ -303,6 +339,72 @@ function searchFilmName(){
                         `)
             })
         }
+    })
+}
+
+function showListSeatsFromInActiveShow(roomId){
+    let username = $("#username-hidden").val();
+    $.ajax({
+        type: "GET",
+        url: `/seat/getSeatsByRoom/${roomId}`
+    }).done((seats) => {
+        let content = ` <div class="modal-header">
+                <h5 class="modal-title" id="room-name">${seats[0].room.room_name}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="d-flex justify-content-center">
+                    <thead class="justify-content-center">
+                        <h2 class="text-center">Màn hình</h2>
+                    </thead>
+                    <tbody >
+                        <tr>`;
+
+        for (let i = 1; i <= seats.length; i++) {
+            if (seats[i-1].user.username === username){
+                if (i === 100){
+                    content += `<td value="${seats[i-1].seat_id}" class="${(seats[i-1].seatStatus.id === 3) ? 'seat-view' : 'seat'} btn ${(seats[i-1].seatStatus.id === 1) ? 'btn-light' : ((seats[i-1].seatStatus.id === 2) ? 'btn-success' : 'btn-danger')} m-2">${seats[i-1].seat_name}</td>
+                        </tr>`
+                }
+                else if (i % 10 === 0){
+                    content += `<td value="${seats[i-1].seat_id}" class="${(seats[i-1].seatStatus.id === 3) ? 'seat-view' : 'seat'} btn ${(seats[i-1].seatStatus.id === 1) ? 'btn-light' : ((seats[i-1].seatStatus.id === 2) ? 'btn-success' : 'btn-danger')} m-2">${seats[i-1].seat_name}</td>
+                        </tr>
+                        <tr>`
+                } else {
+                    content += `<td value="${seats[i-1].seat_id}" class="${(seats[i-1].seatStatus.id === 3) ? 'seat-view' : 'seat'} btn ${(seats[i-1].seatStatus.id === 1) ? 'btn-light' : ((seats[i-1].seatStatus.id === 2) ? 'btn-success' : 'btn-danger')} m-2">${seats[i-1].seat_name}</td>`
+                }
+            } else {
+                if (i === 100){
+                    content += `<td value="${seats[i-1].seat_id}" class="${(seats[i-1].seatStatus.id === 1) ? 'seat' : 'seat-view'} btn ${(seats[i-1].seatStatus.id === 1) ? 'btn-light' : 'btn-danger'} m-2">${seats[i-1].seat_name}</td>
+                        </tr>`
+                }
+                else if (i % 10 === 0){
+                    content += `<td value="${seats[i-1].seat_id}" class="${(seats[i-1].seatStatus.id === 1) ? 'seat' : 'seat-view'} btn ${(seats[i-1].seatStatus.id === 1) ? 'btn-light' : 'btn-danger'} m-2">${seats[i-1].seat_name}</td>
+                        </tr>
+                        <tr>`
+                } else {
+                    content += `<td value="${seats[i-1].seat_id}" class="${(seats[i-1].seatStatus.id === 1) ? 'seat' : 'seat-view'} btn ${(seats[i-1].seatStatus.id === 1) ? 'btn-light' : 'btn-danger'} m-2">${seats[i-1].seat_name}</td>`
+                }
+            }
+
+
+        }
+        content += `</tbody>
+                </table>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <div class="">
+                    <button class=" btn btn-success" style="width: 150px">Ghế đang chọn</button>
+                    <button class=" btn btn-light" style="width: 150px">Ghế trống</button>
+                    <button class=" btn btn-danger" style="width: 150px">Ghế đã chọn</button>
+                </div>
+                <button type="button" class="btn btn-secondary dismiss-modal" data-bs-dismiss="modal">Đóng</button>
+            </div>` ;
+        $("#seatsModal .modal-content").html(content);
+        $("#seatsModal").modal("show");
+        $(".seat").on("click", function (){
+            App.showErrorAlert("Xuất chiếu đã hết giờ mua vé!")
+        })
     })
 }
 
@@ -383,7 +485,7 @@ function selectSeat(seatId){
         if (seat.seatStatus.id === 2){
             $.ajax({
                 type: "GET",
-                url: `/show/findById/${seat.room.room_id}`
+                url: `/show/findShowByRoomId/${seat.room.room_id}`
             }).done((show) => {
                 let newTicket = {
                     seat: seat,
@@ -491,7 +593,7 @@ function getCurrentShowChangeTab(){
                             <div class="rounded card h-40 text-dark" >
                                 <div class="d-flex flex-column h-70 p-2 pb-3 text-shadow-1">
                                     <div class="mb-1">
-                                        <h4 class="fw-bold" style="width: 150px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis">${shows[i].film.film_name}</h4>
+                                        <h4 class="fw-bold" style="width: 250px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis">${shows[i].film.film_name}</h4>
                                         <p class="text-muted">${schedule.schedule_date} ${shows[i].time_start}</p>
                                         <p class="badge ${(shows[i].status) ? 'bg-success text-white' : 'bg-danger text-white'}">${shows[i].status ? 'ACTIVE' : 'IN-ACTIVE'}</p>   
                                     </div>
@@ -536,7 +638,6 @@ function getScheduleOfTicket(){
                     <select class="nav-link fw-bold" name="schedule" id="schedule">
 
                     </select>
-
                   </li>
                   <li class="nav-item">
                     <div class="input-group">
@@ -550,6 +651,13 @@ function getScheduleOfTicket(){
                   </li>`;
     getScheduleChangeTab();
     $(".allItemProduct").html(content);
+    $("#searchFilmName").on("input", function (){
+        if ($("#searchFilmName").val() === ""){
+            getCurrentShow();
+        } else {
+            searchFilmName();
+        }
+    })
 }
 
 
@@ -568,7 +676,7 @@ function allItems(){
                     <div class="rounded card h-40 text-dark" >
                       <div class="d-flex flex-column h-80 p-2 pb-3 text-shadow-1">
                         <div class="mb-1">
-                          <h4 class="fw-bold"  style="width: 150px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis">${product[i].product_name}</h4>
+                          <h4 class="fw-bold"  style="width: 250px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis">${product[i].product_name}</h4>
                           <p class="text-muted" >${product[i].category.category_name}</p>
                         </div>
                         <ul class="d-flex list-unstyled mt-3">
@@ -631,7 +739,7 @@ function searchProductByCategoryId(id){
                     <div class="rounded card h-40 text-dark" >
                       <div class="d-flex flex-column h-80 p-2 pb-3 text-shadow-1">
                         <div class="mb-1">
-                          <h4 class="fw-bold"  style="width: 150px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis">${product[i].product_name}</h4>
+                          <h4 class="fw-bold"  style="width: 250px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis">${product[i].product_name}</h4>
                           <p class="text-muted">${product[i].category.category_name}</p>
                         </div>
                         <ul class="d-flex list-unstyled mt-3">
@@ -742,39 +850,44 @@ $.validator.addMethod("validatePhone", function (value, element) {
 //Tìm kiếm thành viên
 function searchByMember(){
     let string = $("#search").val();
-        $.ajax({
-            type:"GET",
-            url: `/app/searchMember/${string}`
-        }).done(function (member){
-                if(member !== "") {
-                    let content = "";
-                    for (let i = 0; i < member.length; i++) {
-                        content += `
-                            <tr>
-                                <td>${member[i].member_name}</td>
-                                <td>${member[i].phoneNumber}</td>
-                                <td>${member[i].email}</td>
-                                <td>${member[i].aclass.class_name}</td>
-                                <td class="text-center">
-                                    <button type="button" class="btn btn-outline-primary chooseMember" value="${member[i].member_id}">Chọn</button>
-                                </td>
-                            </tr>
-                        `;
-                    }
-                    $("#detailMember").html(content);
-                    $(".chooseMember").on("click", function (){
-                        let id = $(this).attr("value");
-                        console.log(id);
-                        getMember(id);
+    $.ajax({
+        type:"GET",
+        url: `/app/searchMember/${string}`
+    }).done(function (member){
+            if(member !== "") {
+                let content = "";
+                for (let i = 0; i < member.length; i++) {
+                    content += `
+                        <tr>
+                            <td>${member[i].member_name}</td>
+                            <td>${member[i].phoneNumber}</td>
+                            <td>${member[i].email}</td>
+                            <td>${member[i].aclass.class_name}</td>
+                            <td class="text-center">
+                                <button type="button" class="btn btn-outline-primary chooseMember" value="${member[i].member_id}">Chọn</button>
+                            </td>
+                        </tr>
+                    `;
+                }
+                $("#detailMember").html(content);
+                $(".chooseMember").on("click", function (){
+                    let id = $(this).attr("value");
+                    $.ajax({
+                        type: "GET",
+                        url: `/app/chooseByMember/${id}`
+                    }).done(function (member){
+                        order.member = member;
                         $("#search").val("");
                         $("#searchModal").modal('hide');
+                        drawOrder();
                     })
-                } else {
-                    App.showErrorAlert("Chưa đăng ký thành viên!")
-                }
-        }).fail(function (){
-            App.showErrorAlert("Hãy nhập để tìm kiếm!")
-        })
+                })
+            } else {
+                App.showErrorAlert("Chưa đăng ký thành viên!")
+            }
+    }).fail(function (){
+        App.showErrorAlert("Hãy nhập để tìm kiếm!")
+    })
 }
 
 $(".searchMember").on("click",function (){
@@ -961,10 +1074,15 @@ function drawOrder(){
                           <div>
                             <h5>Thành viên: </h5>
                           </div>
-                          <h5 class="btn text-muted deleteMember" value="${order.member.member_id}">${order.member.member_name}</h5>
+                          <h5 class="btn text-muted deleteMember" value="${order.member.member_id}">${order.member.member_name} (-${order.member.aclass.percent_discount}% CO)</h5>
+                          <input type="hidden" id="discount-hidden" value="${order.member.aclass.percent_discount}">
                         </li>
                     </ul>
                 </div>`;
+        let percent_discount = $("#discount-hidden").val();
+        if  (order.total_product !== 0){
+            order.total_product = total_product*(100-percent_discount)/100;
+        }
     } else {
         content += `<div class="current-order panel-body border" style="height: 50px;margin-bottom: 10px " id="chooseMemberName">
                 <input type="hidden" id="memberId" value="">
@@ -993,7 +1111,14 @@ function drawOrder(){
                 </div>
               </div>`;
     $("#allList").html(content);
-
+    $(".deleteMember").on("click", function (){
+        App.showDeleteConfirmDialog().then((result) => {
+            if (result.isConfirmed){
+                order.member = "";
+                drawOrder();
+            }
+        });
+    })
 
     $(".delete-ticket").on("click", function (){
         let seatId = $(this).attr("value");
@@ -1031,13 +1156,13 @@ function subProduct(id){
             if (order.products[indexProduct].amount === 1){
                 order.products.splice(indexProduct,1);
                 if (order.products.length === 0){
-                    emptyOrder(order);
+                    emptyOrder();
                 } else {
-                    drawOrder(order);
+                    drawOrder();
                 }
             } else if(order.products[indexProduct].amount > 1){
                 order.products[indexProduct].amount--;
-                drawOrder(order);
+                drawOrder();
             }
         }
     })
@@ -1122,34 +1247,47 @@ $(".addToProduct").on("click",function (){
 })
 //Kết thúc order
 
-//Chọn thành viên vào order
-function getMember(id){
+function updateClassMember(){
     $.ajax({
         type: "GET",
-        url: `/app/chooseByMember/${id}`
-    }).done(function (members){
-        console.log(members)
-        order.member = members;
-        $("#chooseMemberName").html(`<ul class="list-group mb-3 ">
-                <li class=" d-flex justify-content-between p-2 pb-0 ">
-                  <div>
-                    <h5 class="my-0" style="width: 150px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis">Thành viên: </h5>
-                  </div>
-                  <h5 class="btn text-muted deleteMember" value="${members.member_id}">${members.member_name}</h5>
-                </li>
-              </ul>`);
-
-        $(".deleteMember").on("click", function (){
-            App.showDeleteConfirmDialog().then((result) => {
-                if (result.isConfirmed){
-                    order.member.member_id = 0;
-                    $("#chooseMemberName").html("")
-                    $("#memberId").val(members.member_id);
+        url: "/members/allMember"
+    }).done((members) =>{
+        for (let i = 0; i < members.length; i++) {
+            $.ajax({
+                type: "GET",
+                url: `/visit/findByMemberId/${members[i].member_id}`
+            }).done((visits) => {
+                if (members[i].aclass.class_id === 1){
+                    if  (visits.length >= 25 && visits.length <50) {
+                        updateMember(members[i],2);
+                    } else if (visits.length >= 50){
+                        updateMember(members[i], 3);
+                    }
+                } else if (members[i].aclass.class_id === 2){
+                    if (visits.length < 25) {
+                        updateMember(members[i], 1);
+                    } else if (visits.length >= 50){
+                        updateMember(members[i], 3);
+                    }
+                } else {
+                    if (visits.length < 25) {
+                        updateMember(members[i], 1);
+                    } else if (visits.length < 50){
+                        updateMember(members[i], 2);
+                    }
                 }
-            });
-        })
+            })
+        }
     })
 }
+
+function updateMember(member, classId){
+    $.ajax({
+        type: "PUT",
+        url: `/members/update/${member.member_id}/${classId}`
+    })
+}
+
 
 //Tạo order
 
@@ -1169,189 +1307,301 @@ function createOrder(){
         username: user
     }
 
-        if (member === undefined){
-            let newOrder = {
-                order_date : order_date,
-                order_time : order_time,
-                total_product: total_product,
-                total_ticket: total_ticket,
-                total_price: total_price,
-                user: newUser
-            }
-            App.showCreateConfirmDialog().then((result) =>{
-                if (result.isConfirmed){
-                    $.ajax({
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        },
-                        type: "POST",
-                        data: JSON.stringify(newOrder),
-                        url: "/app/saveOrder"
-                    }).done((resp) => {
-                        console.log(resp);
-
-                        for (let i = 0; i < order.products.length ; i++) {
-                            let newOrderDetail = {
-                                order :{
-                                    order_id : resp.order_id
-                                },
-                                product_name: order.products[i].product_name,
-                                product_amount: order.products[i].amount,
-                                price: order.products[i].amount*order.products[i].price
-                            }
-                            $.ajax({
-                                headers: {
-                                    'Accept': 'application/json',
-                                    'Content-Type': 'application/json'
-                                },
-                                type: "POST",
-                                data: JSON.stringify(newOrderDetail),
-                                url: "/app/saveOrderDetail"
-                            })
-                        }
-
-                        for (let i = 0; i < order.ticket.length ; i++) {
-                            let newTicket = {
-                                order :{
-                                    order_id : resp.order_id
-                                },
-                                price: order.ticket[i].seat.typeSeat.price,
-                                show: {
-                                    show_id:order.ticket[i].show.show_id
-                                },
-                                seat: {
-                                    seat_id:order.ticket[i].seat.seat_id
-                                }
-                            }
-                            $.ajax({
-                                headers: {
-                                    'Accept': 'application/json',
-                                    'Content-Type': 'application/json'
-                                },
-                                type: "POST",
-                                data: JSON.stringify(newTicket),
-                                url: "/app/saveTicket"
-                            }).done((ticket) => {
-                                console.log(ticket)
-                                $.ajax({
-                                    type: "PUT",
-                                    url: `/app/setTakenSeat/${ticket.seat.seat_id}`
-                                })
-                                App.showSuccessAlert("Create new order successfully!");
-                            })
-                        }
-
-                    })
-                }
-            })
-        } else {
-            let newOrder = {
-                order_date : order_date,
-                order_time : order_time,
-                total_product: total_product,
-                total_ticket: total_ticket,
-                total_price: total_price,
-                member : newMember,
-                user: newUser
-            }
-            App.showCreateConfirmDialog().then((result) =>{
-                if (result.isConfirmed){
-                    $.ajax({
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        },
-                        type: "POST",
-                        data: JSON.stringify(newOrder),
-                        url: "/app/saveOrder"
-                    }).done((resp) => {
-                        console.log(resp);
-
-                        for (let i = 0; i < order.products.length ; i++) {
-                            let newOrderDetail = {
-                                order :{
-                                    order_id : resp.order_id
-                                },
-                                product_name: order.products[i].product_name,
-                                product_amount: order.products[i].amount,
-                                price: order.products[i].amount*order.products[i].price
-                            }
-                            $.ajax({
-                                headers: {
-                                    'Accept': 'application/json',
-                                    'Content-Type': 'application/json'
-                                },
-                                type: "POST",
-                                data: JSON.stringify(newOrderDetail),
-                                url: "/app/saveOrderDetail",
-                            })
-                        }
-
-                        for (let i = 0; i < order.ticket.length ; i++) {
-                            let newTicket = {
-                                order :{
-                                    order_id : resp.order_id
-                                },
-                                price: order.ticket[i].seat.typeSeat.price,
-                                show: {
-                                    show_id:order.ticket[i].show.show_id
-                                },
-                                user: {
-                                    user: order.user.id
-                                },
-                                member:{
-                                    member_id:resp.member.member_id
-                                },
-                                seat: {
-                                    seat_id:order.ticket[i].seat.seat_id
-                                }
-                            }
-                            $.ajax({
-                                headers: {
-                                    'Accept': 'application/json',
-                                    'Content-Type': 'application/json'
-                                },
-                                type: "POST",
-                                data: JSON.stringify(newTicket),
-                                url: "/app/saveTicket"
-                            }).done((ticket) => {
-                                console.log(ticket)
-                                $.ajax({
-                                    type: "PUT",
-                                    url: `/app/setTakenSeat/${ticket.seat.seat_id}`
-                                })
-                                App.showSuccessAlert("Create new order successfully!");
-                            })
-                        }
-                    })
-                    deleteOrder();
-                }
-            })
+    if (member === undefined){
+        let newOrder = {
+            order_date : order_date,
+            order_time : order_time,
+            total_product: total_product,
+            total_ticket: total_ticket,
+            total_price: total_price,
+            user: newUser
         }
+        App.showCreateConfirmDialog().then((result) =>{
+            if (result.isConfirmed){
+                $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    type: "POST",
+                    data: JSON.stringify(newOrder),
+                    url: "/app/saveOrder"
+                }).done((resp) => {
 
+                    for (let i = 0; i < order.products.length ; i++) {
+                        let newOrderDetail = {
+                            order :{
+                                order_id : resp.order_id
+                            },
+                            product_name: order.products[i].product_name,
+                            product_amount: order.products[i].amount,
+                            price: order.products[i].amount*order.products[i].price
+                        }
+                        $.ajax({
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            type: "POST",
+                            data: JSON.stringify(newOrderDetail),
+                            url: "/app/saveOrderDetail"
+                        })
+                    }
 
+                    for (let i = 0; i < order.ticket.length ; i++) {
+                        let newTicket = {
+                            order :{
+                                order_id : resp.order_id
+                            },
+                            price: order.ticket[i].seat.typeSeat.price,
+                            show: {
+                                show_id:order.ticket[i].show.show_id
+                            },
+                            seat: {
+                                seat_id:order.ticket[i].seat.seat_id
+                            }
+                        }
+                        $.ajax({
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            type: "POST",
+                            data: JSON.stringify(newTicket),
+                            url: "/app/saveTicket"
+                        }).done((ticket) => {
+                            saveTicket(ticket);
+                        })
+                    }
+                    App.showSuccessAlert("Thanh toán thành công");
+                    deleteOrder();
+                    $(".allSchedule").click();
 
+                })
+            }
+        })
+    } else {
+        let newOrder = {
+            order_date : order_date,
+            order_time : order_time,
+            total_product: total_product,
+            total_ticket: total_ticket,
+            total_price: total_price,
+            member : newMember,
+            user: newUser
+        }
+        App.showCreateConfirmDialog().then((result) =>{
+            if (result.isConfirmed){
+                $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    type: "POST",
+                    data: JSON.stringify(newOrder),
+                    url: "/app/saveOrder"
+                }).done((resp) => {
+                    for (let i = 0; i < order.products.length ; i++) {
+                        let newOrderDetail = {
+                            order :{
+                                order_id : resp.order_id
+                            },
+                            product_name: order.products[i].product_name,
+                            product_amount: order.products[i].amount,
+                            price: order.products[i].amount*order.products[i].price
+                        }
+                        $.ajax({
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            type: "POST",
+                            data: JSON.stringify(newOrderDetail),
+                            url: "/app/saveOrderDetail",
+                        })
+                    }
+                    for (let i = 0; i < order.ticket.length ; i++) {
+                        let newTicket = {
+                            order :{
+                                order_id : resp.order_id
+                            },
+                            price: order.ticket[i].seat.typeSeat.price,
+                            show: {
+                                show_id:order.ticket[i].show.show_id
+                            },
+                            user: {
+                                user: order.user.id
+                            },
+                            member:{
+                                member_id:resp.member.member_id
+                            },
+                            seat: {
+                                seat_id:order.ticket[i].seat.seat_id
+                            }
+                        }
+                        $.ajax({
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            type: "POST",
+                            data: JSON.stringify(newTicket),
+                            url: "/app/saveTicket"
+                        }).done((ticket) => {
+                            saveTicket(ticket);
+                        })
+                    }
 
+                    let visit = {
+                        rel_date: newOrder.order_date,
+                        exp_date: App.addDays(newOrder.order_date, 365),
+                        member: newMember
+                    }
+                    $.ajax({
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        type: "POST",
+                        url: "/visit/save",
+                        data: JSON.stringify(visit)
+                    })
+                    App.showSuccessAlert("Create new order successfully!");
+                    deleteOrder();
+                    $(".allSchedule").click();
+                })
+            }
+        })
+    }
+}
 
+function saveTicket(ticket){
+    $.ajax({
+        type: "PUT",
+        url: `/app/setTakenSeat/${ticket.seat.seat_id}`
+    })
+
+    $.ajax({
+        type: "GET",
+        url: `/show/findById/${ticket.show.show_id}`
+    }).done((show) => {
+        $.ajax({
+            type: "PUT",
+            url: `/films/addAdmit/${show.film.film_id}`
+        })
+    })
 }
 
 function deleteOrder(){
     order.products = [];
+    order.ticket = [];
     order.total_price = 0;
     order.order_date = "";
     order.order_time = "";
-    order.user.username = "";
-    order.member = "";
-    order.total_product = 0;
     order.total_ticket = 0;
     $("#received").val("");
     $("#balanced").html("");
-    emptyOrder(order)
+    emptyOrder()
 }
 
 $("#createToOrder").on("click",createOrder);
 
+$("#searchFilmName").on("input", function (){
+    if ($("#searchFilmName").val() === ""){
+        getCurrentShow();
+    } else {
+        searchFilmName();
+    }
+});
+
+getSchedules();
+
+$(".allSchedule").on("click",getScheduleOfTicket);
+
+//Tạo mới thành viên
+$(".createMember").on("click",function (){
+    $("#editModal").modal('show');
+});
+
+$("#create-button").on("click",createMemberApp);
+
+$(() => {
+    $("#create-form").validate({
+        errorElement: 'div',
+        rules: {
+            member_name:  {
+                required: true,
+                minlength: 5,
+                maxlength: 50,
+            },
+            phoneNumber: {
+                required: true,
+                number: true,
+                minlength:10,
+                maxlength:11,
+                validatePhone:true
+            },
+            email:{
+                required:true
+            }
+        },
+
+        messages: {
+            member_name: {
+                required: "Vui lòng nhập họ và tên",
+                minlength: "Vui lòng nhập tối thiểu 2 ký tự!",
+                maxlength: "Vui lòng nhập tối đa chỉ có 50 ký tự!"
+            },
+            phoneNumber: {
+                required: "Vui lòng nhập số điện thoại!",
+                number: "Vui lòng chỉ nhập số",
+                minlength: "Vui lòng nhập tối thiểu 10 số!",
+                maxlength: "Vui lòng nhập tối đa chỉ có 11 số!"
+            },
+            email:{
+                required:"Vui lòng nhập địa chỉ email"
+            }
+        },
+
+        submitHandler : createMemberApp
+    });
+});
+$.validator.addMethod("validatePhone", function (value, element) {
+    return this.optional(element) || /((09|03|07|08|05)+([0-9]{8})\b)/g.test(value);
+}, "Hãy nhập số điện thoại hợp lệ!!!");
+
+$(".searchMember").on("click",function (){
+    if($("#search").val() !== ""){
+        $("#searchModal").modal('show');
+        searchByMember();
+    } else {
+        App.showErrorAlert("Hãy nhập để tìm kiếm!")
+    }
+
+});
+
+$(".close-button").on("click",function (){
+    $("#search").val("");
+    $("#editModal").modal('hide');
+});
+
+$(".addToProduct").on("click",function (){
+    let id = $(this).attr("value");
+    getProduct(id);
+})
+//Kết thúc order
+
+$("#createToOrder").on("click",createOrder);
+
 $(".allProduct").on("click",allItems)
+
 $(".allProduct").on("click",getAllCategory)
+
+updateClassMember();
+
+$(".clearOrder").on("click", function (){
+    emptyOrder();
+    checkChoosingSeat();
+    drawOrder();
+})
 
