@@ -34,7 +34,6 @@ public class Show {
     @JoinColumn(name = "room_id")
     private Room room;
 
-    @JsonIgnore
     @OneToMany(targetEntity = Ticket.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "ticket_id")
     private List<Ticket> tickets;

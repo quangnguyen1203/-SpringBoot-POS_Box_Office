@@ -1,5 +1,6 @@
 package com.cg.bo.service.impl;
 
+import com.cg.bo.model.projection.Room;
 import com.cg.bo.model.projection.Schedule;
 import com.cg.bo.model.projection.Show;
 import com.cg.bo.repository.ShowRepository;
@@ -59,5 +60,10 @@ public class ShowServiceImpl implements ShowService {
     @Override
     public Iterable<Show> findShowsByRoomName(String room_name, Long id) {
         return showRepository.findShowsByRoomName(room_name,id);
+    }
+
+    @Override
+    public Optional<Show> findShowByRoom(Room room) {
+        return showRepository.findShowByRoom(room);
     }
 }

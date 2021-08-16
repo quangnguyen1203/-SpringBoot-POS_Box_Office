@@ -1,7 +1,9 @@
 package com.cg.bo.controller;
 
+import com.cg.bo.model.projection.Room;
 import com.cg.bo.model.projection.Schedule;
 import com.cg.bo.model.projection.Show;
+import com.cg.bo.service.impl.RoomServiceImpl;
 import com.cg.bo.service.impl.ScheduleServiceImpl;
 import com.cg.bo.service.impl.ShowServiceImpl;
 import com.cg.bo.utils.DateUtils;
@@ -10,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.sql.Time;
 
 @RestController
 @RequestMapping("/show")
@@ -23,6 +27,9 @@ public class ShowController {
 
     @Autowired
     private ShowServiceImpl showService;
+
+    @Autowired
+    private RoomServiceImpl roomService;
 
     @GetMapping("/create")
     public ModelAndView showCreateShowForm(){
@@ -114,7 +121,9 @@ public class ShowController {
     public void setStatusForShow(Iterable<Show> shows){
         for (Show s: shows
         ) {
-            s.setStatus(30 >= dateUtils.differentTimeInMinutes(s.getTime_start().toString()));
+            Time timeStart = s.getTime_start();
+            boolean status = 30 >= dateUtils.differentTimeInMinutes(timeStart.toString());
+            s.setStatus(status);
             showService.save(s);
         }
     }
@@ -135,7 +144,28 @@ public class ShowController {
     @GetMapping("/searchShow/{schedule_id}/{film_name}")
     public ResponseEntity<Iterable<Show>> searchByScheduleAndFilmName(@PathVariable Long schedule_id, @PathVariable String film_name){
         Iterable<Show> shows = showService.searchShowOfScheduleWhereShowNameLike(schedule_id,film_name);
-        setStatusForShow(shows);
+        Schedule schedule = scheduleService.findById(schedule_id).get();
+        if (dateUtils.getCurrentDate().compareTo(schedule.getSchedule_date()) < 0){
+            for (Show s :
+                    shows) {
+                s.setStatus(true);
+                showService.save(s);
+            }
+        } else if (dateUtils.getCurrentDate().compareTo(schedule.getSchedule_date()) >0){
+            for (Show s :
+                    shows) {
+                s.setStatus(false);
+                showService.save(s);
+            }
+        } else {
+            setStatusForShow(shows);
+        }
         return new ResponseEntity<>(shows, HttpStatus.OK);
+    }
+
+    @GetMapping("/findShowByRoomId/{roomId}")
+    public ResponseEntity<Show> findShowByRoomId(@PathVariable Long roomId){
+        Room room = roomService.findById(roomId).get();
+        return new ResponseEntity<>(showService.findShowByRoom(room).get(), HttpStatus.OK);
     }
 }

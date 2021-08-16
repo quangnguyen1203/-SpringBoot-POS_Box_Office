@@ -26,15 +26,16 @@ public class Order {
     private double total_ticket;
     private double total_price;
 
+    @JsonIgnore
     @OneToMany
     @JoinColumn(name = "ticket_id")
     private List<Ticket> tickets;
 
+    @JsonIgnore
     @OneToMany
     @JoinColumn(name = "orderDetail_id")
     private List<OrderDetail> orderDetails;
 
-    @JsonIgnore
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;

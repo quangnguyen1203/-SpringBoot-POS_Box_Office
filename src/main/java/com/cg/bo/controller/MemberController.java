@@ -42,7 +42,7 @@ public class MemberController {
     }
 
     @GetMapping("/allMember")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
     public ResponseEntity<Iterable<Member>> allMembers(){
         return new ResponseEntity<>(memberService.findAll(), HttpStatus.OK);
     }
@@ -81,5 +81,18 @@ public class MemberController {
     public ResponseEntity<Member> memberResponseEntity(@PathVariable Long id){
         Member member = memberService.findById(id).get();
         return new ResponseEntity<>(member,HttpStatus.OK);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<Member> updateMember(@RequestBody Member member){
+        return new ResponseEntity<>(memberService.save(member), HttpStatus.OK);
+    }
+
+    @PutMapping("/update/{memberId}/{classId}")
+    public ResponseEntity<Member> updateClassMember(@PathVariable Long memberId, @PathVariable Long classId){
+        Member member = memberService.findById(memberId).get();
+        Class aClass = classService.findById(classId).get();
+        member.setAClass(aClass);
+        return new ResponseEntity<>(memberService.save(member), HttpStatus.OK);
     }
 }
