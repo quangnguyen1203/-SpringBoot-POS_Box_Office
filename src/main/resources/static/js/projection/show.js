@@ -35,7 +35,6 @@ function getAllFilm(){
         type: "GET",
         url: `/films/allStatusTrueFilm/${schedule_id}`
     }).done(function (films) {
-        console.log(films)
         let content = "";
         for (let i = films.length - 1; i >= 0; i--) {
             content += `
@@ -154,3 +153,6 @@ $.validator.addMethod("validateTime", function(value, element) {
     if (parts[0] > 23 || parts[1] > 59 || parts[2] > 59) return false;
     return true;
 }, "Hãy nhập theo đúng định dạng");
+
+
+}

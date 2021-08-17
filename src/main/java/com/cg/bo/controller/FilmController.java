@@ -1,6 +1,7 @@
 package com.cg.bo.controller;
 
 import com.cg.bo.model.projection.Film;
+import com.cg.bo.model.projection.Schedule;
 import com.cg.bo.service.FilmService;
 import com.cg.bo.service.impl.FilmServiceImpl;
 import com.cg.bo.service.impl.ScheduleServiceImpl;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.Date;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/films")
@@ -22,9 +24,6 @@ public class FilmController {
 
     @Autowired
     private DateUtils dateUtils;
-
-    @Autowired
-    private FilmServiceImpl filmService;
 
     @Autowired
     protected ScheduleServiceImpl scheduleService;
