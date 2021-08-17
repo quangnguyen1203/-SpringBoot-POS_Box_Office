@@ -25,6 +25,6 @@ public class ProjectionController {
     @GetMapping
     @PreAuthorize("hasAnyAuthority('PROJECTION')")
     public ModelAndView homePage() {
-        return new ModelAndView("projection/home");
+        return new ModelAndView("projection/film/list");
     }
 }

@@ -19,6 +19,6 @@ public interface FilmRepository extends JpaRepository<Film,Long> {
     Iterable<Film> findAllByOrderByFilm_idDesc();
 
     @Query("select f from Film f where f.status = TRUE")
-   Iterable<Film> findAllByStatusTrue();
+    Iterable<Film> findAllByStatusTrue();
 
 }

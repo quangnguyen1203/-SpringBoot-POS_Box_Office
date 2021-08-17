@@ -32,13 +32,12 @@
         <!-- end page title -->
 
         <div class="row">
-          <div class="col-xl-3 col-sm-6">
+          <div class="col-xl-4 col-sm-6">
             <div class="card">
               <div class="card-body widget-style-2">
                 <div class="media">
-                  <div class="media-body align-self-center">
-                    <h2 class="my-0"><span data-plugin="counterup">50</span></h2>
-                    <p class="mb-0">Daily Visits</p>
+                  <div class="media-body align-self-center" id="sum_admit">
+
                   </div>
                   <i class="ion-md-eye text-pink bg-light"></i>
                 </div>
@@ -46,47 +45,32 @@
             </div>
           </div>
 
-          <div class="col-xl-3 col-sm-6">
+          <div class="col-xl-4 col-sm-6">
             <div class="card">
               <div class="card-body widget-style-2">
                 <div class="media">
-                  <div class="media-body align-self-center">
-                    <h2 class="my-0"><span data-plugin="counterup">12056</span></h2>
-                    <p class="mb-0">Sales</p>
+                  <div class="media-body align-self-center" id="total_price">
+
                   </div>
-                  <i class="ion-md-paper-plane text-purple bg-light"></i>
+                  <i class="ion-logo-usd text-purple bg-light"></i>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="col-xl-3 col-sm-6">
+          <div class="col-xl-4 col-sm-6">
             <div class="card">
               <div class="card-body widget-style-2">
                 <div class="media">
-                  <div class="media-body align-self-center">
-                    <h2 class="my-0"><span data-plugin="counterup">1268</span></h2>
-                    <p class="mb-0">New Orders</p>
+                  <div class="media-body align-self-center" id="total_member">
+
                   </div>
-                  <i class="ion-ios-pricetag text-info bg-light"></i>
+                  <i class="ion-ios-people text-info bg-light"></i>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="col-xl-3 col-sm-6">
-            <div class="card">
-              <div class="card-body widget-style-2">
-                <div class="media">
-                  <div class="media-body align-self-center">
-                    <h2 class="my-0"><span data-plugin="counterup">145</span></h2>
-                    <p class="mb-0">New Users</p>
-                  </div>
-                  <i class="mdi mdi-comment-multiple text-primary bg-light"></i>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
 
         <div class="row">
@@ -150,9 +134,8 @@
   <!-- ============================================================== -->
 </div>
 <!-- END wrapper -->
-</body>
 <div th:replace="/dashboard/layout/script::script"></div>
-<script>
-  App.getUser();
-</script>
+</body>
+
+<script src="/js/manager/home.js"></script>
 </html>

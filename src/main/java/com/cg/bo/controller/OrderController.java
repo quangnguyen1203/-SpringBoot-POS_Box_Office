@@ -1,8 +1,12 @@
 package com.cg.bo.controller;
 
+import com.cg.bo.model.bussiness.Member;
 import com.cg.bo.model.bussiness.Order;
+import com.cg.bo.model.dto.OrderAdmitDTO;
 import com.cg.bo.model.dto.OrderDTO;
+import com.cg.bo.model.dto.OrderMonthDTO;
 import com.cg.bo.model.security.User;
+import com.cg.bo.service.impl.MemberServiceImpl;
 import com.cg.bo.service.impl.OrderServiceImpl;
 import com.cg.bo.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +29,9 @@ public class OrderController {
 
     @Autowired
     private OrderServiceImpl orderService;
+
+    @Autowired
+    private MemberServiceImpl memberService;
 
     @GetMapping("/listOrder")
     public ModelAndView ListOrder(){
@@ -66,5 +73,20 @@ public class OrderController {
     @GetMapping("/monthlyRevenue")
     public ResponseEntity<Iterable<OrderDTO>> getMonthlyRevenue(){
         return new ResponseEntity<>(orderService.findByMonthlyRevenue(),HttpStatus.OK);
+    }
+
+    @GetMapping("/monthlyAdmit/{month}")
+    public ResponseEntity<Iterable<OrderAdmitDTO>> getSumAdmit(@PathVariable int month){
+        return new ResponseEntity<>(orderService.findSumAdmitMonth(month),HttpStatus.OK);
+    }
+
+    @GetMapping("/totalMonth/{month}")
+    public ResponseEntity<Iterable<OrderMonthDTO>> getTotalMonth(@PathVariable int month){
+        return new ResponseEntity<>(orderService.findTotalMonth(month),HttpStatus.OK);
+    }
+
+    @GetMapping("/totalMember")
+    public ResponseEntity<Iterable<Member>> getTotalMember(){
+        return new ResponseEntity<>(memberService.findAll(),HttpStatus.OK);
     }
 }

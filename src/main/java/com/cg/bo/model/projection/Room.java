@@ -21,6 +21,7 @@ public class Room {
     private Long room_id;
     private String room_name;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "show_id")
     private Show show;

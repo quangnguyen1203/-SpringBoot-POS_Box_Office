@@ -17,7 +17,7 @@ public interface ShowRepository extends JpaRepository<Show, Long> {
 
     @Transactional
     @Modifying
-    @Query("select s from Show s where s.schedule= :schedule order by s.time_start asc")
+    @Query("select s from Show s where s.schedule = :schedule order by s.time_start asc")
     Iterable<Show> findShowsBySchedule(@Param("schedule") Schedule schedule);
 
     Iterable<Show> findAllByScheduleAndStatusTrue(Schedule schedule);

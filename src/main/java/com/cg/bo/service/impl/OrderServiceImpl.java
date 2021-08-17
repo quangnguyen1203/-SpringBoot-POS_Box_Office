@@ -1,7 +1,9 @@
 package com.cg.bo.service.impl;
 
 import com.cg.bo.model.bussiness.Order;
+import com.cg.bo.model.dto.OrderAdmitDTO;
 import com.cg.bo.model.dto.OrderDTO;
+import com.cg.bo.model.dto.OrderMonthDTO;
 import com.cg.bo.repository.OrderRepository;
 import com.cg.bo.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,5 +66,15 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Iterable<OrderDTO> findByMonthlyRevenue() {
         return orderRepository.findByMonthlyRevenue();
+    }
+
+    @Override
+    public Iterable<OrderAdmitDTO> findSumAdmitMonth(int month) {
+        return orderRepository.findSumAdmitMonth(month);
+    }
+
+    @Override
+    public Iterable<OrderMonthDTO> findTotalMonth(int month) {
+        return orderRepository.findTotalMonth(month);
     }
 }

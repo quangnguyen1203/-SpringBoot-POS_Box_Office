@@ -2,13 +2,14 @@
 class App {
     static showCreateConfirmDialog(){
         return Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
+            title: 'Bạn có chắc chắn không?',
+            text: "Bạn sẽ không thể hoàn lại!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes',
+            confirmButtonText: 'Chắc chắn',
+            cancelButtonText: 'Không',
         })
     }
 
@@ -121,6 +122,12 @@ class App {
         }
 
         return ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2)
+    }
+
+    static getCurrentMonth(){
+            let today = new Date();
+            let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            return `${mm}`;
     }
 
     static countTakenSeat(seats) {

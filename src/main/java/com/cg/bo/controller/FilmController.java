@@ -86,28 +86,15 @@ public class FilmController {
         return new ResponseEntity<>(filmService.findById(id).get(), HttpStatus.OK);
     }
 
-    @GetMapping("/allStatusTrueFilm/{schedule_id}")
-    public ResponseEntity<Iterable<Film>> listFilmTrue(@PathVariable Long schedule_id) {
-        Optional<Schedule> schedules = scheduleService.findById(schedule_id);
-        Iterable<Film> films = filmService.findAll();
-        for (Film f:films
-        ) {
-            if(f.getExp_date().compareTo(schedules.get().getSchedule_date()) > 0){
-                f.setStatus(true);
-                filmService.save(f);
-            }else {
-                f.setStatus(false);
-                filmService.save(f);
-            }
-        }
-        return new ResponseEntity<>(filmService.findAllByStatusTrue(), HttpStatus.OK);
-    }
-
     @PutMapping("/addAdmit/{film_id}")
     public void addAdmit(@PathVariable Long film_id){
         Film film = filmService.findById(film_id).get();
         film.setAdmit(film.getAdmit()+1);
         filmService.save(film);
+    }
 
+    @GetMapping("/allTrueFilm")
+    public ResponseEntity<Iterable<Film>> allTrueFilm(){
+        return new ResponseEntity<>(filmService.findAllByStatusTrue(),HttpStatus.OK);
     }
 }

@@ -5,7 +5,8 @@ function getSchedules() {
     $.ajax({
         type: "GET",
         url: "/schedules/allSchedule"
-    }).done(function (schedules) {
+    }).done(function (schedules){
+        console.log(schedules)
         let content = "";
         for (let i = 0; i < schedules.length; i++) {
             content += `
@@ -28,18 +29,18 @@ function checkAvailable() {
 }
 
 function getAllFilm() {
-    let schedule_id = $("#schedule_date").val();
-    console.log(schedule_id)
+    let schedule_date = $("#schedule_date option:selected").text();
     $.ajax({
         type: "GET",
-        url: `/films/allStatusTrueFilm/${schedule_id}`
-    }).done(function (films) {
-        console.log(films)
+        url: "/films/allTrueFilm"
+    }).done(function (films){
         let content = "";
-        for (let i = films.length - 1; i >= 0; i--) {
-            content += `
-            <option value="${films[i].film_id}"> ${films[i].film_name}</option>
+        for (let i = films.length-1; i >= 0; i--) {
+            if(films[i].exp_date > schedule_date){
+                content += `
+                    <option value="${films[i].film_id}"> ${films[i].film_name}</option>
                 `;
+            }
         }
         $("#film_id").html(content);
     })

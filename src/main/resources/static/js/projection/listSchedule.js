@@ -1,7 +1,5 @@
 App.getUser();
 
-
-
 function getAllSchedule() {
     $.ajax({
         type: "GET",
@@ -32,7 +30,8 @@ function getShowList(id) {
     $.ajax({
         type: "GET",
         url: `/show/allShowsToday/${id}`
-    }).done(function (shows) {
+    }).done(function (shows){
+        console.log(shows)
         let content = "";
         for (let i = 0; i < shows.length; i++) {
             let room_id = shows[i].room.room_id;

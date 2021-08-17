@@ -1,7 +1,9 @@
 package com.cg.bo.repository;
 
 import com.cg.bo.model.bussiness.Order;
+import com.cg.bo.model.dto.OrderAdmitDTO;
 import com.cg.bo.model.dto.OrderDTO;
+import com.cg.bo.model.dto.OrderMonthDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -38,4 +40,14 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "GROUP BY month(o.order_date)")
     Iterable<OrderDTO> findByMonthlyRevenue();
 
+
+    @Query(nativeQuery = true, value = "SELECT DISTINCT month(o.order_date) as `month`,f.admit as admit from orders o \n" +
+            "inner join tickets t on o.order_id = t.order_id\n" +
+            "inner join shows s on t.show_id = s.show_id\n" +
+            "inner join films f on s.film_id = f.film_id where month(o.order_date) = ?;")
+    Iterable<OrderAdmitDTO> findSumAdmitMonth(int month);
+
+    @Query(nativeQuery = true,value = "select month(o.order_date) as `month`, sum(o.total_price) as total_price from orders o\n" +
+            "where month(o.order_date) = ?")
+    Iterable<OrderMonthDTO> findTotalMonth(int month);
 }
