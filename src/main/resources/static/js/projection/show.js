@@ -154,5 +154,10 @@ $.validator.addMethod("validateTime", function(value, element) {
     return true;
 }, "Hãy nhập theo đúng định dạng");
 
+function currentFilms(){
+    let schedule_id = $("#schedule_date");
+    $.ajax({
+        type: "GET",
 
+    })
 }
