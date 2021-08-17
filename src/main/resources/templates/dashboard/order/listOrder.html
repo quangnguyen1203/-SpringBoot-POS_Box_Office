@@ -29,18 +29,37 @@
       <div class="container-fluid">
 
         <!-- start page title -->
+<!--        <div class="row">-->
+<!--          <div class="col-12" style="margin-top: 10px;">-->
+<!--            <div class="page-title-box">-->
+<!--              <h4 class="page-title">Lịch sử mua hàng</h4></br>-->
+<!--              <input type="hidden" id="order_id">-->
+<!--              <h7>Chọn ngày:</h7>-->
+<!--              <div class="col-lg-3">-->
+<!--                <input type="date" name="order_date" required="" class="form-control" id="order_date">-->
+<!--              </div>-->
+<!--              <div class="clearfix"></div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+
         <div class="row">
-          <div class="col-12" style="margin-top: 10px;">
-            <div class="page-title-box">
-              <h4 class="page-title">Lịch sử mua hàng</h4></br>
-              <input type="hidden" id="order_id">
-              <h7>Chọn ngày:</h7>
-              <div class="col-lg-3">
-                <input type="date" name="order_date" required="" class="form-control" id="order_date">
+          <div class="col-lg-12" style="margin-top: 10px;">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="header-title mb-4">Lịch sử mua hàng</h4>
+                <form class="parsley-examples row" id="create-form">
+                  <div class="form-group col-lg-6">
+                    <input type="hidden" id="order_id">
+                    <label>Chọn ngày <span class="text-danger">*</span></label>
+                    <input type="date" name="order_date" parsley-trigger="change" required placeholder="Nhập ngày để tìm kiếm" class="form-control" id="order_date">
+                  </div>
+                </form>
               </div>
-              <div class="clearfix"></div>
             </div>
+            <!-- end card -->
           </div>
+          <!-- end col -->
         </div>
         <!-- end page title -->
 
@@ -52,7 +71,7 @@
                 <div class="table-responsive">
                   <table class="table table-centered mb-0 table-nowrap" id="orderList">
                     <thead>
-                    <tr>
+                    <tr class="text-center">
                       <th>#</th>
                       <th>Giờ mua hàng</th>
                       <th>Tổng giá sản phẩm</th>

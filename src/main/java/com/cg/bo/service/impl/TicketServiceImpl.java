@@ -33,4 +33,9 @@ public class TicketServiceImpl implements TicketService {
     public void remove(Long id) {
         ticketRepository.deleteById(id);
     }
+
+    @Override
+    public Iterable<Ticket> findAllByTicket(Long id) {
+        return ticketRepository.findAllByTicket(id);
+    }
 }

@@ -16,12 +16,12 @@ function getListOrderDate(){
                               <input hidden id="${orders[i].order_id}">
                               <td>${orders[i].order_id}</td>
                               <td>${orders[i].order_time}</td>
-                              <td><a value="${orders[i].order_id}" class="btn modalProduct">${orders[i].total_product.toLocaleString('vi', {
+                              <td class="text-right"><a value="${orders[i].order_id}" class="btn modalProduct">${orders[i].total_product.toLocaleString('vi', {
                     style: 'currency',
                     currency: 'VND'
                 })}</a></td>
-                              <td><a value="${orders[i].order_id}" class="btn modalTicket">${orders[i].total_ticket.toLocaleString('vi', {style: 'currency', currency: 'VND'})}</a></td>
-                              <td>${orders[i].total_price.toLocaleString('vi', {style: 'currency', currency: 'VND'})}</td>
+                              <td class="text-right"><a value="${orders[i].order_id}" class="btn modalTicket">${orders[i].total_ticket.toLocaleString('vi', {style: 'currency', currency: 'VND'})}</a></td>
+                              <td class="text-right">${orders[i].total_price.toLocaleString('vi', {style: 'currency', currency: 'VND'})}</td>
                               <td>${orders[i].member == null ? "None" : orders[i].member.member_name}</td>
                               <td>${orders[i].user.username}</td>
                         </tr>
@@ -100,7 +100,6 @@ function getTotalProduct(id) {
                     </tr>
             `
         }
-        console.log(products)
         $("#product-modal tbody").html(content);
         $("#product-modal tfoot").html(content1);
         $("#showModalProduct").modal('show');
@@ -112,7 +111,6 @@ function getTotalTicket(id){
         type : "GET",
         url : `/tickets/allTicketByOder/${id}`
     }).done(function (tickets){
-        console.log(tickets)
         let content1 = "";
         let content = "";
         for (let i = 0; i  < tickets.length ; i++) {
@@ -149,6 +147,7 @@ function currentOrderDate(){
 }
 
 getListOrderDateToday();
+
 function getListOrderDateToday(){
     let order_date = App.getToday();
     $.ajax({
@@ -197,12 +196,12 @@ function getListOrderDateToday(){
                               <input hidden id="${orders[i].order_id}">
                               <td>${orders[i].order_id}</td>
                               <td>${orders[i].order_time}</td>
-                              <td><a value="${orders[i].order_id}" class="btn modalProduct">${orders[i].total_product.toLocaleString('vi', {
+                              <td class="text-right"><a value="${orders[i].order_id}" class="btn modalProduct">${orders[i].total_product.toLocaleString('vi', {
                     style: 'currency',
                     currency: 'VND'
                 })}</a></td>
-                              <td><a value="${orders[i].order_id}" class="btn modalTicket">${orders[i].total_ticket.toLocaleString('vi', {style: 'currency', currency: 'VND'})}</a></td>
-                              <td>${orders[i].total_price.toLocaleString('vi', {style: 'currency', currency: 'VND'})}</td>
+                              <td class="text-right"><a value="${orders[i].order_id}" class="btn modalTicket">${orders[i].total_ticket.toLocaleString('vi', {style: 'currency', currency: 'VND'})}</a></td>
+                              <td class="text-right">${orders[i].total_price.toLocaleString('vi', {style: 'currency', currency: 'VND'})}</td>
                               <td>${orders[i].member == null ? "None" : orders[i].member.member_name}</td>
                               <td>${orders[i].user.username}</td>
                         </tr>
