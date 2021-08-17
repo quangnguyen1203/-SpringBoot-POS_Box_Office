@@ -44,5 +44,10 @@ public class ScheduleServiceImpl implements ScheduleService {
         return scheduleRepository.searchBySchedule_date(schedule_date);
     }
 
+    @Override
+    public Optional<Schedule> findScheduleBySchedule_date(Date schedule_date) {
+        return scheduleRepository.findScheduleBySchedule_date(schedule_date);
+    }
+
 
 }

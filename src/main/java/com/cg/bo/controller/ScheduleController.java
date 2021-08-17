@@ -74,4 +74,9 @@ public class ScheduleController {
     public ResponseEntity<Schedule> getScheduleById(@PathVariable Long id){
         return new ResponseEntity<>(scheduleService.findById(id).get(), HttpStatus.OK);
     }
+
+    @GetMapping("/getByDate/{schedule_date}")
+    public ResponseEntity<Schedule> findScheduleByScheduleDate(@PathVariable Date schedule_date){
+        return new ResponseEntity<>(scheduleService.findScheduleBySchedule_date(schedule_date).get(), HttpStatus.OK);
+    }
 }

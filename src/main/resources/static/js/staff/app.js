@@ -518,28 +518,58 @@ function deleteTicketFromOrder(seatId){
 function checkChoosingSeat(){
     let schedule_id = $("#schedule").val();
     let username = $("#username-hidden").val();
-    $.ajax({
-        type: "GET",
-        url: `/show/allShows/${schedule_id}`
-    }).done((shows) => {
-        for (let i = 0; i < shows.length; i++) {
+    console.log(schedule_id);
+    if (schedule_id !== undefined){
+        $.ajax({
+            type: "GET",
+            url: `/show/allShows/${schedule_id}`
+        }).done((shows) => {
+            for (let i = 0; i < shows.length; i++) {
+                $.ajax({
+                    type: "GET",
+                    url: `/seat/getSeatsByRoom/${shows[i].room.room_id}`
+                }).done((seats) => {
+                    for (let j = 0; j < seats.length; j++) {
+                        if (seats[j].seatStatus.id === 2 && seats[j].user.username === username){
+                            deleteTicketFromOrder(seats[j].seat_id);
+                        }
+                    }
+                })
+            }
+        })
+    } else {
+        let schedule_date = App.getToday();
+
+        $.ajax({
+            type: "GET",
+            url: `/schedules/getByDate/${schedule_date}`
+        }).done((schedule) => {
+            console.log(schedule);
             $.ajax({
                 type: "GET",
-                url: `/seat/getSeatsByRoom/${shows[i].room.room_id}`
-            }).done((seats) => {
-                for (let j = 0; j < seats.length; j++) {
-                    if (seats[j].seatStatus.id === 2 && seats[j].user.username === username){
-                        deleteTicketFromOrder(seats[j].seat_id);
-                    }
+                url: `/show/allShows/${schedule.schedule_id}`
+            }).done((shows) => {
+                for (let i = 0; i < shows.length; i++) {
+                    $.ajax({
+                        type: "GET",
+                        url: `/seat/getSeatsByRoom/${shows[i].room.room_id}`
+                    }).done((seats) => {
+                        for (let j = 0; j < seats.length; j++) {
+                            if (seats[j].seatStatus.id === 2 && seats[j].user.username === username){
+                                deleteTicketFromOrder(seats[j].seat_id);
+                            }
+                        }
+                    })
                 }
             })
-        }
-    })
+        })
+    }
+
 }
 
 $("#searchFilmName").on("input", function (){
     if ($("#searchFilmName").val() === ""){
-        getCurrentShow();
+        getCurrentShowChangeTab();
     } else {
         searchFilmName();
     }
@@ -653,7 +683,7 @@ function getScheduleOfTicket(){
     $(".allItemProduct").html(content);
     $("#searchFilmName").on("input", function (){
         if ($("#searchFilmName").val() === ""){
-            getCurrentShow();
+            getCurrentShowChangeTab();
         } else {
             searchFilmName();
         }
@@ -1508,7 +1538,7 @@ $("#createToOrder").on("click",createOrder);
 
 $("#searchFilmName").on("input", function (){
     if ($("#searchFilmName").val() === ""){
-        getCurrentShow();
+        getCurrentShowChangeTab();
     } else {
         searchFilmName();
     }
@@ -1600,8 +1630,7 @@ $(".allProduct").on("click",getAllCategory)
 updateClassMember();
 
 $(".clearOrder").on("click", function (){
-    emptyOrder();
+    deleteOrder();
     checkChoosingSeat();
-    drawOrder();
 })
 
