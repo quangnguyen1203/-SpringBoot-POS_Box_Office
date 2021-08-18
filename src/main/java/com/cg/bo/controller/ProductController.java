@@ -54,6 +54,7 @@ public class ProductController {
     }
 
     @GetMapping("/createNewProduct")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ModelAndView createProductForm(){
         return new ModelAndView("dashboard/product/create");
     }
@@ -94,9 +95,11 @@ public class ProductController {
 
 
     @GetMapping("/hiddenProduct")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ModelAndView getAllProductHiddenPage() {
         return new ModelAndView("dashboard/product/hiddenList");
     }
+
     @GetMapping("/allHiddenProduct")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<Iterable<Product>> allHiddenProducts(){

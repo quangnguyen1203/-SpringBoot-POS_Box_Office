@@ -8,6 +8,7 @@ import com.cg.bo.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -29,6 +30,7 @@ public class FilmController {
 
     //listFilm
     @GetMapping("/listFilm")
+    @PreAuthorize("hasAnyAuthority('PROJECTION')")
     public ModelAndView listFilm(){
         return new ModelAndView("projection/film/list");
     }
@@ -58,6 +60,7 @@ public class FilmController {
 
     ///createFilm
     @GetMapping("/createFilm")
+    @PreAuthorize("hasAnyAuthority('PROJECTION')")
     public ModelAndView createFilm(){
         return new ModelAndView("projection/film/create");
     }

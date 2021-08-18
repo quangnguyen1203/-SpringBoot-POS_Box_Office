@@ -10,6 +10,7 @@ import com.cg.bo.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -32,6 +33,7 @@ public class ShowController {
     private RoomServiceImpl roomService;
 
     @GetMapping("/create")
+    @PreAuthorize("hasAnyAuthority('PROJECTION')")
     public ModelAndView showCreateShowForm(){
         return new ModelAndView("/projection/show/create");
     }
