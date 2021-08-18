@@ -17,6 +17,11 @@ public class Class {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long class_id;
     private String class_name;
+    private int percent_discount;
+
+    public Class(Long class_id) {
+        this.class_id = class_id;
+    }
 
     public Class(String class_name) {
         this.class_name = class_name;

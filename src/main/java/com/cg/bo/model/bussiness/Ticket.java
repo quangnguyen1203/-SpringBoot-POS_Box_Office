@@ -1,7 +1,9 @@
 package com.cg.bo.model.bussiness;
 
+import com.cg.bo.model.projection.Seat;
 import com.cg.bo.model.security.User;
 import com.cg.bo.model.projection.Show;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,10 +27,18 @@ public class Ticket {
     private Show show;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "seat_id")
+    private Seat seat;
 
-    @OneToOne
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
+
+
+    public Ticket(double price, Show show, Seat seat, Order order) {
+        this.price = price;
+        this.show = show;
+        this.seat = seat;
+        this.order = order;
+    }
 }

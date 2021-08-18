@@ -12,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "films")
+@Table(name = "products")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,6 @@ public class Product {
     private String product_name;
     private Long amount;
     private double price;
-    private String image;
     private String description;
 
     @JsonIgnore
@@ -33,38 +32,34 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    public Product(String product_name, Long amount, double price, String image, String description, Category category) {
+    public Product(String product_name, Long amount, double price, String description, Category category) {
         this.product_name = product_name;
         this.amount = amount;
         this.price = price;
-        this.image = image;
         this.description = description;
         this.category = category;
     }
 
-    public Product(String product_name, double price, String image, String description, Category category) {
+    public Product(String product_name, double price, String description, Category category) {
         this.product_name = product_name;
         this.price = price;
-        this.image = image;
         this.description = description;
         this.category = category;
     }
 
-    public Product(Long product_id, String product_name, Long amount, double price, String image, String description, Category category) {
+    public Product(Long product_id, String product_name, Long amount, double price, String description, Category category) {
         this.product_id = product_id;
         this.product_name = product_name;
         this.amount = amount;
         this.price = price;
-        this.image = image;
         this.description = description;
         this.category = category;
     }
 
-    public Product(String product_name, Long amount, double price, String image, String description, boolean isDelete, Category category) {
+    public Product(String product_name, Long amount, double price, String description, boolean isDelete, Category category) {
         this.product_name = product_name;
         this.amount = amount;
         this.price = price;
-        this.image = image;
         this.description = description;
         this.isDelete = isDelete;
         this.category = category;

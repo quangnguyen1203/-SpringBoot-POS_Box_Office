@@ -1,7 +1,6 @@
 package com.cg.bo.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -37,7 +36,7 @@ public class HomeController {
 
     @GetMapping("/login")
     public ModelAndView login() {
-        return new ModelAndView("login");
+        return new ModelAndView("/login/login");
     }
 
     @GetMapping(value="/logout")
@@ -46,21 +45,12 @@ public class HomeController {
         Cookie jwtCookieRemove = new Cookie("JWT", "");
         jwtCookieRemove.setMaxAge(0);
         response.addCookie(jwtCookieRemove);
-        return new ModelAndView("login");
+        return new ModelAndView("logincssjs");
     }
 
     @GetMapping("/register")
     public ModelAndView register() {
-        return new ModelAndView("register");
+        return new ModelAndView("/login/register");
     }
-
-//    @GetMapping("/admin")
-//    @PreAuthorize("hasAnyAuthority('USER_READ')")
-//    public ModelAndView admin(HttpServletRequest request) {
-//        ModelAndView modelAndView = new ModelAndView("admin");
-//        modelAndView.addObject("userInfo", getPrincipal());
-//        return modelAndView;
-//    }
-
 
 }

@@ -21,7 +21,10 @@ public class Visit {
     private Date rel_date;
     private Date exp_date;
 
-    @JsonIgnore
-    @Column(columnDefinition = "boolean default false")
-    private boolean isStatus;
+    @Column(columnDefinition = "boolean default true")
+    private boolean isActive;
+
+    @ManyToOne(targetEntity = Member.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "member_id")
+    private Member member;
 }
