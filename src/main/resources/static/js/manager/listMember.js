@@ -1,5 +1,7 @@
 App.getUser();
 
+$(".logout").on("click", App.logout);
+
 function getAllClass(){
     $.ajax({
         type: "GET",

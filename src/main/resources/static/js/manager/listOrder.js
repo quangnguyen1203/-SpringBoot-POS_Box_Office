@@ -1,5 +1,7 @@
 App.getUser();
 
+$(".logout").on("click", App.logout);
+
 function getListOrderDate(){
     let order_date  = $('#order_date').val();
     $.ajax({

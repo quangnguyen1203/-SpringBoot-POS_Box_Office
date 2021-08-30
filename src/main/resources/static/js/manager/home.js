@@ -1,5 +1,5 @@
 App.getUser();
-
+$(".logout").on("click", App.logout);
 function sumAdmit(){
     let month = App.getCurrentMonth();
     console.log(month)

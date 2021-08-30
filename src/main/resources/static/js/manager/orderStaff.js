@@ -1,4 +1,6 @@
-App.getUser()
+App.getUser();
+
+$(".logout").on("click", App.logout);
 
 function getByUserRoleStaff(){
     $.ajax({

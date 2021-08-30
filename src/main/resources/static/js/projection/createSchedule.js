@@ -1,5 +1,7 @@
 App.getUser();
 
+$(".logout").on("click", App.logout);
+
 function createSchedule(){
     let schedule_date = $("#schedule_date").val();
     let shows = [];

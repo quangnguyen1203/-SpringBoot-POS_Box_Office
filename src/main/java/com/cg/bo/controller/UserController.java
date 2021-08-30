@@ -7,7 +7,6 @@ import com.cg.bo.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,7 +27,7 @@ public class UserController {
     RoleServiceImpl roleService;
 
     private String getPrincipal() {
-        String userName = null;
+        String userName = "";
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (principal instanceof UserDetails) {
@@ -40,7 +39,6 @@ public class UserController {
     }
 
     @GetMapping("/create")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ModelAndView createForm(){
         return new ModelAndView("/dashboard/user/create");
     }
@@ -67,7 +65,6 @@ public class UserController {
     }
 
     @GetMapping("/list")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ModelAndView listUser(){
         return new ModelAndView("/dashboard/user/list");
     }

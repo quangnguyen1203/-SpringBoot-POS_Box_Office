@@ -1,4 +1,7 @@
 App.getUser();
+
+$(".logout").on("click", App.logout);
+
 function getAllProduct(){
     $.ajax({
         type: "GET",

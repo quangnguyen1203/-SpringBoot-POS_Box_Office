@@ -69,26 +69,26 @@ public class AppController {
     }
 
     @GetMapping("/allCategory")
-    @PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
+//    @PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
     public ResponseEntity<Iterable<Category>> allCategories(){
         return new ResponseEntity<>(categoryService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/allProduct")
-    @PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
+//    @PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
     public ResponseEntity<Iterable<Product>> allProducts(){
         return new ResponseEntity<>(productService.findAllByOrderByProduct_idDesc(), HttpStatus.OK);
     }
 
     @GetMapping("/menuProductByCategory/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
+//    @PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
     public ResponseEntity<Iterable<Product>> productResponseEntity(@PathVariable Long id){
         Iterable<Product> products = productService.findAllByCategoryCategory_id(id);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
     @GetMapping("/findProduct/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
+//    @PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
     public ResponseEntity<Product> findById(@PathVariable Long id){
         Product product = productService.findById(id).get();
         product.setAmount(1L);
@@ -96,7 +96,7 @@ public class AppController {
     }
 
     @PostMapping("/createNewMember")
-    @PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
+//    @PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
     public ResponseEntity<Member> createNewMember(@RequestBody Member member){
         Class aClass = classService.findById(1L).get();
         member.setAClass(aClass);
@@ -104,25 +104,25 @@ public class AppController {
     }
 
     @GetMapping("/searchMember/{string}")
-    @PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
+//    @PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
     public ResponseEntity<Iterable<Member>> searchByMember(@PathVariable String string){
         return new ResponseEntity<>(memberService.searchByAllMember(string), HttpStatus.OK);
     }
 
     @GetMapping("/chooseByMember/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
+//    @PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
     public ResponseEntity<Member> chooseByMember(@PathVariable Long id){
         return new ResponseEntity<>(memberService.findById(id).get(),HttpStatus.OK);
     }
 
     @GetMapping("/allSchedules")
-    @PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
+//    @PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
     public ResponseEntity<Iterable<Schedule>> allSchedule(){
         return new ResponseEntity<>(scheduleService.findAllByOrOrderBySchedule_dateAsc(),HttpStatus.OK);
     }
 
     @PostMapping("/saveOrder")
-    @PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
+//    @PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
     public ResponseEntity<Order> saveOrder(@RequestBody Order order){
         String username = getPrincipal();
         User user = userService.findByName(username);
@@ -132,19 +132,19 @@ public class AppController {
     }
 
     @PostMapping("/saveOrderDetail")
-    @PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
+//    @PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
     public ResponseEntity<OrderDetail> saveOrderDetail(@RequestBody OrderDetail orderDetail){
         return new ResponseEntity<>(orderDetailService.save(orderDetail),HttpStatus.CREATED);
     }
 
     @PostMapping("/saveTicket")
-    @PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
+//    @PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
     public ResponseEntity<Ticket> saveTicket(@RequestBody Ticket ticket){
         return new ResponseEntity<>(ticketService.save(ticket),HttpStatus.CREATED);
     }
 
     @PutMapping("/setTakenSeat/{seatId}")
-    @PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
+//    @PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
     public ResponseEntity<Seat> setTakenSeat(@PathVariable Long seatId){
         Seat seat = seatService.findById(seatId).get();
         if (seat.getSeatStatus().getId() == 2) {
@@ -152,4 +152,13 @@ public class AppController {
         }
         return new ResponseEntity<>(seatService.save(seat), HttpStatus.OK);
     }
+
+    @PostMapping("/saveOrder/{username}")
+    public ResponseEntity<Order> saveOrder(@RequestBody Order order, @PathVariable String username){
+        User user = userService.findByName(username);
+        order.setUser(user);
+        orderService.save(order);
+        return new ResponseEntity<>(order, HttpStatus.CREATED);
+    }
+
 }

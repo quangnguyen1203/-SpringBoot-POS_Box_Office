@@ -1,5 +1,6 @@
 App.getUser();
 
+$(".logout").on("click", App.logout);
 
 function getSchedules() {
     $.ajax({

@@ -1,5 +1,7 @@
 App.getUser();
 
+$(".logout").on("click", App.logout);
+
 let singleUploadForm = document.querySelector('#singleUploadForm');
 let singleFileUploadInput = document.querySelector('#singleFileUploadInput');
 

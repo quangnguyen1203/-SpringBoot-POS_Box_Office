@@ -1,5 +1,7 @@
 App.getUser();
 
+$(".logout").on("click", App.logout);
+
 function editFilm(){
     let arr = $(location).attr('href').split("/");
     let film_id = arr[arr.length -1];

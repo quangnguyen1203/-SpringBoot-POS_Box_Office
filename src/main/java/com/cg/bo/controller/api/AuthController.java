@@ -18,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/api")
@@ -36,8 +37,12 @@ public class AuthController {
         return userService.createUser(user);
     }
 
+
     @PostMapping("/login")
-    public ResponseEntity<?> login(HttpServletRequest request, @RequestBody User user) {
+    public ResponseEntity<?> login(HttpServletRequest request, HttpServletResponse response, @RequestBody User user) {
+
+//        response.setHeader("Access-Control-Allow-Origin", "*");
+//        response.setHeader("Access-Control-Allow-Methods", "GET,POST,DELETE,PUT,OPTIONS");
 
         UserPrincipal userPrincipal = userService.findByUsername(user.getUsername());
         if (!new BCryptPasswordEncoder().matches(user.getPassword(), userPrincipal.getPassword())) {
@@ -81,6 +86,4 @@ public class AuthController {
     public ResponseEntity<Iterable<User>> getAllUser() {
         return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }
-
-
 }

@@ -1,5 +1,7 @@
 App.getUser();
 
+$(".logout").on("click", App.logout);
+
 let order = {
     total_price: 0,
     order_time: 0,
@@ -1355,7 +1357,7 @@ function createOrder(){
                     },
                     type: "POST",
                     data: JSON.stringify(newOrder),
-                    url: "/app/saveOrder"
+                    url: `/app/saveOrder/${newUser.username}`
                 }).done((resp) => {
 
                     for (let i = 0; i < order.products.length ; i++) {
@@ -1429,7 +1431,7 @@ function createOrder(){
                     },
                     type: "POST",
                     data: JSON.stringify(newOrder),
-                    url: "/app/saveOrder"
+                    url: `/app/saveOrder/${newUser.username}`
                 }).done((resp) => {
                     for (let i = 0; i < order.products.length ; i++) {
                         let newOrderDetail = {

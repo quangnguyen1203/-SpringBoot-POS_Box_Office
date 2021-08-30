@@ -92,8 +92,6 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-
-
     @GetMapping("/hiddenProduct")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ModelAndView getAllProductHiddenPage() {
@@ -101,7 +99,7 @@ public class ProductController {
     }
 
     @GetMapping("/allHiddenProduct")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+//    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<Iterable<Product>> allHiddenProducts(){
         return new ResponseEntity<>(productService.findAllProduct_idDesc(), HttpStatus.OK);
     }

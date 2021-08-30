@@ -1,5 +1,7 @@
 App.getUser();
 
+$(".logout").on("click", App.logout);
+
 function createMember(){
     let member_name = $("#member_name").val();
     let phoneNumber = $("#phoneNumber").val();
