@@ -29,6 +29,6 @@ public class ManagerController {
     @GetMapping
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ModelAndView homePage() {
-        return new ModelAndView("dashboard/home");
+        return new ModelAndView("/dashboard/home");
     }
 }
