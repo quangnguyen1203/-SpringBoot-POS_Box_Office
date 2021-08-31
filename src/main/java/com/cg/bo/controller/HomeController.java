@@ -36,7 +36,7 @@ public class HomeController {
 
     @GetMapping("/login")
     public ModelAndView login() {
-        return new ModelAndView("login/login");
+        return new ModelAndView("/login/login");
     }
 
     @GetMapping(value="/logout")
@@ -50,7 +50,7 @@ public class HomeController {
 
     @GetMapping("/register")
     public ModelAndView register() {
-        return new ModelAndView("login/register");
+        return new ModelAndView("/login/register");
     }
 
 }

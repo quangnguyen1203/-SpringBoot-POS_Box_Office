@@ -39,7 +39,7 @@ public class UserController {
 
     @GetMapping("/create")
     public ModelAndView createForm(){
-        return new ModelAndView("dashboard/user/create");
+        return new ModelAndView("/dashboard/user/create");
     }
 
     @GetMapping("/getUser")
@@ -49,7 +49,7 @@ public class UserController {
 
     @GetMapping("/user-deleted")
     public ModelAndView getDeletedUsersForm(){
-        return new ModelAndView("dashboard/user/deleted");
+        return new ModelAndView("/dashboard/user/deleted");
     }
 
     @PostMapping("/create")
@@ -65,7 +65,7 @@ public class UserController {
 
     @GetMapping("/list")
     public ModelAndView listUser(){
-        return new ModelAndView("dashboard/user/list");
+        return new ModelAndView("/dashboard/user/list");
     }
 
     @GetMapping("/getListUser")
