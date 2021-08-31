@@ -146,17 +146,17 @@ class App {
         window.location.href = "https://pos-box-office-cinema.herokuapp.com/login";
     }
 
-    static getUser(){
-        if (parseJwt(getCookie("JWT")).user.authorities[0] !== "STAFF") {
-            window.location.href = "http://localhost:5000/403"
-        } else if (parseJwt(getCookie("JWT")).user.authorities[0] === "STAFF"){
-            let user = parseJwt(getCookie("JWT")).user;
-            $("#user").html(`${user.username}`);
-            $("#username-hidden").val(user.username);
-        } else  {
-            window.location.href = "http://localhost:5000/";
-        }
-    }
+    // static getUser(){
+    //     if (parseJwt(getCookie("JWT")).user.authorities[0] !== "STAFF") {
+    //         window.location.href = "http://localhost:5000/403"
+    //     } else if (parseJwt(getCookie("JWT")).user.authorities[0] === "STAFF"){
+    //         let user = parseJwt(getCookie("JWT")).user;
+    //         $("#user").html(`${user.username}`);
+    //         $("#username-hidden").val(user.username);
+    //     } else  {
+    //         window.location.href = "http://localhost:5000/";
+    //     }
+    // }
 
     static getCookie(cname) {
         let name = cname + "=";
