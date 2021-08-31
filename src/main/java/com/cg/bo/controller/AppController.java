@@ -65,7 +65,7 @@ public class AppController {
     @GetMapping
     @PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
     public ModelAndView pageApp(){
-        return new ModelAndView("/app/app");
+        return new ModelAndView("app/app");
     }
 
     @GetMapping("/allCategory")
