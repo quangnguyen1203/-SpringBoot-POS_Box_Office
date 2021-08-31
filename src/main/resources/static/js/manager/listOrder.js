@@ -17,21 +17,22 @@ function getListOrderDate(){
              <tr id="row${orders[i].order_id}">
                               <input hidden id="${orders[i].order_id}">
                               <td>${orders[i].order_id}</td>
-                              <td>${orders[i].order_time}</td>
+                              <td class="text-center">${orders[i].order_time}</td>
                               <td class="text-right"><a value="${orders[i].order_id}" class="btn modalProduct">${orders[i].total_product.toLocaleString('vi', {
                     style: 'currency',
                     currency: 'VND'
                 })}</a></td>
                               <td class="text-right"><a value="${orders[i].order_id}" class="btn modalTicket">${orders[i].total_ticket.toLocaleString('vi', {style: 'currency', currency: 'VND'})}</a></td>
                               <td class="text-right">${orders[i].total_price.toLocaleString('vi', {style: 'currency', currency: 'VND'})}</td>
-                              <td>${orders[i].member == null ? "None" : orders[i].member.member_name}</td>
-                              <td>${orders[i].user.username}</td>
+                              <td class="text-center">${orders[i].member == null ? "None" : orders[i].member.member_name}</td>
+                              <td class="text-center">${orders[i].user.username}</td>
                         </tr>
                         
             `;
             }
         }
         $("#orderList tbody").html(content);
+
         $('.modalProduct').on("click", function () {
             let id = $(this).attr('value');
             getTotalProduct(id);
@@ -66,12 +67,12 @@ function getTotalAllPrice(){
             <tr>
                 <td colspan="5"><strong>Tống số vé bán ra trong ngày:</strong></td>
                 <td></td>
-                <td colspan="2"><strong>${amountTicket}</strong></td>
+                <td colspan="2" class="text-right"><strong>${amountTicket}</strong></td>
             </tr>
             <tr>
                 <td colspan="5"><strong>Tống doanh thu trong ngày:</strong></td>
                 <td></td>
-                <td colspan="2"><strong>${totalMoney.toLocaleString('vi', {style: 'currency', currency: 'VND'})}</strong></td>
+                <td colspan="2" class="text-right"><strong>${totalMoney.toLocaleString('vi', {style: 'currency', currency: 'VND'})}</strong></td>
             </tr>
             `;
             }
@@ -91,14 +92,14 @@ function getTotalProduct(id) {
             content += `
                         <tr>
                             <td>${products[i].product_name}</td>
-                            <td>${products[i].product_amount}</td>
-                            <td>${products[i].price.toLocaleString('vi', {style: 'currency', currency: 'VND'})}</td>
+                            <td class="text-center">${products[i].product_amount}</td>
+                            <td class="text-right">${products[i].price.toLocaleString('vi', {style: 'currency', currency: 'VND'})}</td>
                         </tr> 
         `;
             content1 =`
                      <tr>
-                      <td colspan="2">Tổng giá vé</td>
-                      <td>${products[i].order.total_product}</td>
+                      <td colspan="2"><strong>Tổng giá vé</strong></td>
+                      <td class="text-right"><strong>${products[i].order.total_product.toLocaleString('vi', {style: 'currency', currency: 'VND'})}</strong></td>
                     </tr>
             `
         }
@@ -126,8 +127,8 @@ function getTotalTicket(id){
          `;
             content1 =`
                      <tr>
-                      <td colspan="3">Tổng giá vé</td>
-                      <td>${tickets[i].order.total_ticket}</td>
+                      <td colspan="3"><strong>Tổng giá vé</strong></td>
+                      <td class="text-right"><strong>${tickets[i].order.total_ticket.toLocaleString('vi', {style: 'currency', currency: 'VND'})}</strong></td>
                     </tr>
             `
         }
@@ -170,14 +171,14 @@ function getListOrderDateToday(){
                 totalMoney += orders[i].total_price;
                 content = `
             <tr>
-                <td colspan="5">Tống số vé bán ra trong ngày</td>
+                <td colspan="5"><strong>Tống số vé bán ra trong ngày</strong></td>
                 <td></td>
-                <td colspan="2">${amountTicket}</td>
+                <td colspan="2" class="text-right"><strong>${amountTicket}</strong></td>
             </tr>
             <tr>
-                <td colspan="5">Tống tiền trong ngày</td>
+                <td colspan="5"><strong>Tống tiền trong ngày</strong></td>
                 <td></td>
-                <td colspan="2">${totalMoney.toLocaleString('vi', {style: 'currency', currency: 'VND'})}</td>
+                <td colspan="2" class="text-right"><strong>${totalMoney.toLocaleString('vi', {style: 'currency', currency: 'VND'})}</strong></td>
             </tr>
             `;
             }
@@ -197,21 +198,22 @@ function getListOrderDateToday(){
              <tr id="row${orders[i].order_id}">
                               <input hidden id="${orders[i].order_id}">
                               <td>${orders[i].order_id}</td>
-                              <td>${orders[i].order_time}</td>
+                              <td class="text-center">${orders[i].order_time}</td>
                               <td class="text-right"><a value="${orders[i].order_id}" class="btn modalProduct">${orders[i].total_product.toLocaleString('vi', {
                     style: 'currency',
                     currency: 'VND'
                 })}</a></td>
                               <td class="text-right"><a value="${orders[i].order_id}" class="btn modalTicket">${orders[i].total_ticket.toLocaleString('vi', {style: 'currency', currency: 'VND'})}</a></td>
                               <td class="text-right">${orders[i].total_price.toLocaleString('vi', {style: 'currency', currency: 'VND'})}</td>
-                              <td>${orders[i].member == null ? "None" : orders[i].member.member_name}</td>
-                              <td>${orders[i].user.username}</td>
+                              <td class="text-center">${orders[i].member == null ? "None" : orders[i].member.member_name}</td>
+                              <td class="text-center">${orders[i].user.username}</td>
                         </tr>
                         
             `;
             }
         }
         $("#orderList tbody").html(content);
+
         $('.modalProduct').on("click", function () {
             let id = $(this).attr('value');
             getTotalProduct(id);

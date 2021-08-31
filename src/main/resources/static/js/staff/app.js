@@ -1636,3 +1636,7 @@ $(".clearOrder").on("click", function (){
     checkChoosingSeat();
 })
 
+$(document).ready( function () {
+    $('#myTable').DataTable();
+} );
+
