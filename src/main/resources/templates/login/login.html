@@ -69,11 +69,11 @@
             // App.showSuccessAlert("Đăng nhập thành công!");
             // console.log(user);
             if  (user.roles[0].authority === "ADMIN"){
-                window.location.href = "/admin";
+                window.location.href = "admin";
             } else if (user.roles[0].authority === "PROJECTION"){
-                window.location.href = "/projection";
+                window.location.href = "projection";
             } else {
-                window.location.href = "/app";
+                window.location.href = "app";
             }
         }).fail(() => {
             App.showErrorAlert("Đã xảy ra lỗi. Vui lòng kiểm tra tên đăng nhập hoặc mật khẩu!");
