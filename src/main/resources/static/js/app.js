@@ -146,44 +146,6 @@ class App {
         window.location.href = "https://pos-box-office-cinema.herokuapp.com/login";
     }
 
-    // static getUser(){
-    //     if (parseJwt(getCookie("JWT")).user.authorities[0] !== "STAFF") {
-    //         window.location.href = "http://localhost:5000/403"
-    //     } else if (parseJwt(getCookie("JWT")).user.authorities[0] === "STAFF"){
-    //         let user = parseJwt(getCookie("JWT")).user;
-    //         $("#user").html(`${user.username}`);
-    //         $("#username-hidden").val(user.username);
-    //     } else  {
-    //         window.location.href = "http://localhost:5000/";
-    //     }
-    // }
-
-    static getCookie(cname) {
-        let name = cname + "=";
-        let decodedCookie = decodeURIComponent(document.cookie);
-        let ca = decodedCookie.split(';');
-        for(let i = 0; i <ca.length; i++) {
-            let c = ca[i];
-            while (c.charAt(0) == ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(name) == 0) {
-                return c.substring(name.length, c.length);
-            }
-        }
-        return "";
-    }
-
-    static parseJwt (token) {
-        let base64Url = token.split('.')[1];
-        let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        let jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
-
-        return JSON.parse(jsonPayload);
-    };
-
     static setCookie(cName, cValue) {
         const d = new Date();
         d.setTime(d.getTime() + (24*60*60*1000));
