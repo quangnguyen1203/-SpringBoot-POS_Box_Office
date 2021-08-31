@@ -65,4 +65,16 @@ public class SeatController {
         return new ResponseEntity<>(seatService.save(seat), HttpStatus.OK);
     }
 
+    @PutMapping("/selectSeatById/{id}/{username}")
+    public ResponseEntity<Seat> selectSeatById(@PathVariable Long id, @PathVariable String username){
+        Seat seat = seatService.findById(id).get();
+        if (seat.getSeatStatus().getId() == 1L){
+            seat.getSeatStatus().setId(2L);
+        }
+        else if (seat.getSeatStatus().getId() == 2L && username.equals(seat.getUser().getUsername())){
+            seat.getSeatStatus().setId(1L);
+        }
+        seat.setUser(userService.findByName(username));
+        return new ResponseEntity<>(seatService.save(seat), HttpStatus.OK);
+    }
 }

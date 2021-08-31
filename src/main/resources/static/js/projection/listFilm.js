@@ -1,3 +1,7 @@
+App.getUser();
+
+$(".logout").on("click", App.logout);
+
 function checkAvailable(){
     $.ajax({
         type: "GET",

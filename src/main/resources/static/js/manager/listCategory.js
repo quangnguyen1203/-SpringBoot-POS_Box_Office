@@ -1,4 +1,7 @@
 App.getUser();
+
+$(".logout").on("click", App.logout);
+
 function getAllCategory(){
         $.ajax({
             type: "GET",

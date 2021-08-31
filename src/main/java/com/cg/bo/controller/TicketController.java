@@ -5,6 +5,7 @@ import com.cg.bo.service.impl.TicketServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,12 +19,14 @@ public class TicketController {
 
 
     @GetMapping("/allTicket")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<Iterable<Ticket>> allTicket(){
         Iterable<Ticket> findAllTicket = ticketService.findAll();
         return new ResponseEntity<>(findAllTicket, HttpStatus.OK);
     }
 
     @GetMapping("/allTicketByOder/{ticket_id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<Iterable<Ticket>> listTicketBy(@PathVariable Long ticket_id){
         Iterable<Ticket> findAllTicket = ticketService.findAllByTicket(ticket_id);
         return new ResponseEntity<>(findAllTicket, HttpStatus.OK);

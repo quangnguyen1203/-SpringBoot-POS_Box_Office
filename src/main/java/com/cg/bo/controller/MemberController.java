@@ -42,7 +42,7 @@ public class MemberController {
     }
 
     @GetMapping("/allMember")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
+//    @PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
     public ResponseEntity<Iterable<Member>> allMembers(){
         return new ResponseEntity<>(memberService.findAll(), HttpStatus.OK);
     }

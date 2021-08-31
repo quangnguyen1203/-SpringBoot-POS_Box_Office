@@ -1,6 +1,5 @@
 package com.cg.bo.controller;
 
-import com.cg.bo.model.bussiness.Product;
 import com.cg.bo.security.UserPrincipal;
 import com.cg.bo.service.impl.RoleServiceImpl;
 import com.cg.bo.service.impl.UserServiceImpl;
@@ -27,7 +26,7 @@ public class UserController {
     RoleServiceImpl roleService;
 
     private String getPrincipal() {
-        String userName = null;
+        String userName = "";
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (principal instanceof UserDetails) {
@@ -69,10 +68,16 @@ public class UserController {
         return new ModelAndView("/dashboard/user/list");
     }
 
+    @GetMapping("/getListUser")
+    public ResponseEntity<Iterable<com.cg.bo.model.security.User>> getListUser(){
+        return new ResponseEntity<>(userService.findAll(),HttpStatus.OK);
+    }
+
     @GetMapping("/listUsers")
     public ResponseEntity<Iterable<com.cg.bo.model.security.User>> listUsers(){
         return new ResponseEntity<>(userService.findAllByDeletedFalse(),HttpStatus.OK);
     }
+
 
     @PostMapping("/delete/{id}")
     public ResponseEntity<com.cg.bo.model.security.User> deleteUserById(@PathVariable Long id){

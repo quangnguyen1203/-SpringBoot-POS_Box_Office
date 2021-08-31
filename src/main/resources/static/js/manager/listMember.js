@@ -1,5 +1,7 @@
 App.getUser();
 
+$(".logout").on("click", App.logout);
+
 function getAllClass(){
     $.ajax({
         type: "GET",
@@ -25,9 +27,9 @@ function getAllMember(){
             content += `
                         <tr id="row${member[i].member_id}">
                               <td>${member[i].member_name}</td>
-                              <td>${member[i].phoneNumber}</td>
-                              <td>${member[i].email}</td>
-                              <td>${member[i].aclass.class_name}</td>
+                              <td class="text-center">${member[i].phoneNumber}</td>
+                              <td class="text-center">${member[i].email}</td>
+                              <td class="text-center">${member[i].aclass.class_name}</td>
                               <td class="text-center">
                                 <button value="${member[i].member_id}" class="btn btn-outline-primary mr-2 edit-button" ><i class="far fa-edit"></i>Sửa</button>
                                 <button value="${member[i].member_id}" class="btn btn-outline-danger delete-button" ><i class="fas fa-trash-alt"></i>Xóa</button>

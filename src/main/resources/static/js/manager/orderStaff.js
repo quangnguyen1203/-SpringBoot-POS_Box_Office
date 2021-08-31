@@ -1,4 +1,6 @@
-App.getUser()
+App.getUser();
+
+$(".logout").on("click", App.logout);
 
 function getByUserRoleStaff(){
     $.ajax({
@@ -35,11 +37,11 @@ function searchByStaffName(){
             if(orders[i].order_date === order_date){
                 total += orders[i].total_price
                 content += `
-                    <tr>
+                    <tr class="text-center">
                         <td>${orders[i].order_id}</td>
                         <td>${orders[i].order_date}</td>
                         <td>${orders[i].order_time}</td>
-                        <td>${orders[i].total_price.toLocaleString('vi', {style : 'currency', currency : 'VND'})}</td>
+                        <td class="text-right">${orders[i].total_price.toLocaleString('vi', {style : 'currency', currency : 'VND'})}</td>
                         <td>${orders[i].user.username}</td>
                     </tr>
                   
@@ -49,7 +51,7 @@ function searchByStaffName(){
         content1 += `
             <tr>
                 <td colspan="4"><strong>Tổng doanh thu của nhân viên:</strong></td>
-                <td><strong>${total.toLocaleString('vi', {style : 'currency', currency : 'VND'})}</strong></td>
+                <td class="text-right"><strong>${total.toLocaleString('vi', {style : 'currency', currency : 'VND'})}</strong></td>
             </tr>        
         `;
 

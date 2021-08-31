@@ -1,5 +1,7 @@
 App.getUser();
 
+$(".logout").on("click", App.logout);
+
 //Tạo tài khoản
 
 function user(){
@@ -28,7 +30,20 @@ function user(){
             $("#create-form")[0].reset();
             App.showSuccessAlert("Đăng ký thành công!");
         }).fail(()=>{
-            App.showErrorAlert("Có lỗi đã xảy ra, vui lòng kiểm tra lại!")
+            $.ajax({
+                type: "GET",
+                url: "/user/getListUser"
+            }).done(function (users) {
+                for (let i = 0; i < users.length; i++) {
+                    if (users[i].username === user.username){
+                        App.showErrorAlert("Tên tài khoản đã bị trùng. Vui lòng kiểm tra lại!");
+                    } else if (users[i].phone === user.phone){
+                        App.showErrorAlert("Số diện thoại đã bị trùng. Vui lòng kiểm tra lại!");
+                    } else if (users[i].email === user.email){
+                        App.showErrorAlert("Email đã bị trùng. Vui lòng kiểm tra lại!");
+                    }
+                }
+            })
         })
     }
 }
