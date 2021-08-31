@@ -2,7 +2,7 @@
 <html lang="en"  xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>HOME</title>
-  <div th:replace="/dashboard/layout/head::resources"></div>
+  <div th:replace="dashboard/layout/head::resources"></div>
   <link rel="stylesheet" href="https://www.cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css" />
 
 
@@ -10,7 +10,7 @@
 <body>
 <!-- Begin page -->
 <div id="wrapper">
-  <div th:replace="/dashboard/layout/side-bar::side-bar"></div>
+  <div th:replace="dashboard/layout/side-bar::side-bar"></div>
   <!-- ============================================================== -->
   <!-- Start Page Content here -->
   <!-- ============================================================== -->
@@ -109,7 +109,7 @@
   <!-- ============================================================== -->
 </div>
 <!-- END wrapper -->
-<div th:replace="/dashboard/layout/script::script"></div>
+<div th:replace="dashboard/layout/script::script"></div>
 </body>
 
 <script src="/js/manager/home.js"></script>
