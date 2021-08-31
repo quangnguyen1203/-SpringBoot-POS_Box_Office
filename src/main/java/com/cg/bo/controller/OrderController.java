@@ -37,7 +37,7 @@ public class OrderController {
     @GetMapping("/listOrder")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ModelAndView ListOrder(){
-        return new ModelAndView("dashboard/order/listOrder");
+        return new ModelAndView("/dashboard/order/listOrder");
     }
 
     @GetMapping("/allOrder")
@@ -59,7 +59,7 @@ public class OrderController {
     @GetMapping("/listOrderByStaff")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ModelAndView listOrderByStaff(){
-        return new ModelAndView("dashboard/order/listStaffDetail");
+        return new ModelAndView("/dashboard/order/listStaffDetail");
     }
 
     @GetMapping("/findByStaff/{id}")
