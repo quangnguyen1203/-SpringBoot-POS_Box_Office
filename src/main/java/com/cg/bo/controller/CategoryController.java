@@ -23,7 +23,7 @@ public class CategoryController {
     @GetMapping("/")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ModelAndView homePage() {
-        return new ModelAndView("/dashboard/category/list");
+        return new ModelAndView("dashboard/category/list");
     }
 
     @GetMapping("/allCategory")

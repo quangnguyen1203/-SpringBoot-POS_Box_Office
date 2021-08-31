@@ -50,7 +50,7 @@ public class HomeController {
 
     @GetMapping("/register")
     public ModelAndView register() {
-        return new ModelAndView("/login/register");
+        return new ModelAndView("login/register");
     }
 
 }
