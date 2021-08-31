@@ -3,7 +3,7 @@
 
 <head>
     <title>HOME</title>
-    <div th:replace="/dashboard/layout/head::resources"></div>
+    <div th:replace="dashboard/layout/head::resources"></div>
     <style>
         .error{
             color: red;
@@ -19,7 +19,7 @@
 <!-- Begin page -->
 <div id="wrapper">
 
-    <div th:replace="/dashboard/layout/side-bar::side-bar"></div>
+    <div th:replace="dashboard/layout/side-bar::side-bar"></div>
 
     <!-- ============================================================== -->
     <!-- Start Page Content here -->
@@ -83,7 +83,7 @@
 </div>
 
 </body>
-<div th:replace="/dashboard/layout/script::script"></div>
+<div th:replace="dashboard/layout/script::script"></div>
 
 <script src="/js/manager/createProduct.js"></script>
 </html>

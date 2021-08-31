@@ -3,14 +3,14 @@
 
 <head>
     <title>HOME</title>
-    <div th:replace="/dashboard/layout/head::resources"></div>
+    <div th:replace="dashboard/layout/head::resources"></div>
 </head>
 
 <body>
 
 <!-- Begin page -->
 <div id="wrapper">
-    <div th:replace="/dashboard/layout/side-bar::side-bar"></div>
+    <div th:replace="dashboard/layout/side-bar::side-bar"></div>
 
   <!-- ============================================================== -->
   <!-- Start Page Content here -->
@@ -34,7 +34,7 @@
         <!-- end page title -->
 
         <!-- create category-->
-        <div th:replace="/dashboard/category/create::createCategory"></div>
+        <div th:replace="dashboard/category/create::createCategory"></div>
         <!--end create category-->
         <div class="row">
           <div class="col-12">
@@ -81,9 +81,9 @@
 
 </div>
 <!-- END wrapper -->
-<div th:replace="/dashboard/layout/editModalCategory::editModalCategory"></div>
+<div th:replace="dashboard/layout/editModalCategory::editModalCategory"></div>
 </body>
-<div th:replace="/dashboard/layout/script::script"></div>
+<div th:replace="dashboard/layout/script::script"></div>
 
 <script src="/js/manager/listCategory.js">
 </script>
