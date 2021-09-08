@@ -2,7 +2,6 @@ App.getUser();
 $(".logout").on("click", App.logout);
 function sumAdmit(){
     let month = App.getCurrentMonth();
-    console.log(month)
     $.ajax({
         type: "GET",
         url: `/orders/monthlyAdmit/${month}`
