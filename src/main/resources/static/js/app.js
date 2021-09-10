@@ -81,6 +81,13 @@ class App {
             return `${yyyy}-${mm}-${dd}`;
     }
 
+    static getCurrentMonthAndYear(){
+        let today = new Date();
+        let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        let yyyy = today.getFullYear();
+        return `${yyyy}-${mm}`;
+    }
+
     static addDays(date, days) {
         let result = new Date(date);
         result.setDate(result.getDate() + days);
@@ -142,8 +149,8 @@ class App {
 
     static logout(){
         document.cookie = 'JWT' +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-        // window.location.href = "http://localhost:8080/login";
-        window.location.href = "https://pos-box-office-cinema.herokuapp.com/login";
+        window.location.href = "http://localhost:8080/login";
+        // window.location.href = "https://pos-box-office-cinema.herokuapp.com/login";
     }
 
     static setCookie(cName, cValue) {

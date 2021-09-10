@@ -11,4 +11,6 @@ public interface ScheduleService extends GeneralService<Schedule>{
     Iterable<Schedule> searchBySchedule_date(String schedule_date);
 
     Optional<Schedule> findScheduleBySchedule_date(Date schedule_date);
+
+    Iterable<Schedule> findScheduleByMonthAndYear(String schedule_date);
 }

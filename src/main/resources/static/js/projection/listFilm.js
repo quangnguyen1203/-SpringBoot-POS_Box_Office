@@ -24,7 +24,7 @@ function getAllFilm(){
                                     </div>
                                     <div class="col p-4 d-flex flex-column position-static">
                                     
-                                        <div class="btn buttonStatus ${films[i].status ? "btn" : "btn-secondary" }">${films[i].status ?'':"Phim đã hết hạn"}</div>
+                                        <div class="btn buttonStatus ${films[i].status ? "btn-primary" : "btn-secondary" }">${films[i].status ?'Active':"Inactive"}</div>
                                     
                                         <div>
                                         <h4 class="mb-5"><b>${films[i].film_name}</b></h4>
@@ -40,7 +40,7 @@ function getAllFilm(){
                                            <strong>Lượt xem: ${films[i].admit}</strong></br>
                                         </p>
                                         <a href="/films/edit-form/${films[i].film_id}" value="${films[i].film_id}" type="submit" class="edit-button">
-                                        <i class="edit-button" style="color: #0a53be">Chi tiết</i></a>
+                                        <i class="edit-button" style="color: #0a53be">Chỉnh sửa</i></a>
                                         </a> 
                                     </div>
                              
