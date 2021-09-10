@@ -37,7 +37,6 @@ function getSchedules(){
         $("#schedule").on("change",function (){
             // let id = $('option:selected',this).attr("value");
             let id = $("#schedule option:selected").attr('value');
-            console.log(id);
             getShows(id)
         })
         getCurrentShow();
@@ -179,6 +178,7 @@ function getCurrentShow(){
                 type: "GET",
                 url: `/show/allActiveShowsToday/${schedule.schedule_id}`
             }).done((shows) => {
+                console.log(shows);
                 let content =``;
                 for (let i = 0; i < shows.length; i++) {
                     content += `
@@ -281,6 +281,62 @@ function getCurrentShow(){
     })
 }
 
+function getCurrentShowChangeTab(){
+    let id = $("#schedule").val();
+    $.ajax({
+        type: "GET",
+        url: `/schedules/${id}`
+    }).done((schedule) =>{
+        if (schedule.schedule_date === App.getToday()){
+            $.ajax({
+                type: "GET",
+                url: `/show/allActiveShowsToday/${schedule.schedule_id}`
+            }).done((shows) => {
+                let content =``;
+                for (let i = 0; i < shows.length; i++) {
+                    content += `
+                        <div class="col-md-4 mb-3" >
+                            <div class="rounded card h-40 text-dark" >
+                                <div class="d-flex flex-column h-70 p-2 pb-3 text-shadow-1">
+                                    <div class="mb-1">
+                                        <h4 class="fw-bold" style="width: 250px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis">${shows[i].film.film_name}</h4>
+                                        <p class="text-muted">${schedule.schedule_date} ${shows[i].time_start}</p>
+                                        <p class="badge ${(shows[i].status) ? 'bg-success text-white' : 'bg-danger text-white'}">${shows[i].status ? 'ACTIVE' : 'IN-ACTIVE'}</p>   
+                                    </div>
+                                    <ul class="d-flex list-unstyled mt-3">
+                                        <li class="me-auto">
+                                            <button class="btn btn-outline-warning showSeats" value="${shows[i].room.room_id}"><i class="fas fa-plus"></i></button></li>
+
+                                        <li class="d-flex align-items-center">
+                                            <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"/></svg>
+                                            <span id="admit${shows[i].room.room_id}" class="admit" value="${shows[i].room.room_id}"></span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                $("#menuProduct").html(content);
+                $(".showSeats").on("click", function (){
+                    let roomId = $(this).val();
+                    showListSeats(roomId);
+                })
+                for (let i =0; i < shows.length; i++){
+                    $.ajax({
+                        type: "GET",
+                        url: `/seat/getSeatsByRoom/${shows[i].room.room_id}`
+                    }).done((seats) =>{
+                        $(`#admit${shows[i].room.room_id}`).html(`
+                            <p>${App.countTakenSeat(seats)}/100</p>
+                        `)
+                    })
+                }
+            })
+        }
+    })
+}
+
 function searchFilmName(){
     let schedule_id = $("#schedule").val();
     let film_name = $("#searchFilmName").val();
@@ -289,7 +345,6 @@ function searchFilmName(){
         type: "GET",
         url: `/show/searchShow/${schedule_id}/${film_name}`
     }).done((shows) => {
-        console.log(shows);
         let content ="";
         for (let i = 0; i < shows.length; i++) {
             content += `
@@ -482,7 +537,6 @@ function selectSeat(seatId){
         type: "PUT",
         url: `/seat/selectSeatById/${seatId}`
     }).done((seat) => {
-        console.log(seat)
         showListSeats(seat.room.room_id);
         if (seat.seatStatus.id === 2){
             $.ajax({
@@ -520,7 +574,6 @@ function deleteTicketFromOrder(seatId){
 function checkChoosingSeat(){
     let schedule_id = $("#schedule").val();
     let username = $("#username-hidden").val();
-    console.log(schedule_id);
     if (schedule_id !== undefined){
         $.ajax({
             type: "GET",
@@ -546,7 +599,6 @@ function checkChoosingSeat(){
             type: "GET",
             url: `/schedules/getByDate/${schedule_date}`
         }).done((schedule) => {
-            console.log(schedule);
             $.ajax({
                 type: "GET",
                 url: `/show/allShows/${schedule.schedule_id}`
@@ -606,61 +658,7 @@ function getScheduleChangeTab(){
     })
 }
 
-function getCurrentShowChangeTab(){
-    let id = $("#schedule").val();
-    $.ajax({
-        type: "GET",
-        url: `/schedules/${id}`
-    }).done((schedule) =>{
-        if (schedule.schedule_date === App.getToday()){
-            $.ajax({
-                type: "GET",
-                url: `/show/allActiveShowsToday/${schedule.schedule_id}`
-            }).done((shows) => {
-                let content =``;
-                for (let i = 0; i < shows.length; i++) {
-                    content += `
-                        <div class="col-md-4 mb-3" >
-                            <div class="rounded card h-40 text-dark" >
-                                <div class="d-flex flex-column h-70 p-2 pb-3 text-shadow-1">
-                                    <div class="mb-1">
-                                        <h4 class="fw-bold" style="width: 250px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis">${shows[i].film.film_name}</h4>
-                                        <p class="text-muted">${schedule.schedule_date} ${shows[i].time_start}</p>
-                                        <p class="badge ${(shows[i].status) ? 'bg-success text-white' : 'bg-danger text-white'}">${shows[i].status ? 'ACTIVE' : 'IN-ACTIVE'}</p>   
-                                    </div>
-                                    <ul class="d-flex list-unstyled mt-3">
-                                        <li class="me-auto">
-                                            <button class="btn btn-outline-warning showSeats" value="${shows[i].room.room_id}"><i class="fas fa-plus"></i></button></li>
 
-                                        <li class="d-flex align-items-center">
-                                            <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"/></svg>
-                                            <span id="admit${shows[i].room.room_id}" class="admit" value="${shows[i].room.room_id}"></span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }
-                $("#menuProduct").html(content);
-                $(".showSeats").on("click", function (){
-                    let roomId = $(this).val();
-                    showListSeats(roomId);
-                })
-                for (let i =0; i < shows.length; i++){
-                    $.ajax({
-                        type: "GET",
-                        url: `/seat/getSeatsByRoom/${shows[i].room.room_id}`
-                    }).done((seats) =>{
-                        $(`#admit${shows[i].room.room_id}`).html(`
-                            <p>${App.countTakenSeat(seats)}/100</p>
-                        `)
-                    })
-                }
-            })
-        }
-    })
-}
 
 //Quầy vé
 function getScheduleOfTicket(){
@@ -757,12 +755,10 @@ function getAllCategory(){
 }
 
 function searchProductByCategoryId(id){
-    console.log(id);
     $.ajax({
         type: "GET",
         url: `/app/menuProductByCategory/${id}`
     }).done(function (product){
-        console.log(product)
         let content = "";
         for (let i = 0; i < product.length ; i++) {
             content += `
@@ -810,7 +806,6 @@ function createMemberApp(){
     }
 
     if ($("#create-form").valid()){
-        console.log(member)
         $.ajax({
             headers: {
                 'Accept': 'application/json',
@@ -1132,7 +1127,7 @@ function drawOrder(){
                 <div class="d-flex justify-content-between p-2 pb-0">
                   <h5>Khách đưa</h5>
                   <div class="d-flex justify-content-between">
-                    <input type="text" value="" id="received">
+                    <input type="number" value="" id="received">
                     <span class="input-group-text">đ</span>
                   </div>
                 </div>
@@ -1181,7 +1176,6 @@ function subProduct(id){
         type: "GET",
         url: `/app/findProduct/${id}`,
         success: function (data){
-            console.log(data)
             let productName = data.product_name;
             let indexProduct = checkSelected(order.products,productName);
             if (order.products[indexProduct].amount === 1){
@@ -1219,7 +1213,7 @@ function emptyOrder(){
                 <div class="d-flex justify-content-between p-2 pb-0">
                   <h5>Khách đưa</h5>
                   <div class="d-flex justify-content-between">
-                    <input type="text" value="" id="received">
+                    <input type="number" value="" id="received">
                     <span class="input-group-text">đ</span>
                   </div>
                 </div>
@@ -1238,7 +1232,7 @@ function emptyOrder(){
                 <div class="d-flex justify-content-between p-2 pb-0">
                   <h5>Khách đưa</h5>
                   <div class="d-flex justify-content-between">
-                    <input type="text" value="" id="received">
+                    <input type="number" value="" id="received">
                     <span class="input-group-text">đ</span>
                   </div>
                 </div>
@@ -1257,7 +1251,7 @@ function emptyOrder(){
                 <div class="d-flex justify-content-between p-2 pb-0">
                   <h5>Khách đưa</h5>
                   <div class="d-flex justify-content-between">
-                    <input type="text" value="" id="received">
+                    <input type="number" value="" id="received">
                     <span class="input-group-text">đ</span>
                   </div>
                 </div>
@@ -1497,7 +1491,7 @@ function createOrder(){
                         url: "/visit/save",
                         data: JSON.stringify(visit)
                     })
-                    App.showSuccessAlert("Create new order successfully!");
+                    App.showSuccessAlert("Tạo mới đơn hàng thành công!");
                     deleteOrder();
                     $(".allSchedule").click();
                 })
@@ -1545,7 +1539,6 @@ $("#searchFilmName").on("input", function (){
     }
 });
 
-getSchedules();
 
 $(".allSchedule").on("click",getScheduleOfTicket);
 

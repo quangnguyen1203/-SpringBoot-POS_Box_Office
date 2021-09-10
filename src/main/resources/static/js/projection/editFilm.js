@@ -58,6 +58,7 @@ function editFilm(){
                 </div>`;
             $("#edit-film").html(content);
             $("#save-film").on("click",saveFilm);
+            $('#up_relDate').on("change",updateDate);
         })
     }).fail(function (){
         App.showErrorAlert("Đã xảy ra lỗi!")
@@ -205,3 +206,9 @@ $(() => {
         submitHandler : saveFilm
     });
 });
+
+function updateDate(){
+    let date = $("#up_relDate").val();
+    let release_date = date.split("-");
+    $("#up_expDate").val(release_date[0]+"-"+release_date[1]+"-"+release_date[2]);
+}

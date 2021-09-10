@@ -131,25 +131,24 @@ function createShow() {
 
 
 
-// $(() => {
-//     $("#create-form").validate({
-//         onfocusout: false,
-//         onkeyup: false,
-//         onclick: false,
-//         rules: {
-//             time_start: {
-//                 required: true,
-//                 validateTime: true,
-//             },
-//         },
-//         messages: {
-//             time_start: {
-//                 required: "Hãy điền giờ bắt đầu",
-//             },
-//         },
-//         submitHandler: createShow
-//     });
-// })
+$(() => {
+    $("#create-form").validate({
+        onfocusout: false,
+        onkeyup: false,
+        onclick: false,
+        rules: {
+            time_start: {
+                required: true,
+            },
+        },
+        messages: {
+            time_start: {
+                required: "Hãy nhập thời gian bắt đầu!",
+            },
+        },
+        submitHandler: createShow
+    });
+})
 // $.validator.addMethod("validateTime", function (value, element) {
 //     if (!/^\d{2}:\d{2}:\d{2}$/.test(value)) return false;
 //     var parts = value.split(':');

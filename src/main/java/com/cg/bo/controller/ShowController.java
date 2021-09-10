@@ -75,18 +75,6 @@ public class ShowController {
         return new ResponseEntity<>(showService.findShowsBySchedule(schedule),HttpStatus.OK);
     }
 
-    @GetMapping("/allShowsToday/{scheduleId}")
-    public ResponseEntity<Iterable<Show>> findAllShowAndSchedule(@PathVariable Long scheduleId){
-        Schedule schedule  = scheduleService.findById(scheduleId).get();
-        Iterable<Show> shows = showService.findShowsBySchedule(schedule);
-        if(dateUtils.getCurrentDate().compareTo(schedule.getSchedule_date()) < 0){
-            setStatusShowAfterDate(shows);
-        }else {
-            setStatusForShow(shows);
-        }
-        return new ResponseEntity<>(showService.findShowsBySchedule(schedule), HttpStatus.OK);
-    }
-
     @GetMapping("/allShows/{scheduleId}")
     public ResponseEntity<Iterable<Show>> findAllShows(@PathVariable Long scheduleId) {
         Schedule schedule = scheduleService.findById(scheduleId).get();
@@ -105,6 +93,18 @@ public class ShowController {
             }
         }
         return new ResponseEntity<>(shows, HttpStatus.OK);
+    }
+
+    @GetMapping("/allShowsToday/{scheduleId}")
+    public ResponseEntity<Iterable<Show>> findAllShowAndSchedule(@PathVariable Long scheduleId){
+        Schedule schedule  = scheduleService.findById(scheduleId).get();
+        Iterable<Show> shows = showService.findShowsBySchedule(schedule);
+        if(dateUtils.getCurrentDate().compareTo(schedule.getSchedule_date()) < 0){
+            setStatusShowAfterDate(shows);
+        }else {
+            setStatusForShow(shows);
+        }
+        return new ResponseEntity<>(showService.findShowsBySchedule(schedule), HttpStatus.OK);
     }
 
     @GetMapping("/allActiveShowsToday/{scheduleId}")
@@ -164,5 +164,11 @@ public class ShowController {
     public ResponseEntity<Show> findShowByRoomId(@PathVariable Long roomId){
         Room room = roomService.findById(roomId).get();
         return new ResponseEntity<>(showService.findShowByRoom(room).get(), HttpStatus.OK);
+    }
+
+    public static void main(String[] args) {
+        DateUtils dateUtils = new DateUtils();
+        ShowController showController = new ShowController();
+        System.out.println(30 >= dateUtils.differentTimeInMinutes("20:30:30"));
     }
 }
