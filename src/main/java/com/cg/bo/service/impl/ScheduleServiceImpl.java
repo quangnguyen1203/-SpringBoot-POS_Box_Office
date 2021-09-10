@@ -49,5 +49,10 @@ public class ScheduleServiceImpl implements ScheduleService {
         return scheduleRepository.findScheduleBySchedule_date(schedule_date);
     }
 
+    @Override
+    public Iterable<Schedule> findScheduleByMonthAndYear(String schedule_date) {
+        return scheduleRepository.findScheduleByMonthAndYear(schedule_date);
+    }
+
 
 }

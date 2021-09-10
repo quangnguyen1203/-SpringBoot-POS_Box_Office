@@ -82,4 +82,9 @@ public class ScheduleController {
     public ResponseEntity<Schedule> findScheduleByScheduleDate(@PathVariable Date schedule_date){
         return new ResponseEntity<>(scheduleService.findScheduleBySchedule_date(schedule_date).get(), HttpStatus.OK);
     }
+
+    @GetMapping("/allScheduleByMonth/{schedule_month}")
+    public ResponseEntity<Iterable<Schedule>> allSchedule_ByMonth(@PathVariable String schedule_month){
+        return new ResponseEntity<>(scheduleService.findScheduleByMonthAndYear(schedule_month), HttpStatus.OK);
+    }
 }

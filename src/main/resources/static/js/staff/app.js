@@ -566,7 +566,6 @@ function checkChoosingSeat(){
             })
         })
     }
-
 }
 
 $("#searchFilmName").on("input", function (){

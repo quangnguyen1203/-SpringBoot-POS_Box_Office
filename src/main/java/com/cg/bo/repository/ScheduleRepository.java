@@ -18,4 +18,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
     @Query("select s from Schedule s where s.schedule_date = ?1")
     Optional<Schedule> findScheduleBySchedule_date(Date schedule_date);
+
+    @Query(nativeQuery = true,value = "SELECT * FROM schedules s WHERE s.schedule_date LIKE ?%")
+    Iterable<Schedule> findScheduleByMonthAndYear(String schedule_date);
 }

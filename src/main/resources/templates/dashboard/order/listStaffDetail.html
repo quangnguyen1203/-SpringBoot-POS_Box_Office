@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>HOME</title>
-  <div th:replace="/dashboard/layout/head::resources"></div>
+  <div th:replace="dashboard/layout/head::resources"></div>
   <style>
     #search-button{
       margin-top: 7px;
@@ -14,7 +14,7 @@
 <!-- Begin page -->
 <div id="wrapper">
 
-  <div th:replace="/dashboard/layout/side-bar::side-bar"></div>
+  <div th:replace="dashboard/layout/side-bar::side-bar"></div>
   <!-- ============================================================== -->
   <!-- Start Page Content here -->
   <!-- ============================================================== -->
@@ -111,9 +111,9 @@
   <!-- ============================================================== -->
 </div>
 <!-- END wrapper -->
-
+<div th:replace="dashboard/layout/script::script"></div>
 </body>
-<div th:replace="/dashboard/layout/script::script"></div>
+
 
 <script src="/js/manager/orderStaff.js"></script>
 </html>

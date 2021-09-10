@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>HOME</title>
-  <div th:replace="/projection/layout/head::resources-pro"></div>
+  <title>PROJECTION</title>
+  <div th:replace="projection/layout/head::resources-pro"></div>
 </head>
 
 <body>
 <!-- Begin page -->
 <div id="wrapper">
-  <div th:replace="/projection/layout/side-bar::side-bar-pro"></div>
+  <div th:replace="projection/layout/side-bar::side-bar-pro"></div>
   <!-- ============================================================== -->
   <!-- Start Page Content here -->
   <!-- ============================================================== -->
@@ -148,7 +148,7 @@
 <!-- END wrapper -->
 
 </body>
-<div th:replace="/projection/layout/script::script-pro"></div>
+<div th:replace="projection/layout/script::script-pro"></div>
 <script>
   App.getUser()
   $(".logout").on("click", App.logout);

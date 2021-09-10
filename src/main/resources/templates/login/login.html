@@ -9,9 +9,9 @@
 
     <link rel="stylesheet" href="/css/mystyle.css">
     <link rel="stylesheet" href="/css/sweetalert2.min.css">
-        <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
-        <script type="text/javascript" src="/js/sweetalert2.min.js"></script>
-        <script type="text/javascript" src="/js/app.js"></script>
+    <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="/js/sweetalert2.min.js"></script>
+    <script type="text/javascript" src="/js/app.js"></script>
 </head>
 <body class="img js-fullheight" style="background-image: url(/img/bg.jpg);">
 <section class="ftco-section">
@@ -50,7 +50,6 @@
 <script src="/js/main.js"></script>
 
 <script>
-
     function loginHandle() {
         let customer = {
             username: $("#username").val(),
@@ -66,20 +65,18 @@
             url: "/api/login",
             data: JSON.stringify(customer)
         }).done((user) => {
-            // App.showSuccessAlert("Đăng nhập thành công!");
-            // console.log(user);
             if  (user.roles[0].authority === "ADMIN"){
-                window.location.href = "/admin";
+                window.location.href = "admin";
             } else if (user.roles[0].authority === "PROJECTION"){
-                window.location.href = "/projection";
+                window.location.href = "projection";
             } else {
-                window.location.href = "/app";
+                window.location.href = "app";
             }
+            App.setCookie("JWT", user.token);
         }).fail(() => {
             App.showErrorAlert("Đã xảy ra lỗi. Vui lòng kiểm tra tên đăng nhập hoặc mật khẩu!");
         });
     }
-
     $("#btnLogin").on("click",loginHandle);
 </script>
 

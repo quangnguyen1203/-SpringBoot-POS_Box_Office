@@ -3,7 +3,7 @@
 
 <head>
     <title>HOME</title>
-    <div th:replace="/projection/layout/head::resources-pro"></div>
+    <div th:replace="projection/layout/head::resources-pro"></div>
     <style>
         .error{
             color: red;
@@ -17,7 +17,7 @@
 <!-- Begin page -->
 <div id="wrapper">
 
-    <div th:replace="/projection/layout/side-bar::side-bar-pro"></div>
+    <div th:replace="projection/layout/side-bar::side-bar-pro"></div>
 
     <!-- ============================================================== -->
     <!-- Start Page Content here -->
@@ -59,7 +59,7 @@
 
                                     <div class="form-group col-md-6">
                                         <label>Thời gian bắt đầu:(hh:mm:ss)<span class="text-danger">*</span></label>
-                                        <input id="time_start" name="time_start"  type="text" placeholder="Nhập giờ theo định dạng" required class="form-control">
+                                        <input id="time_start" name="time_start"  type="time" placeholder="Nhập giờ theo định dạng" required class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group text-right mb-0">
@@ -91,7 +91,7 @@
 </div>
 
 </body>
-<div th:replace="/projection/layout/script::script-pro"></div>
+<div th:replace="projection/layout/script::script-pro"></div>
 
 <script src="/js/projection/show.js"></script>
 

@@ -35,7 +35,7 @@ public class ShowController {
     @GetMapping("/create")
     @PreAuthorize("hasAnyAuthority('PROJECTION')")
     public ModelAndView showCreateShowForm(){
-        return new ModelAndView("/projection/show/create");
+        return new ModelAndView("projection/show/create");
     }
 
     @PostMapping("/create")
@@ -67,11 +67,6 @@ public class ShowController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
-
-    @GetMapping("/allShow")
-    public ModelAndView listAllShow(){
-        return new ModelAndView("/projection/show/list");
     }
 
     @GetMapping("/apiShow/{scheduleId}")

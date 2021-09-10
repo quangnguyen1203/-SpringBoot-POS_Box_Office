@@ -28,7 +28,7 @@ function createFilm(){
     let film_id = $('#film_id').val();
     let film_name = $("#film_name").val();
     let image = $("#imageName").val();
-    let duration = $("#film_duration").val();
+    let duration = $("#hour").val() + ":" + $("#minute").val() + ":" + $("#second").val();
     let rel_date = $("#rel_date").val();
     let exp_date = $("#exp_date").val();
     let description = $("#film_description").val();
@@ -45,6 +45,7 @@ function createFilm(){
         description : description,
         admit : admit,
     }
+    console.log(newFilm);
     if ($("#create-form").valid()){
         $.ajax({
             headers: {

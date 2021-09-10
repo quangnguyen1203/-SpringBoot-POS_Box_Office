@@ -56,6 +56,7 @@ $("#create-button").on("click", createShow);
 
 function createShow() {
     let film_id = $("#film_id").val();
+
     $.ajax({
         type: "GET",
         url: `/films/find/${film_id}`
@@ -80,7 +81,7 @@ function createShow() {
                     schedule_id: $("#schedule_date").val()
                 }
                 let bonus_time = "00:30:00";
-                let time_start = $("#time_start").val();
+                let time_start = $("#time_start").val() + ":00";
                 let time_end = App.addTimes(App.addTimes(time_start, film.duration), bonus_time);
                 console.log(time_end)
                 let show = {
@@ -100,6 +101,7 @@ function createShow() {
                         url: "/show/create",
                         data: JSON.stringify(show)
                     }).done((newShow) =>{
+                        console.log(newShow)
                         let newRoom = {
                             room_id: room1.room_id,
                             isFull: room1.isFull,
@@ -129,28 +131,28 @@ function createShow() {
 
 
 
-$(() => {
-    $("#create-form").validate({
-        onfocusout: false,
-        onkeyup: false,
-        onclick: false,
-        rules: {
-            time_start: {
-                required: true,
-                validateTime: true,
-            },
-        },
-        messages: {
-            time_start: {
-                required: "Hãy điền giờ bắt đầu",
-            },
-        },
-        submitHandler: createShow
-    });
-})
-$.validator.addMethod("validateTime", function (value, element) {
-    if (!/^\d{2}:\d{2}:\d{2}$/.test(value)) return false;
-    var parts = value.split(':');
-    if (parts[0] > 23 || parts[1] > 59 || parts[2] > 59) return false;
-    return true;
-}, "Hãy nhập theo đúng định dạng");
+// $(() => {
+//     $("#create-form").validate({
+//         onfocusout: false,
+//         onkeyup: false,
+//         onclick: false,
+//         rules: {
+//             time_start: {
+//                 required: true,
+//                 validateTime: true,
+//             },
+//         },
+//         messages: {
+//             time_start: {
+//                 required: "Hãy điền giờ bắt đầu",
+//             },
+//         },
+//         submitHandler: createShow
+//     });
+// })
+// $.validator.addMethod("validateTime", function (value, element) {
+//     if (!/^\d{2}:\d{2}:\d{2}$/.test(value)) return false;
+//     var parts = value.split(':');
+//     if (parts[0] > 23 || parts[1] > 59 || parts[2] > 59) return false;
+//     return true;
+// }, "Hãy nhập theo đúng định dạng");
