@@ -101,7 +101,10 @@ public class ShowController {
         Iterable<Show> shows = showService.findShowsBySchedule(schedule);
         if(dateUtils.getCurrentDate().compareTo(schedule.getSchedule_date()) < 0){
             setStatusShowAfterDate(shows);
-        }else {
+        }else if (dateUtils.getCurrentDate().compareTo(schedule.getSchedule_date()) > 0){
+            setStatusShowBeforeDate(shows);
+        }
+            else {
             setStatusForShow(shows);
         }
         return new ResponseEntity<>(showService.findShowsBySchedule(schedule), HttpStatus.OK);
@@ -128,6 +131,13 @@ public class ShowController {
     public void setStatusShowAfterDate(Iterable<Show> shows){
         for(Show s :shows){
             s.setStatus(true);
+            showService.save(s);
+        }
+    }
+
+    public void setStatusShowBeforeDate(Iterable<Show> shows){
+        for(Show s :shows){
+            s.setStatus(false);
             showService.save(s);
         }
     }
